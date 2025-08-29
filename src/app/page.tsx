@@ -1,103 +1,216 @@
-import Image from "next/image";
+//src/app/page.tsx
+'use client';
 
-export default function Home() {
+import { Suspense, lazy } from 'react';
+import HeroSection from '@/components/ui/HeroSection';
+import ExclusivitySection from '@/components/ui/ExclusivitySection';
+import AchievementCounter from '@/components/ui/AchievementCounter';
+import FloatingButtons from '@/components/ui/FloatingButtons';
+
+// Lazy load components that are below the fold
+const PortfolioTeaser = lazy(() => import('@/components/ui/PortfolioTeaser'));
+const DesignInsightSnippet = lazy(() => import('@/components/ui/DesignInsightSnippet'));
+const TestimonialSection = lazy(() => import('@/components/ui/TestimonialSection'));
+
+// Sample data - In production, this would come from your database
+const heroImages = [
+  {
+    src: '/images/hero/luxury-living-room.jpg',
+    alt: 'Luxury living room with contemporary furnishings',
+    title: 'Contemporary Elegance',
+    subtitle: 'A stunning blend of modern luxury and timeless sophistication in Lagos'
+  },
+  {
+    src: '/images/hero/luxury-bedroom.jpg',
+    alt: 'Elegant master bedroom with luxury finishes',
+    title: 'Master Suite Sanctuary',
+    subtitle: 'Bespoke bedroom design featuring custom furnishings and premium materials'
+  },
+  {
+    src: '/images/hero/luxury-kitchen.jpg',
+    alt: 'Modern luxury kitchen with marble countertops',
+    title: 'Culinary Masterpiece',
+    subtitle: 'State-of-the-art kitchen design with Italian marble and custom cabinetry'
+  }
+];
+
+const heroVideo = {
+  thumbnailSrc: '/images/video/portfolio-thumbnail.jpg',
+  videoSrc: '/videos/olivehaus-portfolio.mp4',
+  title: 'OliveHaus Portfolio Showcase',
+  description: 'Experience our luxury interior design projects from concept to completion'
+};
+
+const heroTagline = {
+  main: 'Spaces that Define Luxury.',
+  sub: 'Designs that Feel Like Home.'
+};
+
+const availableSlots = {
+  q1: 3,
+  q2: 8,
+  q3: 12,
+  q4: 15
+};
+
+const counters = {
+  completedProjects: 157,
+  happyClients: 143,
+  yearsExperience: 15,
+  ongoingProjects: 28
+};
+
+const contactInfo = {
+  phone: '+234-xxx-xxx-xxxx',
+  whatsapp: '+234-xxx-xxx-xxxx'
+};
+
+export default function HomePage() {
+  // Handle CTA clicks
+  const handleHireUsClick = () => {
+    // Scroll to contact section or open contact modal
+    const contactSection = document.getElementById('contact-section');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Fallback: redirect to contact page
+      window.location.href = '/contact';
+    }
+    
+    // Analytics tracking
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as any).gtag('event', 'click', {
+        event_category: 'engagement',
+        event_label: 'hire_us_hero',
+      });
+    }
+  };
+
+  const handleBookNowClick = () => {
+    // Scroll to contact section or open booking modal
+    const contactSection = document.getElementById('contact-section');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Fallback: redirect to contact page
+      window.location.href = '/contact';
+    }
+    
+    // Analytics tracking
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as any).gtag('event', 'click', {
+        event_category: 'engagement',
+        event_label: 'book_now_exclusivity',
+      });
+    }
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      {/* Hero Section */}
+      <HeroSection
+        images={heroImages}
+        video={heroVideo}
+        tagline={heroTagline}
+        onHireUsClick={handleHireUsClick}
+      />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Exclusivity Section */}
+      <ExclusivitySection
+        availableSlots={availableSlots}
+        currentYear={2025}
+        urgencyMessage="Due to high demand and our commitment to personalized service, we maintain limited project slots per quarter to ensure exceptional quality and attention to detail."
+        onBookNowClick={handleBookNowClick}
+      />
+
+      {/* Achievement Counter */}
+      <AchievementCounter counters={counters} />
+
+      {/* Portfolio Teaser - Lazy loaded */}
+      <Suspense fallback={
+        <div className="py-20 bg-luxury-cream">
+          <div className="container-luxury">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="aspect-square bg-luxury-platinum/50 rounded-2xl animate-pulse" />
+              ))}
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      }>
+        <PortfolioTeaser />
+      </Suspense>
+
+      {/* Design Insight Snippet - Lazy loaded */}
+      <Suspense fallback={
+        <div className="py-20 bg-white">
+          <div className="container-luxury">
+            <div className="max-w-4xl mx-auto">
+              <div className="h-8 bg-luxury-platinum/50 rounded-lg mb-6 animate-pulse" />
+              <div className="h-64 bg-luxury-platinum/50 rounded-2xl animate-pulse" />
+            </div>
+          </div>
+        </div>
+      }>
+        <DesignInsightSnippet />
+      </Suspense>
+
+      {/* Testimonials - Lazy loaded */}
+      <Suspense fallback={
+        <div className="py-20 bg-luxury-cream">
+          <div className="container-luxury">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="card-luxury">
+                  <div className="h-32 bg-luxury-platinum/50 rounded-lg animate-pulse" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      }>
+        <TestimonialSection />
+      </Suspense>
+
+      {/* Contact Section */}
+      <section id="contact-section" className="py-20 bg-gradient-to-br from-luxury-charcoal to-luxury-slate text-white">
+        <div className="container-luxury text-center">
+          <h2 className="text-luxury-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            Ready to Transform Your Space?
+          </h2>
+          <p className="text-xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
+            Contact us today for a private consultation and discover how we can create your dream luxury space.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <a
+              href={`tel:${contactInfo.phone}`}
+              className="btn-luxury text-lg px-12 py-4"
+            >
+              Call Us Now
+            </a>
+            
+            <a
+              href={`https://wa.me/${contactInfo.whatsapp.replace(/[^\d]/g, '')}?text=Hello! I'm interested in OliveHaus Interiors' luxury design services.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-3 text-white hover:text-luxury-gold transition-colors duration-300 border border-white/30 rounded-lg px-8 py-4 hover:border-luxury-gold"
+            >
+              <span>WhatsApp Us</span>
+            </a>
+          </div>
+          
+          <p className="mt-8 text-sm text-white/70">
+            Response time: Within 2 hours during business hours
+          </p>
+        </div>
+      </section>
+
+      {/* Floating Buttons */}
+      <FloatingButtons
+        phone={contactInfo.phone}
+        whatsapp={contactInfo.whatsapp}
+      />
+    </>
   );
 }
