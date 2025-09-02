@@ -1,3 +1,4 @@
+//src/components/ui/DesignInsightSnippet.tsx
 'use client';
 
 import { useState } from 'react';
@@ -5,6 +6,17 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Lightbulb, Palette, Ruler, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// Extend window type for gtag function
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'config' | 'event' | 'set',
+      targetId: string,
+      config?: Record<string, unknown>
+    ) => void;
+  }
+}
 
 interface DesignAnnotation {
   id: string;
@@ -25,7 +37,7 @@ const sampleInsight = {
   title: 'Luxury Living Room Design',
   projectName: 'Victoria Island Penthouse',
   description: 'Discover the thought process behind our award-winning living room design that seamlessly blends contemporary luxury with Nigerian cultural elements.',
-  renderImage: '/images/insights/living-room-render.jpg',
+  renderImage: '/images/design-insights/7.webp',
   annotations: [
     {
       id: 'lighting',
@@ -74,8 +86,8 @@ export default function DesignInsightSnippet({ className }: DesignInsightSnippet
 
   const handleViewFullInsights = () => {
     // Analytics tracking
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'click', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'click', {
         event_category: 'engagement',
         event_label: 'view_design_insights',
       });
@@ -141,7 +153,6 @@ export default function DesignInsightSnippet({ className }: DesignInsightSnippet
                 {/* Interactive Annotations */}
                 {sampleInsight.annotations.map((annotation) => {
                   const IconComponent = annotation.icon;
-                  const isActive = activeAnnotation === annotation.id;
 
                   return (
                     <motion.button

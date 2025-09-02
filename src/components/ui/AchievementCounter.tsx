@@ -58,10 +58,9 @@ function CounterItem({ icon: Icon, value, label, suffix = '', description, delay
         clearInterval(timer);
       };
     }
-    // No return needed for the else case - this is valid
+    
+    return undefined; // Explicit return for the else path
   }, [isInView, value, isAnimating, controls]);
-
-  
 
   return (
     <motion.div
@@ -251,9 +250,9 @@ export default function AchievementCounter({ counters, className }: AchievementC
             className="mt-16 max-w-4xl mx-auto"
           >
             <div className="card-luxury bg-gradient-to-br from-luxury-gold/5 to-luxury-darkGold/5">
-              <div className="text-6xl text-luxury-gold/20 mb-4">"</div>
+              <div className="text-6xl text-luxury-gold/20 mb-4">&apos;</div>
               <p className="text-2xl font-elegant italic text-luxury-charcoal leading-relaxed mb-6">
-                OliveHaus didn't just design our home; they created a masterpiece that reflects our personality and exceeds our expectations in every detail.
+                OliveHaus didn&apos;t just design our home; they created a masterpiece that reflects our personality and exceeds our expectations in every detail.
               </p>
               <div className="flex items-center justify-center space-x-4">
                 <div className="w-12 h-12 bg-luxury-gold rounded-full flex items-center justify-center">

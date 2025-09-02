@@ -1,3 +1,4 @@
+//src/components/ui/HeroSection.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -5,6 +6,17 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// Extend window type for gtag function
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'config' | 'event' | 'set',
+      targetId: string,
+      config?: Record<string, unknown>
+    ) => void;
+  }
+}
 
 interface HeroImage {
   src: string;
@@ -71,8 +83,8 @@ export default function HeroSection({
   const openVideoModal = () => {
     setIsVideoModalOpen(true);
     // Analytics tracking
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'video_play', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'video_play', {
         event_category: 'engagement',
         event_label: 'hero_video',
       });

@@ -6,6 +6,17 @@ import { Phone, MessageCircle, X, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn, buildWhatsAppUrl, buildPhoneUrl } from '@/lib/utils';
 
+// Extend window type for gtag function
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'config' | 'event' | 'set',
+      targetId: string,
+      config?: Record<string, unknown>
+    ) => void;
+  }
+}
+
 interface FloatingButtonsProps {
   phone: string;
   whatsapp: string;
@@ -37,8 +48,8 @@ export default function FloatingButtons({
     window.open(whatsappUrl, '_blank');
     
     // Analytics tracking
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'click', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'click', {
         event_category: 'engagement',
         event_label: 'whatsapp_floating_button',
       });
@@ -50,8 +61,8 @@ export default function FloatingButtons({
     window.location.href = buildPhoneUrl(phone);
     
     // Analytics tracking
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'click', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'click', {
         event_category: 'engagement',
         event_label: 'phone_floating_button',
       });

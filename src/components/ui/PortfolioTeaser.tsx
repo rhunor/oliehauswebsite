@@ -1,17 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Eye } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, trackEvent } from '@/lib/utils';
+import { PortfolioImage } from '@/components/ui/OptimizedImage';
 
 interface PortfolioProject {
   id: string;
   title: string;
   category: string;
   location: string;
-  image: string;
+  image: {
+    src: string; // Changed from StaticImageData to string
+    alt: string;
+    width: number;
+    height: number;
+  };
   description: string;
   featured: boolean;
 }
@@ -20,14 +25,19 @@ interface PortfolioTeaserProps {
   className?: string;
 }
 
-// Sample portfolio data - In production, this would come from your database
+// Enhanced portfolio data with string paths instead of static imports
 const portfolioProjects: PortfolioProject[] = [
   {
     id: '1',
     title: 'Luxury Penthouse',
     category: 'Residential',
     location: 'Victoria Island, Lagos',
-    image: '/images/portfolio/penthouse-main.jpg',
+    image: {
+      src: '/images/portfolio/penthouse-main.webp',
+      alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
+      width: 800,
+      height: 600,
+    },
     description: 'A stunning 4-bedroom penthouse with panoramic city views and bespoke furnishings',
     featured: true,
   },
@@ -36,7 +46,12 @@ const portfolioProjects: PortfolioProject[] = [
     title: 'Corporate Headquarters',
     category: 'Commercial',
     location: 'Ikoyi, Lagos',
-    image: '/images/portfolio/office-main.jpg',
+    image: {
+      src: '/images/portfolio/office-main.webp',
+      alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
+      width: 800,
+      height: 600,
+    },
     description: 'Modern corporate office design emphasizing productivity and luxury aesthetics',
     featured: true,
   },
@@ -45,7 +60,12 @@ const portfolioProjects: PortfolioProject[] = [
     title: 'Private Villa',
     category: 'Residential',
     location: 'Banana Island, Lagos',
-    image: '/images/portfolio/villa-main.jpg',
+    image: {
+      src: '/images/portfolio/villa-main.webp',
+      alt: 'Contemporary villa interior with tropical luxury elements, smart home features, and custom millwork',
+      width: 800,
+      height: 600,
+    },
     description: 'Contemporary villa design with tropical luxury elements and smart home integration',
     featured: true,
   },
@@ -54,7 +74,12 @@ const portfolioProjects: PortfolioProject[] = [
     title: 'Boutique Hotel',
     category: 'Hospitality',
     location: 'Lekki Phase 1, Lagos',
-    image: '/images/portfolio/hotel-main.jpg',
+    image: {
+      src: '/images/portfolio/hotel-main.webp',
+      alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
+      width: 800,
+      height: 600,
+    },
     description: 'Intimate boutique hotel combining Nigerian heritage with modern luxury',
     featured: true,
   },
@@ -63,7 +88,12 @@ const portfolioProjects: PortfolioProject[] = [
     title: 'Executive Suite',
     category: 'Residential',
     location: 'Abuja',
-    image: '/images/portfolio/suite-main.jpg',
+    image: {
+      src: '/images/portfolio/suite-main.webp',
+      alt: 'Elegant executive master bedroom with custom millwork, premium bedding, and luxury finishes',
+      width: 800,
+      height: 600,
+    },
     description: 'Elegant master suite with custom millwork and premium finishes',
     featured: false,
   },
@@ -72,7 +102,12 @@ const portfolioProjects: PortfolioProject[] = [
     title: 'Restaurant Interior',
     category: 'Commercial',
     location: 'Victoria Island, Lagos',
-    image: '/images/portfolio/restaurant-main.jpg',
+    image: {
+      src: '/images/portfolio/restaurant-main.webp',
+      alt: 'Fine dining restaurant with sophisticated ambiance, innovative lighting, and luxury table settings',
+      width: 800,
+      height: 600,
+    },
     description: 'Fine dining restaurant with sophisticated ambiance and innovative lighting',
     featured: false,
   },
@@ -89,29 +124,26 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
     : portfolioProjects.filter(project => project.category === activeCategory);
 
   const handleViewProject = (projectId: string) => {
-    // Analytics tracking
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'click', {
-        event_category: 'engagement',
-        event_label: `portfolio_project_${projectId}`,
-      });
-    }
+    // Enhanced analytics tracking
+    trackEvent('click', 'engagement', `portfolio_project_${projectId}`);
 
     // In production, this would navigate to the project detail page
     console.log(`Viewing project: ${projectId}`);
+    // Example: router.push(`/portfolio/${projectId}`);
   };
 
   const handleViewAllPortfolio = () => {
     // Analytics tracking
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'click', {
-        event_category: 'engagement',
-        event_label: 'view_all_portfolio',
-      });
-    }
+    trackEvent('click', 'engagement', 'view_all_portfolio');
 
     // In production, this would navigate to the full portfolio page
     console.log('Viewing full portfolio');
+    // Example: router.push('/portfolio');
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+    trackEvent('click', 'engagement', `portfolio_filter_${category.toLowerCase()}`);
   };
 
   return (
@@ -154,7 +186,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
           {categories.map((category) => (
             <button
               key={category}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => handleCategoryChange(category)}
               className={cn(
                 "px-6 py-3 rounded-full font-medium transition-all duration-300",
                 activeCategory === category
@@ -186,14 +218,18 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
               onClick={() => handleViewProject(project.id)}
             >
               <div className="card-luxury overflow-hidden">
-                {/* Project Image */}
+                {/* Project Image with Enhanced Optimization */}
                 <div className="relative aspect-[4/3] mb-6 overflow-hidden rounded-xl">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  <PortfolioImage
+                    src={project.image.src}
+                    alt={project.image.alt}
+                    width={project.image.width}
+                    height={project.image.height}
+                    className="transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={index < 3} // Prioritize first 3 images
+                    showLoadingState={true}
+                    hoverEffect={false} // Handled by container hover
                   />
                   
                   {/* Overlay */}
@@ -215,38 +251,36 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                       opacity: hoveredProject === project.id ? 1 : 0,
                       scale: hoveredProject === project.id ? 1 : 0.8
                     }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute inset-0 flex items-center justify-center z-10"
+                    className="absolute inset-0 flex items-center justify-center z-20"
                   >
-                    <button className="bg-white/90 backdrop-blur-sm text-luxury-charcoal p-4 rounded-full shadow-luxury hover:bg-white transition-colors duration-300">
+                    <div className="bg-luxury-gold text-white p-4 rounded-full shadow-luxury-soft">
                       <Eye className="w-6 h-6" />
-                    </button>
+                    </div>
                   </motion.div>
                 </div>
 
-                {/* Project Info */}
-                <div className="space-y-3">
+                {/* Project Details */}
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-luxury-gold font-medium uppercase tracking-wide">
+                    <span className="text-luxury-gold text-sm font-medium">
                       {project.category}
                     </span>
-                    <span className="text-sm text-luxury-slate">
+                    <span className="text-luxury-slate text-sm">
                       {project.location}
                     </span>
                   </div>
 
-                  <h3 className="text-luxury-heading text-2xl font-bold group-hover:text-luxury-gold transition-colors duration-300">
+                  <h3 className="text-luxury-heading text-xl font-bold group-hover:text-luxury-gold transition-colors duration-300">
                     {project.title}
                   </h3>
 
-                  <p className="text-luxury-body text-sm leading-relaxed">
+                  <p className="text-luxury-slate leading-relaxed">
                     {project.description}
                   </p>
 
-                  {/* View Project Link */}
-                  <div className="flex items-center text-luxury-gold font-medium text-sm group-hover:text-luxury-dark-gold transition-colors duration-300">
+                  <div className="flex items-center text-luxury-gold font-medium group-hover:gap-3 gap-2 transition-all duration-300">
                     <span>View Project</span>
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
                 </div>
               </div>
@@ -254,25 +288,21 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
           ))}
         </motion.div>
 
-        {/* View All Portfolio CTA */}
+        {/* View All Portfolio Button */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           className="text-center mt-16"
         >
           <button
             onClick={handleViewAllPortfolio}
-            className="btn-luxury text-lg px-12 py-4 group"
+            className="btn-luxury group"
           >
-            <span className="relative z-10">View Complete Portfolio</span>
-            <ArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+            <span>View Full Portfolio</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
           </button>
-          
-          <p className="mt-4 text-sm text-luxury-slate/70">
-            Discover all {portfolioProjects.length}+ luxury projects in our complete portfolio
-          </p>
         </motion.div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+//next.config.ts - Enhanced version
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -12,6 +13,10 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: false,
   },
   images: {
+    // Enable modern image formats (AVIF first, then WebP as fallback)
+    formats: ['image/avif', 'image/webp'],
+    
+    // Configure remote patterns for external images
     remotePatterns: [
       {
         protocol: 'https',
@@ -24,8 +29,25 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    formats: ['image/webp', 'image/avif'],
+    
+    // Device sizes for responsive images
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    
+    // Image sizes for images with sizes prop
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    
+    // Explicitly allow quality values (NEW in Next.js 15.5+)
+    // This replaces the deprecated 'quality' property
+    qualities: [70, 75, 80, 85, 90, 95, 100],
+    
+    // Minimize overhead for the image optimization API (in seconds)
+    minimumCacheTTL: 31536000, // 1 year in seconds
+    
+    // Enable SVG support with security policy
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  
   experimental: {
     turbo: {
       rules: {
@@ -36,13 +58,17 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  // Enable experimental features
+  
+  // Enable experimental features for better performance
   swcMinify: true,
+  
   // Optimize for production
   productionBrowserSourceMaps: false,
+  
   // Performance optimizations
   compress: true,
-  // Configure headers
+  
+  // Configure headers for security and performance
   async headers() {
     return [
       {
@@ -60,8 +86,47 @@ const nextConfig: NextConfig = {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
           },
+          // Cache static assets
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
         ],
       },
+      // Specific headers for images
+      {
+        source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Headers for videos
+      {
+        source: '/videos/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
+  
+  // Redirect configuration if needed
+  async redirects() {
+    return [
+      // Add any redirects here if needed
+    ];
+  },
+  
+  // Rewrite configuration for cleaner URLs
+  async rewrites() {
+    return [
+      // Add any rewrites here if needed
     ];
   },
 };

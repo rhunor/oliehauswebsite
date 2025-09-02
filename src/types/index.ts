@@ -1,4 +1,4 @@
-//src/ypes/index.ts
+//src/types/index.ts - Enhanced version with optimized image types
 import { ObjectId } from 'mongodb';
 
 // Base interfaces
@@ -8,7 +8,28 @@ export interface BaseDocument {
   updatedAt: Date;
 }
 
-// Project interfaces
+// Enhanced image interfaces for optimization
+export interface OptimizedImageProps {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  priority?: boolean;
+  quality?: number;
+  sizes?: string;
+  className?: string;
+  blurDataURL?: string;
+  placeholder?: 'blur' | 'empty';
+}
+
+export interface ResponsiveImageSizes {
+  mobile: string;
+  tablet: string;
+  desktop: string;
+  xl: string;
+}
+
+// Project interfaces (enhanced from your existing)
 export interface Project extends BaseDocument {
   title: string;
   slug: string;
@@ -27,12 +48,22 @@ export interface Project extends BaseDocument {
   tags: string[];
 }
 
+// Enhanced ProjectImage with optimization properties
 export interface ProjectImage {
   url: string;
   alt: string;
   caption?: string;
   isPrimary: boolean;
   cloudinaryId: string;
+  width: number;
+  height: number;
+  aspectRatio: string; // e.g., "16:9", "4:3", "1:1"
+  category: ImageCategory;
+  optimizedVersions?: {
+    webp: string;
+    avif: string;
+    thumbnail: string;
+  };
 }
 
 export interface BeforeAfterImage {
@@ -40,11 +71,15 @@ export interface BeforeAfterImage {
     url: string;
     alt: string;
     cloudinaryId: string;
+    width: number;
+    height: number;
   };
   after: {
     url: string;
     alt: string;
     cloudinaryId: string;
+    width: number;
+    height: number;
   };
   description: string;
 }
@@ -54,13 +89,29 @@ export interface ProjectTestimonial {
   content: string;
   rating: number;
   isHighProfile: boolean;
+  clientPhoto?: OptimizedImageProps;
 }
 
 export type ProjectCategory = 'residential' | 'corporate' | 'commercial';
 export type ProjectSubcategory = 'bathroom' | 'bedroom' | 'kitchen' | 'living-room' | 'office' | 'retail' | 'hospitality';
 export type ProjectStatus = 'completed' | 'in-progress' | 'planned';
+export type ImageCategory = 'hero' | 'portfolio' | 'detail' | 'thumbnail' | 'before' | 'after';
 
-// Design insight interfaces
+// Hero section interfaces (matching your existing components)
+export interface HeroImage extends OptimizedImageProps {
+  title: string;
+  subtitle: string;
+}
+
+export interface VideoContent {
+  thumbnailSrc: string;
+  videoSrc: string;
+  title: string;
+  description: string;
+  thumbnail: OptimizedImageProps;
+}
+
+// Design insight interfaces (enhanced)
 export interface DesignInsight extends BaseDocument {
   title: string;
   slug: string;
@@ -80,6 +131,12 @@ export interface DesignRender {
   alt: string;
   annotations: DesignAnnotation[];
   cloudinaryId: string;
+  width: number;
+  height: number;
+  optimizedVersions?: {
+    webp: string;
+    avif: string;
+  };
 }
 
 export interface DesignAnnotation {
@@ -120,267 +177,24 @@ export interface Lead extends BaseDocument, ContactForm {
   assignedTo?: ObjectId;
   notes: LeadNote[];
   followUpDate?: Date;
-  priority: LeadPriority;
-  estimatedValue: number;
 }
 
-export interface LeadNote {
+export interface LeadNote extends BaseDocument {
   content: string;
-  createdBy: ObjectId;
-  createdAt: Date;
-  isImportant: boolean;
+  author: ObjectId;
 }
 
-export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'proposal-sent' | 'negotiation' | 'closed-won' | 'closed-lost';
-export type LeadSource = 'website' | 'whatsapp' | 'phone' | 'referral' | 'social-media' | 'other';
-export type LeadPriority = 'low' | 'medium' | 'high' | 'urgent';
+export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'proposal-sent' | 'closed-won' | 'closed-lost';
+export type LeadSource = 'website' | 'referral' | 'social-media' | 'google-ads' | 'direct' | 'other';
 
-// Testimonial interfaces
-export interface Testimonial extends BaseDocument {
-  clientName: string;
-  content: string;
-  rating: number;
-  projectId?: ObjectId;
-  location: string;
-  isHighProfile: boolean;
-  featured: boolean;
-  clientImage?: {
-    url: string;
-    alt: string;
-    cloudinaryId: string;
-  };
-  tags: string[];
-}
-
-// Settings and configuration interfaces
-export interface SiteSettings extends BaseDocument {
-  counters: ProjectCounters;
-  bookingSettings: BookingSettings;
-  contactInfo: ContactInfo;
-  socialMedia: SocialMediaLinks;
-  seo: SEOSettings;
-}
-
-export interface ProjectCounters {
-  completedProjects: number;
-  happyClients: number;
-  yearsExperience: number;
-  ongoingProjects: number;
-}
-
-export interface BookingSettings {
-  availableSlots: QuarterlySlots;
-  currentYear: number;
-  showCountdown: boolean;
-  urgencyMessage: string;
-}
-
-export interface QuarterlySlots {
-  q1: number;
-  q2: number;
-  q3: number;
-  q4: number;
-}
-
-export interface ContactInfo {
-  phone: string;
-  whatsapp: string;
-  email: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    postalCode: string;
-  };
-  businessHours: BusinessHours;
-}
-
-export interface BusinessHours {
-  monday: DayHours;
-  tuesday: DayHours;
-  wednesday: DayHours;
-  thursday: DayHours;
-  friday: DayHours;
-  saturday: DayHours;
-  sunday: DayHours;
-}
-
-export interface DayHours {
-  open: string;
-  close: string;
-  isClosed: boolean;
-}
-
-export interface SocialMediaLinks {
-  instagram: string;
-  linkedin: string;
-  facebook: string;
-  twitter: string;
-  pinterest: string;
-}
-
-export interface SEOSettings {
-  metaTitle: string;
-  metaDescription: string;
-  keywords: string[];
-  ogImage: {
-    url: string;
-    width: number;
-    height: number;
-  };
-}
-
-// Admin interfaces
-export interface AdminUser extends BaseDocument {
-  name: string;
-  email: string;
-  password: string;
-  role: AdminRole;
-  isActive: boolean;
-  lastLogin?: Date;
-  avatar?: {
-    url: string;
-    cloudinaryId: string;
-  };
-}
-
-export type AdminRole = 'super-admin' | 'admin' | 'editor';
-
-// API response interfaces
-export interface APIResponse<T = unknown> {
-  success: boolean;
-  data?: T;
-  message: string;
-  error?: string;
-}
-
-export interface PaginationMeta {
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  itemsPerPage: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
-
-export interface PaginatedResponse<T> extends APIResponse<T[]> {
-  meta: PaginationMeta;
-}
-
-// Utility types
-export type Nullable<T> = T | null;
-export type Optional<T> = T | undefined;
-export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-export type RequiredBy<T, K extends keyof T> = T & Required<Pick<T, K>>;
-
-// Component prop interfaces
-export interface BaseComponentProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export interface ImageProps {
-  src: string;
-  alt: string;
-  width?: number;
-  height?: number;
-  priority?: boolean;
-  className?: string;
-  placeholder?: 'blur' | 'empty';
-  blurDataURL?: string;
-}
-
-// Form validation interfaces
-export interface FormErrors {
-  [key: string]: string | undefined;
-}
-
-export interface ValidationRule {
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  pattern?: RegExp;
-  custom?: (value: unknown) => boolean | string;
-}
-
-export interface FormField<T = string> {
-  value: T;
-  error?: string;
-  touched: boolean;
-  rules?: ValidationRule;
-}
-
-// Database connection interfaces
-export interface DatabaseConfig {
-  uri: string;
-  options: Record<string, unknown>;
-}
-
-// Email interfaces
-export interface EmailTemplate {
-  subject: string;
-  html: string;
-  text: string;
-}
-
-export interface EmailConfig {
-  from: string;
-  replyTo: string;
-  templates: Record<string, EmailTemplate>;
-}
-
-// Analytics interfaces
+// Analytics and tracking
 export interface AnalyticsEvent {
-  action: string;
+  eventType: 'page_view' | 'click' | 'form_submit' | 'video_play' | 'download';
   category: string;
-  label?: string;
+  label: string;
   value?: number;
-}
-
-export interface PageViewData {
-  path: string;
-  title: string;
+  userId?: string;
+  sessionId: string;
   timestamp: Date;
-  userAgent: string;
-  referrer?: string;
-}
-
-// Search and filter interfaces
-export interface SearchFilters {
-  category?: ProjectCategory;
-  subcategory?: ProjectSubcategory;
-  tags?: string[];
-  featured?: boolean;
-  dateRange?: {
-    start: Date;
-    end: Date;
-  };
-}
-
-export interface SortOptions {
-  field: string;
-  direction: 'asc' | 'desc';
-}
-
-// Media upload interfaces
-export interface CloudinaryUploadResponse {
-  public_id: string;
-  version: number;
-  signature: string;
-  width: number;
-  height: number;
-  format: string;
-  resource_type: string;
-  created_at: string;
-  tags: string[];
-  bytes: number;
-  type: string;
-  etag: string;
-  placeholder: boolean;
-  url: string;
-  secure_url: string;
-  asset_id: string;
-  display_name: string;
-  original_filename: string;
+  metadata?: Record<string, unknown>;
 }

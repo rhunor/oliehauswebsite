@@ -251,7 +251,7 @@ export default function ExclusivitySection({
                 { label: 'Hours', value: countdown.hours },
                 { label: 'Minutes', value: countdown.minutes },
                 { label: 'Seconds', value: countdown.seconds },
-              ].map((item, index) => (
+              ].map((item) => (
                 <div key={item.label} className="text-center">
                   <motion.div
                     key={item.value}
