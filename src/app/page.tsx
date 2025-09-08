@@ -1,221 +1,318 @@
-//src/app/page.tsx - Updated with proper image implementation
+//src/app/page.tsx - Updated with Cloudinary video URL
 'use client';
 
-import { Suspense, lazy } from 'react';
+import Navigation from '@/components/ui/Navigation';
 import HeroSection from '@/components/ui/HeroSection';
-import ExclusivitySection from '@/components/ui/ExclusivitySection';
-import AchievementCounter from '@/components/ui/AchievementCounter';
-import FloatingButtons from '@/components/ui/FloatingButtons';
-import { HeroImage, VideoContent } from '@/types';
+import PortfolioTeaser from '@/components/ui/PortfolioTeaser';
+import TestimonialSection from '@/components/ui/TestimonialSection';
+import { motion } from 'framer-motion';
 
-// Lazy load components that are below the fold
-const PortfolioTeaser = lazy(() => import('@/components/ui/PortfolioTeaser'));
-const DesignInsightSnippet = lazy(() => import('@/components/ui/DesignInsightSnippet'));
-const TestimonialSection = lazy(() => import('@/components/ui/TestimonialSection'));
-
-// Extend window type for gtag function
-declare global {
-  interface Window {
-    gtag?: (
-      command: 'config' | 'event' | 'set',
-      targetId: string,
-      config?: Record<string, unknown>
-    ) => void;
-  }
+interface HeroImage {
+  src: string;
+  alt: string;
+  title: string;
+  subtitle: string;
 }
 
-// Hero images with optimized specifications for luxury interior design
+interface VideoContent {
+  thumbnailSrc: string;
+  videoSrc: string;
+  title: string;
+  description: string;
+}
+
+// Updated hero images
 const heroImages: HeroImage[] = [
   {
-    src: '/images/hero/luxury-living-room.jpg',
-    alt: 'Luxury living room with contemporary furnishings and panoramic city views',
-    title: 'Contemporary Elegance',
-    subtitle: 'A stunning blend of modern luxury and timeless sophistication in Lagos',
-    width: 1920,
-    height: 800,
-    priority: true,
-    quality: 95,
-    sizes: '100vw'
+    src: '/images/hero/luxury-bedroom.webp',
+    alt: 'Elegant luxury living room with contemporary furniture and sophisticated lighting',
+    title: 'Luxury Living Spaces',
+    subtitle: 'Timeless elegance meets modern comfort'
   },
   {
-    src: '/images/hero/luxury-bedroom.jpg',
-    alt: 'Elegant master bedroom with luxury finishes and bespoke furniture',
-    title: 'Master Suite Sanctuary',
-    subtitle: 'Bespoke bedroom design featuring custom furnishings and premium materials',
-    width: 1920,
-    height: 800,
-    priority: false,
-    quality: 90,
-    sizes: '100vw'
+    src: '/images/hero/luxury-kitchen.webp',
+    alt: 'Modern luxury kitchen with premium finishes and state-of-the-art appliances',
+    title: 'Gourmet Kitchens',
+    subtitle: 'Where culinary dreams come to life'
   },
   {
-    src: '/images/hero/luxury-kitchen.jpg',
-    alt: 'Modern luxury kitchen with marble countertops and Italian cabinetry',
-    title: 'Culinary Masterpiece',
-    subtitle: 'State-of-the-art kitchen design with Italian marble and custom cabinetry',
-    width: 1920,
-    height: 800,
-    priority: false,
-    quality: 90,
-    sizes: '100vw'
-  }
+    src: '/images/hero/luxury-living-room.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
 ];
 
-const availableSlots = {
-  q1: 3,
-  q2: 8,
-  q3: 12,
-  q4: 15
-};
-
-const counters = {
-  completedProjects: 157,
-  happyClients: 143,
-  yearsExperience: 15,
-  ongoingProjects: 28
-};
-
-const contactInfo = {
-  phone: '+234-xxx-xxx-xxxx',
-  whatsapp: '+234-xxx-xxx-xxxx'
-};
-
-
-// Video content with optimized thumbnail
-const heroVideo: VideoContent = {
+// Updated video content with vimeo URL
+const videoContent: VideoContent = {
   thumbnailSrc: '/images/video/portfolio-thumbnail.jpg',
-  videoSrc: '/videos/olivehaus-portfolio.mp4',
+  // Vimeo video URL format
+  videoSrc: 'https://vimeo.com/1116723569',
   title: 'OliveHaus Portfolio Showcase',
-  description: 'Experience our luxury interior design projects from concept to completion',
-  thumbnail: {
-    src: '/images/video/portfolio-thumbnail.jpg',
-    alt: 'Portfolio video thumbnail showing luxury interior design projects',
-    width: 800,
-    height: 450,
-    priority: false,
-    quality: 85,
-    sizes: '(max-width: 768px) 100vw, 800px'
-  }
+  description: 'Discover our luxury interior design process'
 };
 
-const heroTagline = {
-  main: 'Spaces that Define Luxury.',
-  sub: 'Designs that Feel Like Home.'
-};
-
-export default function Home() {
-  // Analytics and lead generation handlers
-  const handleHireUsClick = () => {
-    // Track conversion event
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'click', {
-        event_category: 'conversion',
-        event_label: 'hero_hire_us',
-        value: 1,
-      });
-    }
-
-    // In production, this would trigger the contact modal or redirect
-    console.log('Hire Us clicked - Opening contact options');
-    
-    // For now, scroll to contact section or show WhatsApp/Call options
-    // You can implement a modal or redirect logic here
-  };
-
-  const handleBookNowClick = () => {
-    // Scroll to contact section or open booking modal
-    const contactSection = document.getElementById('contact-section');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      // Fallback: redirect to contact page
-      window.location.href = '/contact';
-    }
-    
-    // Analytics tracking
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'click', {
-        event_category: 'engagement',
-        event_label: 'book_now_exclusivity',
-      });
-    }
+export default function HomePage() {
+  const handleHireUsClick = (): void => {
+    window.location.href = '/contact';
   };
 
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
+    <div className="min-h-screen">
+      <Navigation onHireUsClick={handleHireUsClick} />
+
       <HeroSection
         images={heroImages}
-        video={heroVideo}
-        tagline={heroTagline}
+        video={videoContent}
+        tagline={{
+          main: 'Design for High Quality Living',
+          sub: ''
+        }}
         onHireUsClick={handleHireUsClick}
-        className="relative z-10"
       />
 
-      {/* Exclusivity Section */}
-      <ExclusivitySection 
-        availableSlots={availableSlots}
-        currentYear={2025}
-        urgencyMessage="Due to high demand and our commitment to personalized service, we maintain limited project slots per quarter to ensure exceptional quality and attention to detail."
-        onBookNowClick={handleBookNowClick}
-        className="relative z-20" 
-      />
-
-      {/* Achievement Counter */}
-      <AchievementCounter 
-        counters={counters}
-        className="relative z-20" 
-      />
-
-      {/* Below-the-fold content - Lazy loaded for performance */}
-      <Suspense 
-        fallback={
-          <div className="py-20 bg-luxury-cream">
-            <div className="container-luxury">
-              <div className="flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-luxury-gold border-t-transparent rounded-full animate-spin" />
+      {/* About Us Section */}
+      <section className="py-20 bg-ivory">
+        <div className="container-luxury">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
+                For Nigeria&apos;s <span className="text-luxury-gold">Finest Homes</span>
+              </h2>
+              <div className="space-y-6 text-lg text-luxury-slate leading-relaxed">
+                <p>
+                  OliveHaus Interiors is a premier interior design company serving luxury residential, corporate, and commercial clients in Nigeria and internationally. We specialize in creating bespoke, timeless, and functional spaces for discerning clients.
+                </p>
+                <p>
+                  Our design process emphasizes luxurious personalized solutions, exceptional project management, and remote oversight for diaspora clients.
+                </p>
               </div>
-            </div>
-          </div>
-        }
-      >
-        <PortfolioTeaser className="relative z-20" />
-      </Suspense>
-
-      <Suspense 
-        fallback={
-          <div className="py-20 bg-white">
-            <div className="container-luxury">
-              <div className="flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-luxury-gold border-t-transparent rounded-full animate-spin" />
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden"
+            >
+              <div className="w-full h-full bg-luxury-platinum/30 flex items-center justify-center">
+                <span className="text-luxury-slate">About Us Image</span>
               </div>
-            </div>
+            </motion.div>
           </div>
-        }
-      >
-        <DesignInsightSnippet className="relative z-20" />
-      </Suspense>
+        </div>
+      </section>
 
-      <Suspense 
-        fallback={
-          <div className="py-20 bg-luxury-cream">
-            <div className="container-luxury">
-              <div className="flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-luxury-gold border-t-transparent rounded-full animate-spin" />
+      {/* Rest of your sections remain the same */}
+      {/* We Stand Out Section */}
+      <section className="py-20 bg-luxury-cream">
+        <div className="container-luxury">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
+              We Stand <span className="text-luxury-gold">Out</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                title: 'Seamless Project Experience',
+                description: 'Flawless client experience, before, during and after project execution',
+                icon: '✨'
+              },
+              {
+                title: 'Design for High-Quality Living',
+                description: 'Luxurious, personalized interiors that tastefully blend functionality with timeless aesthetics.',
+                icon: '🏛️'
+              },
+              {
+                title: 'Stress-free Project Oversight',
+                description: 'Stay in control from anywhere in the world with our Daily Manager Platform Updates—track progress, reports, and updates at your convenience',
+                icon: '📱'
+              },
+              {
+                title: 'Constant Team Support',
+                description: 'A responsive, detail-driven team ensures your vision is executed to perfection.',
+                icon: '🤝'
+              }
+            ].map((value, index) => (
+              <motion.div
+                key={value.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+                className="bg-white p-8 rounded-lg shadow-luxury-soft hover:shadow-luxury-strong transition-all duration-300"
+              >
+                <div className="text-4xl mb-4">{value.icon}</div>
+                <h3 className="text-luxury-heading text-xl font-bold mb-4">
+                  {value.title}
+                </h3>
+                <p className="text-luxury-slate leading-relaxed">
+                  {value.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Track Record Section */}
+      <section className="py-20 bg-luxury-charcoal text-white">
+        <div className="container-luxury">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Our Track <span className="text-luxury-gold">Record</span>
+            </h2>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+              Numbers that speak of our commitment to luxury, quality, and client satisfaction across every project we undertake.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              {
+                number: '150+',
+                label: 'Luxury Spaces',
+                description: 'Exquisitely designed and completed projects across Nigeria'
+              },
+              {
+                number: '200+',
+                label: 'Satisfied Clients',
+                description: 'Esteemed individuals who trust us with their luxury spaces'
+              },
+              {
+                number: '12+',
+                label: 'Years of Experience',
+                description: 'Years of expertise in luxury interior design and project'
+              },
+              {
+                number: '25',
+                label: 'Active Projects',
+                description: 'Current luxury projects in various stages of design and execution'
+              }
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+                className="text-center"
+              >
+                <div className="text-5xl md:text-6xl font-bold text-luxury-gold mb-4">
+                  {stat.number}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{stat.label}</h3>
+                <p className="text-white/80 text-sm leading-relaxed">
+                  {stat.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <PortfolioTeaser />
+
+      {/* Inside the Design Section */}
+      <section className="py-20 bg-ivory">
+        <div className="container-luxury">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
+                This is How We Think About <span className="text-luxury-gold">Your Space</span>
+              </h2>
+              <div className="space-y-6 text-lg text-luxury-slate leading-relaxed">
+                <p>
+                  Get a behind-the-scenes look at our design philosophy—from space planning and layout, to colour palettes, furniture, and material selections. Every element is chosen with intention, crafting a home that reflects your personality and elevates your lifestyle.
+                </p>
+                <p>
+                  <em>See how we design with you in mind...</em>
+                </p>
               </div>
-            </div>
+              
+              <div className="mt-8">
+                <a
+                  href="/inside-the-design"
+                  className="btn-luxury-outline inline-flex items-center space-x-2"
+                >
+                  <span>Visit Inside the Design</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative"
+            >
+              <div className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden">
+                <div className="w-full h-full bg-luxury-platinum/30 flex items-center justify-center">
+                  <span className="text-luxury-slate">Design Process Image</span>
+                </div>
+              </div>
+              <div className="mt-4 bg-white p-4 rounded-lg shadow-luxury-soft">
+                <p className="text-sm text-luxury-charcoal font-medium">
+                  Annotation: Every element is chosen with intention to create spaces that reflect your unique personality and elevate your lifestyle.
+                </p>
+              </div>
+            </motion.div>
           </div>
-        }
-      >
-        <TestimonialSection className="relative z-20" />
-      </Suspense>
+        </div>
+      </section>
 
-      {/* Floating Action Buttons - Always visible */}
-      <FloatingButtons 
-        phone={contactInfo.phone}
-        whatsapp={contactInfo.whatsapp}
-        className="fixed bottom-6 right-6 z-50" 
-      />
-    </main>
+      <TestimonialSection />
+
+      {/* Closing Tagline */}
+      <section className="py-20 bg-luxury-charcoal text-white text-center">
+        <div className="container-luxury">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
+              <em>Designers who begin with the end in mind</em>
+            </h2>
+            <button
+              onClick={handleHireUsClick}
+              className="btn-luxury text-lg px-12 py-4"
+            >
+              Bring Your Vision to Life
+            </button>
+          </motion.div>
+        </div>
+      </section>
+    </div>
   );
 }

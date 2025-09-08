@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Extend window type for gtag function
@@ -41,6 +41,8 @@ interface HeroSectionProps {
   };
   onHireUsClick: () => void;
   className?: string;
+  logoSrc?: string;
+  logoAlt?: string;
 }
 
 export default function HeroSection({
@@ -50,63 +52,99 @@ export default function HeroSection({
   onHireUsClick,
   className
 }: HeroSectionProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
 
-  // Auto-advance slideshow
+  // Convert Vimeo URL to embed format
+  const getVimeoEmbedUrl = (vimeoUrl: string): string => {
+    // Extract video ID from URL like https://vimeo.com/1116723569
+    const videoId = vimeoUrl.split('/').pop() || '';
+    
+    // Return Vimeo player URL with necessary parameters for inline fullscreen playback
+    return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&controls=1&playsinline=1&title=0&byline=0&portrait=0&autopause=0`;
+  };
+
+  // Auto-advance slideshow (only when video is not playing)
   useEffect(() => {
+    if (isVideoPlaying) return;
+    
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [images.length, isVideoPlaying]);
 
   // Handle keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-      } else if (e.key === 'ArrowRight') {
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      } else if (e.key === 'Escape' && isVideoModalOpen) {
-        setIsVideoModalOpen(false);
+    const handleKeyDown = (e: KeyboardEvent): void => {
+      if (isVideoPlaying && e.key === 'Escape') {
+        setIsVideoPlaying(false);
+        setIsVideoLoaded(false);
+        return;
+      }
+      
+      if (!isVideoPlaying) {
+        if (e.key === 'ArrowLeft') {
+          setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+        } else if (e.key === 'ArrowRight') {
+          setCurrentImageIndex((prev) => (prev + 1) % images.length);
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [images.length, isVideoModalOpen]);
+  }, [images.length, isVideoPlaying]);
 
-  // Handle video modal
-  const openVideoModal = () => {
-    setIsVideoModalOpen(true);
+  // Handle video play
+  const handleVideoPlay = (): void => {
+    setIsVideoPlaying(true);
     // Analytics tracking
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'video_play', {
         event_category: 'engagement',
-        event_label: 'hero_video',
+        event_label: 'hero_video_inline',
       });
     }
   };
 
-  const closeVideoModal = () => {
-    setIsVideoModalOpen(false);
+  const handleVideoClose = (): void => {
+    setIsVideoPlaying(false);
     setIsVideoLoaded(false);
   };
 
   // Navigation functions
-  const goToPrevious = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  const goToPrevious = (): void => {
+    if (!isVideoPlaying) {
+      setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    }
   };
 
-  const goToNext = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  const goToNext = (): void => {
+    if (!isVideoPlaying) {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentImageIndex(index);
+  const goToSlide = (index: number): void => {
+    if (!isVideoPlaying) {
+      setCurrentImageIndex(index);
+    }
+  };
+
+  // Handle hire us click with analytics
+  const handleHireUsClick = (): void => {
+    onHireUsClick();
+    
+    // Analytics tracking
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'click', {
+        event_category: 'engagement',
+        event_label: 'hero_hire_us',
+      });
+    }
   };
 
   // Get current image safely
@@ -117,199 +155,167 @@ export default function HeroSection({
 
   return (
     <section className={cn("relative min-h-screen overflow-hidden", className)}>
-      {/* Image Slideshow */}
+      {/* Image Slideshow or Video */}
       <div className="relative h-screen">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentImageIndex}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={currentImage.src}
-              alt={currentImage.alt}
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
-            <div className="gradient-overlay" />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Navigation Arrows */}
-        <button
-          onClick={goToPrevious}
-          className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/20 backdrop-blur-sm text-white rounded-full opacity-0 hover:opacity-100 transition-all duration-300 hover:bg-black/40 z-10"
-          aria-label="Previous image"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-
-        <button
-          onClick={goToNext}
-          className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-black/20 backdrop-blur-sm text-white rounded-full opacity-0 hover:opacity-100 transition-all duration-300 hover:bg-black/40 z-10"
-          aria-label="Next image"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={cn(
-                "w-3 h-3 rounded-full transition-all duration-300",
-                index === currentImageIndex
-                  ? "bg-luxury-gold scale-125"
-                  : "bg-white/50 hover:bg-white/80"
-              )}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Content Overlay */}
-      <div className="absolute inset-0 flex items-center justify-center z-20">
-        <div className="container-luxury text-center text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="max-w-4xl mx-auto"
-          >
-            {/* Main Tagline */}
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="block">{tagline.main}</span>
-              <span className="block text-luxury-gold mt-2">{tagline.sub}</span>
-            </h1>
-
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="text-xl md:text-2xl mb-12 text-white/90 font-light leading-relaxed max-w-3xl mx-auto"
-            >
-              Creating bespoke, timeless, and functional spaces for discerning clients in Nigeria and internationally
-            </motion.p>
-
-            {/* CTA Buttons */}
+        {!isVideoPlaying ? (
+          // Image Slideshow
+          <AnimatePresence mode="wait">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.1 }}
-              className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6"
+              key={currentImageIndex}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="absolute inset-0"
             >
-              <button
-                onClick={onHireUsClick}
-                className="btn-luxury text-lg px-12 py-4 group"
-              >
-                <span className="relative z-10">Hire Us Now</span>
-              </button>
-
-              <button
-                onClick={openVideoModal}
-                className="flex items-center space-x-3 text-white hover:text-luxury-gold transition-colors duration-300 group"
-              >
-                <div className="relative">
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-luxury-gold/20 transition-colors duration-300">
-                    <Play className="w-6 h-6 ml-1" fill="currentColor" />
-                  </div>
-                  <div className="absolute inset-0 rounded-full bg-white/10 animate-ping"></div>
-                </div>
-                <div className="text-left">
-                  <div className="font-medium">Watch Our Work</div>
-                  <div className="text-sm text-white/80">See projects come to life</div>
-                </div>
-              </button>
+              <Image
+                src={currentImage.src}
+                alt={currentImage.alt}
+                fill
+                priority
+                className="object-cover"
+                sizes="100vw"
+              />
+              <div className="gradient-overlay" />
             </motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Current Slide Info */}
-      <motion.div
-        key={currentImageIndex}
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        className="absolute bottom-8 left-8 text-white z-10 max-w-md"
-      >
-        <h3 className="font-serif text-2xl font-bold mb-2">
-          {currentImage.title}
-        </h3>
-        <p className="text-white/80 leading-relaxed">
-          {currentImage.subtitle}
-        </p>
-      </motion.div>
-
-      {/* Video Modal */}
-      <AnimatePresence>
-        {isVideoModalOpen && (
+          </AnimatePresence>
+        ) : (
+          // Vimeo Video Player - Full screen with proper aspect ratio
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={closeVideoModal}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 bg-black"
           >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl aspect-video bg-black rounded-2xl overflow-hidden shadow-luxury-lg"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                onClick={closeVideoModal}
-                className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-sm text-white rounded-full hover:bg-black/70 transition-colors duration-300 z-10"
-                aria-label="Close video"
-              >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              {/* Video Content */}
-              {!isVideoLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="luxury-spinner"></div>
-                </div>
-              )}
-
-              <video
-                src={video.videoSrc}
-                controls
-                autoPlay
-                className="w-full h-full object-cover"
-                poster={video.thumbnailSrc}
-                onLoadedData={() => setIsVideoLoaded(true)}
-              >
-                Your browser does not support the video tag.
-              </video>
-
-              {/* Video Info */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                <h4 className="text-white font-serif text-2xl font-bold mb-2">
-                  {video.title}
-                </h4>
-                <p className="text-white/80">
-                  {video.description}
-                </p>
+            {!isVideoLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="w-16 h-16 border-4 border-luxury-gold border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-white ml-4">Loading video...</p>
               </div>
-            </motion.div>
+            )}
+            
+            {/* Close Video Button - Higher z-index and better positioning */}
+            <button
+              onClick={handleVideoClose}
+              className="absolute top-4 right-4 w-14 h-14 bg-black/80 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 z-50 border-2 border-white/30 hover:border-red-500 shadow-lg"
+              aria-label="Close video"
+              style={{ zIndex: 999 }}
+            >
+              <X className="w-7 h-7" />
+            </button>
+            
+            {/* Vimeo iframe with proper full-screen styling */}
+            <iframe
+              src={getVimeoEmbedUrl(video.videoSrc)}
+              className="absolute inset-0 w-full h-full"
+              style={{
+                width: '100%',
+                height: '100%',
+                border: 'none',
+                pointerEvents: 'auto'
+              }}
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              onLoad={() => setIsVideoLoaded(true)}
+              title={video.title}
+            />
           </motion.div>
         )}
-      </AnimatePresence>
+
+        {/* Navigation Controls - Only show when not playing video */}
+        {!isVideoPlaying && (
+          <>
+            {/* Navigation Arrows */}
+            <button
+              onClick={goToPrevious}
+              className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/20 backdrop-blur-sm text-white rounded-full opacity-0 hover:opacity-100 transition-all duration-300 hover:bg-black/40 z-10"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={goToNext}
+              className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-black/20 backdrop-blur-sm text-white rounded-full opacity-0 hover:opacity-100 transition-all duration-300 hover:bg-black/40 z-10"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Slide Indicators */}
+            <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={cn(
+                    "w-3 h-3 rounded-full transition-all duration-300",
+                    index === currentImageIndex
+                      ? "bg-luxury-gold scale-125"
+                      : "bg-white/50 hover:bg-white/80"
+                  )}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Content Overlay - Only show when not playing video */}
+      {!isVideoPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="container-luxury text-center text-white">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="max-w-4xl mx-auto"
+            >
+              {/* Main Tagline */}
+              <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span className="block text-luxury-gold">{tagline.main}</span>
+                {tagline.sub && <span className="block text-white mt-2">{tagline.sub}</span>}
+              </h1>
+
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.8 }}
+                className="text-xl md:text-2xl mb-12 text-white/90 font-light leading-relaxed max-w-3xl mx-auto"
+              >
+                Creating bespoke, timeless, and functional spaces for discerning clients in Nigeria and internationally
+              </motion.p>
+
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1.1 }}
+                className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6"
+              >
+                <button
+                  onClick={handleHireUsClick}
+                  className="btn-luxury text-xl px-12 py-5 bg-luxury-gold hover:bg-luxury-gold/90 text-white border-2 border-luxury-gold font-bold shadow-luxury-strong hover:shadow-luxury-glow transform hover:scale-105 transition-all duration-300"
+                >
+                  Hire Us Now
+                </button>
+                
+                <button
+                  onClick={handleVideoPlay}
+                  className="btn-luxury-outline text-lg px-8 py-4 flex items-center space-x-3 group border-2 border-white/50 hover:border-white transition-all duration-300"
+                >
+                  <Play className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+                  <span>Watch Our Work</span>
+                </button>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
