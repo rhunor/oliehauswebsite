@@ -52,7 +52,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <div className="flex items-center mb-4">
                   <div className="relative w-12 h-12 mr-3">
                     <img
-                      src="/images/logo-olivehaus.svg"
+                      src="/images/logo_transparent_background.png"
                       alt="OliveHaus Interiors Logo"
                       className="w-full h-full object-contain"
                     />

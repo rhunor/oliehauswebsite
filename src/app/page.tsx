@@ -24,19 +24,97 @@ interface VideoContent {
 // Updated hero images
 const heroImages: HeroImage[] = [
   {
-    src: '/images/hero/luxury-bedroom.webp',
+    src: '/images/hero/1.webp',
     alt: 'Elegant luxury living room with contemporary furniture and sophisticated lighting',
     title: 'Luxury Living Spaces',
     subtitle: 'Timeless elegance meets modern comfort'
   },
   {
-    src: '/images/hero/luxury-kitchen.webp',
+    src: '/images/hero/2.webp',
+    alt: 'Modern luxury kitchen with premium finishes and state-of-the-art appliances',
+    title: 'Gourmet Kitchens',
+    subtitle: 'Where culinary dreams come to life'
+  },
+   {
+    src: '/images/hero/3.webp',
     alt: 'Modern luxury kitchen with premium finishes and state-of-the-art appliances',
     title: 'Gourmet Kitchens',
     subtitle: 'Where culinary dreams come to life'
   },
   {
-    src: '/images/hero/luxury-living-room.webp',
+    src: '/images/hero/4.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/5.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/6.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/7.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/8.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/9.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/10.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/3.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/11.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/12.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/13.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/14.webp',
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  },
+   {
+    src: '/images/hero/15.webp',
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'

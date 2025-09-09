@@ -33,7 +33,7 @@ const navigationItems: NavigationItem[] = [
 
 export default function Navigation({ 
   className,
-  logoSrc = '/images/logo-olivehaus.svg',
+  logoSrc = '/images/logo_transparent_background.png',
   logoAlt = 'OliveHaus Interiors Logo',
   onHireUsClick
 }: NavigationProps) {
@@ -117,12 +117,12 @@ export default function Navigation({
                 />
               </div>
               <div className="ml-3 hidden md:block">
-                <div className="font-serif text-xl lg:text-2xl font-bold text-luxury-charcoal">
+                {/* <div className="font-serif text-xl lg:text-2xl font-bold text-luxury-charcoal">
                   OliveHaus
                 </div>
                 <div className="text-xs lg:text-sm text-luxury-slate tracking-wider uppercase">
                   Interiors
-                </div>
+                </div> */}
               </div>
             </Link>
 
