@@ -239,4 +239,67 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
     groups[group].push(item);
     return groups;
   }, {});
-}
+}/**
+ * Scroll utilities for adaptive navigation
+ */
+export const scrollUtils = {
+  /**
+   * Get current scroll position
+   */
+  getScrollY: (): number => {
+    if (typeof window === 'undefined') return 0;
+    return window.scrollY;
+  },
+
+  /**
+   * Check if user is at top of page
+   */
+  isAtTop: (threshold: number = 10): boolean => {
+    return scrollUtils.getScrollY() < threshold;
+  },
+
+  /**
+   * Get scroll direction
+   */
+  getScrollDirection: (currentScrollY: number, lastScrollY: number): 'up' | 'down' => {
+    return currentScrollY > lastScrollY ? 'down' : 'up';
+  },
+};
+
+/**
+ * Performance utilities for navigation
+ */
+export const performanceUtils = {
+  /**
+   * Debounce function for scroll events
+   */
+  debounce: <T extends (...args: Parameters<T>) => ReturnType<T>>(
+    func: T,
+    wait: number
+  ): ((...args: Parameters<T>) => void) => {
+    let timeout: NodeJS.Timeout;
+    
+    return (...args: Parameters<T>): void => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  },
+
+  /**
+   * Throttle function for frequent events
+   */
+  throttle: <T extends (...args: Parameters<T>) => ReturnType<T>>(
+    func: T,
+    limit: number
+  ): ((...args: Parameters<T>) => void) => {
+    let inThrottle: boolean;
+    
+    return (...args: Parameters<T>): void => {
+      if (!inThrottle) {
+        func(...args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  },
+};

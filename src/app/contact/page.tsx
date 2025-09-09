@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, MessageCircle, Clock, CheckCircle } from 'lucide-react';
-import Navigation from '@/components/ui/Navigation';
+// import Navigation from '@/components/ui/Navigation';
 
 interface ContactFormData {
   name: string;
@@ -160,10 +160,10 @@ export default function ContactPage() {
     }
   };
 
-  const handleHireUsClick = (): void => {
-    // Scroll to contact form
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // const handleHireUsClick = (): void => {
+  //   // Scroll to contact form
+  //   document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+  // };
 
   const handleCallClick = (): void => {
     window.open('tel:+2348123456789', '_self');
@@ -179,7 +179,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-ivory">
-      <Navigation onHireUsClick={handleHireUsClick} />
+      {/* <Navigation onHireUsClick={handleHireUsClick} /> */}
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 bg-luxury-charcoal text-white">

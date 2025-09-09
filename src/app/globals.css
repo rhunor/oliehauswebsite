@@ -372,3 +372,74 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+:root {
+  /* Your existing variables stay exactly the same */
+  /* Just add these OliveHaus color variables below your existing ones */
+  
+  /* OliveHaus Luxury Color Palette - Muted Pastels */
+  --color-warm-sand: 232 226 218;      /* #E8E2DA */
+  --color-pale-oat: 242 237 231;       /* #F2EDE7 */
+  --color-light-mushroom: 220 211 200; /* #DCD3C8 */
+  
+  --color-mist-grey: 227 227 225;      /* #E3E3E1 */
+  --color-stone-grey: 207 207 205;     /* #CFCFCD */
+  --color-ash-smoke: 185 184 182;      /* #B9B8B6 */
+  
+  --color-clay-peach: 231 185 169;     /* #E7B9A9 */
+  --color-terracotta-blush: 216 164 143; /* #D8A48F */
+  --color-desert-rose: 201 151 137;    /* #C99789 */
+  
+  --color-light-primrose: 246 242 214; /* #F6F2D6 */
+  --color-pale-citron: 243 235 195;    /* #F3EBC3 */
+  --color-buttercream: 249 245 220;    /* #F9F5DC */
+  
+  --color-soft-sage: 200 209 192;      /* #C8D1C0 */
+  --color-misty-olive: 182 194 173;    /* #B6C2AD */
+  --color-eucalyptus-pastel: 170 185 160; /* #AAB9A0 */
+}
+
+/* ADD THESE UTILITY CLASSES TO YOUR EXISTING @layer utilities SECTION */
+
+@layer utilities {
+  /* Your existing utilities stay the same */
+  /* Just add these new color utilities */
+  
+  /* OliveHaus Background Colors */
+  .bg-soft-sage { background-color: rgb(var(--color-soft-sage)); }
+  .bg-clay-peach { background-color: rgb(var(--color-clay-peach)); }
+  .bg-pale-oat { background-color: rgb(var(--color-pale-oat)); }
+  .bg-mist-grey { background-color: rgb(var(--color-mist-grey)); }
+  .bg-warm-sand { background-color: rgb(var(--color-warm-sand)); }
+  
+  /* OliveHaus Text Colors */
+  .text-soft-sage { color: rgb(var(--color-soft-sage)); }
+  .text-clay-peach { color: rgb(var(--color-clay-peach)); }
+  .text-desert-rose { color: rgb(var(--color-desert-rose)); }
+  
+  /* OliveHaus Hover Colors */
+  .hover\:text-soft-sage:hover { color: rgb(var(--color-soft-sage)); }
+  .hover\:bg-soft-sage:hover { background-color: rgb(var(--color-soft-sage)); }
+  .hover\:bg-clay-peach:hover { background-color: rgb(var(--color-clay-peach)); }
+  
+  /* Opacity Variants for Luxury Effects */
+  .bg-soft-sage\/5 { background-color: rgba(200, 209, 192, 0.05); }
+  .bg-soft-sage\/10 { background-color: rgba(200, 209, 192, 0.1); }
+  
+  /* Six Diamond Pattern (Ritz Carlton inspired) */
+  .diamond-pattern {
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgb(var(--color-luxury-gold)) 2px, transparent 2px),
+      radial-gradient(circle at 75% 25%, rgb(var(--color-luxury-gold)) 2px, transparent 2px),
+      radial-gradient(circle at 25% 75%, rgb(var(--color-luxury-gold)) 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, rgb(var(--color-luxury-gold)) 2px, transparent 2px),
+      radial-gradient(circle at 50% 50%, rgb(var(--color-luxury-gold)) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.02; /* Very subtle like Ritz Carlton */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+}

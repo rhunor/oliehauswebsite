@@ -154,7 +154,8 @@ export default function HeroSection({
   }
 
   return (
-    <section className={cn("relative min-h-screen overflow-hidden", className)}>
+    
+<section className={cn("relative min-h-screen overflow-hidden bg-pale-oat", className)}>
       {/* Image Slideshow or Video */}
       <div className="relative h-screen">
         {!isVideoPlaying ? (

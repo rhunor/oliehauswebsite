@@ -1,7 +1,7 @@
 //src/app/projects/page.tsx
 
 'use client';
-import Navigation from '@/components/ui/Navigation';
+// import Navigation from '@/components/ui/Navigation';
 
 export default function ProjectsPage() {
   const handleHireUsClick = (): void => {
@@ -10,7 +10,7 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-ivory">
-      <Navigation onHireUsClick={handleHireUsClick} />
+      {/* <Navigation onHireUsClick={handleHireUsClick} /> */}
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 bg-luxury-charcoal text-white">

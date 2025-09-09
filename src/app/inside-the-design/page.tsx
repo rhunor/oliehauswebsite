@@ -2,7 +2,7 @@
 
 'use client';
 import { motion } from 'framer-motion';
-import Navigation from '@/components/ui/Navigation';
+// import Navigation from '@/components/ui/Navigation';
 
 export default function InsideTheDesignPage() {
   const handleHireUsClick = (): void => {
@@ -11,7 +11,7 @@ export default function InsideTheDesignPage() {
 
   return (
     <div className="min-h-screen bg-ivory">
-      <Navigation onHireUsClick={handleHireUsClick} />
+      {/* <Navigation onHireUsClick={handleHireUsClick} /> */}
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 bg-luxury-charcoal text-white">
