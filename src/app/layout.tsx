@@ -180,7 +180,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       </head>
       
-      <body className="font-sans antialiased bg-ivory text-luxury-charcoal">
+      <body className="font-sans antialiased bg-ivory text-luxury-charcoal flex flex-col min-h-screen">
         {/* Skip to main content for accessibility */}
         <a
           href="#main-content"
@@ -193,7 +193,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <AdaptiveNavigation />
         
         {/* Main content with proper spacing for fixed navbar */}
-        <main id="main-content" className="min-h-screen">
+        <main id="main-content" className="flex-grow">
           {children}
         </main>
         

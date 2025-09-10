@@ -1,5 +1,36 @@
 @import 'tailwindcss';
 
+/* Defensive layout resets to avoid browser defaults / SVG baseline / scroll-anchoring problems */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Ensure no browser margin, provide stable 100% layout root, mitigate overscroll/scroll anchoring */
+html, body, #__next {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overscroll-behavior-y: contain;
+  overflow-anchor: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Force replaced/inline media elements to behave as blocks (prevents baseline gaps) */
+img, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Extra defense for inline SVG oddities (clips stray strokes that could create overflow) */
+svg {
+  overflow: hidden;
+}
+
+/* Note: your original globals continue below */
+
 /* Note: Google Fonts are handled by next/font in layout.tsx - no CSS imports needed */
 
 /* CSS Variables for Next.js fonts */
@@ -72,6 +103,7 @@ body {
   font-family: var(--font-family-sans);
   font-feature-settings: "rlig" 1, "calt" 1;
   scroll-behavior: smooth;
+  min-height: 100vh;
 }
 
 /* Custom scrollbar with dark mode support */
@@ -199,6 +231,8 @@ body {
     padding-left: 1rem;
     padding-right: 1rem;
     max-width: 80rem;
+    /* allow children to shrink if needed (prevents some flex/grid overflow issues) */
+    min-height: 0;
   }
 
   @media (min-width: 640px) {
