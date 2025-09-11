@@ -55,22 +55,9 @@ const portfolioProjects: PortfolioProject[] = [
     description: 'Modern corporate office design emphasizing productivity and luxury aesthetics',
     featured: true,
   },
+ 
   {
     id: '3',
-    title: 'Private Villa',
-    category: 'Residential',
-    location: 'Banana Island, Lagos',
-    image: {
-      src: '/images/portfolio/villa-main.webp',
-      alt: 'Contemporary villa interior with tropical luxury elements, smart home features, and custom millwork',
-      width: 800,
-      height: 600,
-    },
-    description: 'Contemporary villa design with tropical luxury elements and smart home integration',
-    featured: true,
-  },
-  {
-    id: '4',
     title: 'Boutique Hotel',
     category: 'Hospitality',
     location: 'Lekki Phase 1, Lagos',
@@ -83,34 +70,7 @@ const portfolioProjects: PortfolioProject[] = [
     description: 'Intimate boutique hotel combining Nigerian heritage with modern luxury',
     featured: true,
   },
-  {
-    id: '5',
-    title: 'Executive Suite',
-    category: 'Residential',
-    location: 'Abuja',
-    image: {
-      src: '/images/portfolio/suite-main.webp',
-      alt: 'Elegant executive master bedroom with custom millwork, premium bedding, and luxury finishes',
-      width: 800,
-      height: 600,
-    },
-    description: 'Elegant master suite with custom millwork and premium finishes',
-    featured: false,
-  },
-  {
-    id: '6',
-    title: 'Restaurant Interior',
-    category: 'Commercial',
-    location: 'Victoria Island, Lagos',
-    image: {
-      src: '/images/portfolio/restaurant-main.webp',
-      alt: 'Fine dining restaurant with sophisticated ambiance, innovative lighting, and luxury table settings',
-      width: 800,
-      height: 600,
-    },
-    description: 'Fine dining restaurant with sophisticated ambiance and innovative lighting',
-    featured: false,
-  },
+ 
 ];
 
 export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {

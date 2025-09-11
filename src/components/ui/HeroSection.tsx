@@ -174,6 +174,7 @@ export default function HeroSection({
                 alt={currentImage.alt}
                 fill
                 priority
+                unoptimized={true} // Bypass Next.js optimization to avoid timeout
                 className="object-cover"
                 sizes="100vw"
               />
@@ -282,14 +283,14 @@ export default function HeroSection({
               </h1>
 
               {/* Subtitle */}
-              <motion.p
+              {/* <motion.p
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
                 className="text-xl md:text-2xl mb-12 text-white/90 font-light leading-relaxed max-w-3xl mx-auto"
               >
                 Creating bespoke, timeless, and functional spaces for discerning clients in Nigeria and internationally
-              </motion.p>
+              </motion.p> */}
 
               {/* CTA Buttons */}
               <motion.div

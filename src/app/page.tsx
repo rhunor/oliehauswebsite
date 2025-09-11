@@ -21,130 +21,131 @@ interface VideoContent {
   description: string;
 }
 
-// Updated hero images
+// Updated to use jsDelivr CDN for better performance and reliability
+const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+
+// Updated hero images with jsDelivr CDN URLs
 const heroImages: HeroImage[] = [
   {
-    src: '/images/hero/1.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/1.webp`,
     alt: 'Elegant luxury living room with contemporary furniture and sophisticated lighting',
     title: 'Luxury Living Spaces',
     subtitle: 'Timeless elegance meets modern comfort'
   },
   {
-    src: '/images/hero/2.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/2.webp`,
     alt: 'Modern luxury kitchen with premium finishes and state-of-the-art appliances',
     title: 'Gourmet Kitchens',
     subtitle: 'Where culinary dreams come to life'
   },
   {
-    src: '/images/hero/3.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/3.webp`,
     alt: 'Modern luxury kitchen with premium finishes and state-of-the-art appliances',
     title: 'Gourmet Kitchens',
     subtitle: 'Where culinary dreams come to life'
   },
   {
-    src: '/images/hero/4.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/4.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/5.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/5.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/6.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/6.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/7.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/7.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/8.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/8.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/9.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/9.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/10.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/10.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/11.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/11.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/12.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/12.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/13.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/13.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/14.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/14.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/15.webp',
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-
-  {
-    src: '/images/hero/16.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/15.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/17.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/16.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/18.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/17.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
   {
-    src: '/images/hero/19.webp',
+    src: `${GITHUB_CDN_BASE}/images/hero/18.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
-   {
-    src: '/images/hero/20.webp',
+  {
+    src: `${GITHUB_CDN_BASE}/images/hero/19.webp`,
     alt: 'Serene master bedroom with custom millwork and luxury bedding',
     title: 'Tranquil Bedrooms',
     subtitle: 'Your personal sanctuary of comfort'
   },
-  
+  {
+    src: `${GITHUB_CDN_BASE}/images/hero/20.webp`,
+    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+    title: 'Tranquil Bedrooms',
+    subtitle: 'Your personal sanctuary of comfort'
+  }
 ];
 
 // Updated video content with vimeo URL
@@ -294,7 +295,7 @@ export default function HomePage() {
 
 
         {/* Track Record Section - Enhanced with mist grey cards */}
-        <section className="py-12 bg-luxury-charcoal text-white relative overflow-hidden">
+        <section className="py-12 bg-luxury-charcoal text-black relative overflow-hidden">
           {/* Very subtle pattern */}
           <div 
             className="absolute inset-0 opacity-[0.008] pointer-events-none"
@@ -321,7 +322,7 @@ export default function HomePage() {
               <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 tracking-wide">
                 Our Track <span className="text-luxury-gold">Record</span>
               </h2>
-              <p className="text-xl text-white/90 max-w-3xl mx-auto font-sans leading-relaxed">
+              <p className="text-xl text-black/90 max-w-3xl mx-auto font-sans leading-relaxed">
                 Numbers that speak of our commitment to luxury, quality, and client satisfaction across every project we undertake.
               </p>
             </motion.div>
