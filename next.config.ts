@@ -1,4 +1,4 @@
-//next.config.ts - Enhanced version
+//next.config.ts - Enhanced version with hydration fixes and smart caching
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -12,6 +12,26 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: false,
   },
+  
+  // Enable proper caching but fix hydration issues
+  experimental: {
+    // Only disable staleTimes in development for debugging
+    ...(process.env.NODE_ENV === 'development' && {
+      staleTimes: {
+        dynamic: 30, // 30 seconds for dynamic content
+        static: 180, // 3 minutes for static content
+      },
+    }),
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
+  
   images: {
     // Enable modern image formats (AVIF first, then WebP as fallback)
     formats: ['image/avif', 'image/webp'],
@@ -68,17 +88,6 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
-  
   // Enable experimental features for better performance
   swcMinify: true,
   
@@ -88,11 +97,52 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   compress: true,
   
-  // Configure headers for security and performance
+  // Configure headers for security, performance AND fix caching issues
   async headers() {
     return [
       {
-        source: '/(.*)',
+        // Static assets - cache aggressively (Next.js assets)
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable', // 1 year
+          },
+        ],
+      },
+      {
+        // API routes - short cache for dynamic data
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=60, s-maxage=300', // 1 min browser, 5 min CDN
+          },
+        ],
+      },
+      {
+        // Images - reasonable caching
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, s-maxage=604800', // 1 day browser, 1 week CDN
+          },
+        ],
+      },
+      {
+        // Videos - long cache
+        source: '/videos/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable', // 1 year
+          },
+        ],
+      },
+      {
+        // Pages - reasonable caching (not too aggressive)
+        source: '/((?!api|_next|images|videos).*)',
         headers: [
           {
             key: 'X-Frame-Options',
@@ -106,30 +156,9 @@ const nextConfig: NextConfig = {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
           },
-          // Cache static assets
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      // Specific headers for images
-      {
-        source: '/images/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      // Headers for videos
-      {
-        source: '/videos/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=300, s-maxage=600', // 5 min browser, 10 min CDN
           },
         ],
       },

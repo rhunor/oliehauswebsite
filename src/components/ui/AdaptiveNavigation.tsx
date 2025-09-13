@@ -21,20 +21,23 @@ interface AdaptiveNavigationProps {
 }
 
 const navigationItems: NavigationItem[] = [
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Inside the Design', href: '/inside-design' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Inside the Design', href: '/inside-the-design' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
 const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' }) => {
-  const [scrollState, setScrollState] = useState<ScrollState>({
+  // Use comma to ignore the unused state value, only keep the setter
+  const [, setScrollState] = useState<ScrollState>({
     scrollY: 0,
     isAtTop: true,
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  // Simple scroll detection - no hiding navbar
+  // Simple scroll detection - track scroll for potential animations but navbar always has background
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     const isAtTop = currentScrollY < 10;
@@ -53,25 +56,24 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
   const toggleMobileMenu = (): void => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = (): void => setIsMobileMenuOpen(false);
 
-  // Always visible navbar - only changes background
+  // Always visible navbar with solid background (no transparency)
   const navbarClasses = cn(
     'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
-    scrollState.isAtTop 
-      ? 'bg-transparent backdrop-blur-none' 
-      : 'bg-white/95 backdrop-blur-md shadow-lg',
+    'bg-white/95 backdrop-blur-md shadow-lg', // Always have solid background
     className
   );
 
-  const textClasses = scrollState.isAtTop ? 'text-white' : 'text-luxury-charcoal';
-  const phoneIconClasses = `w-5 h-5 transition-colors duration-300 ${scrollState.isAtTop ? 'text-white' : 'text-luxury-charcoal'}`;
-  const hamburgerClasses = `w-6 h-6 transition-colors duration-300 ${scrollState.isAtTop ? 'text-white' : 'text-luxury-charcoal'}`;
+  // Always use dark text since we now have a light background
+  const textClasses = 'text-luxury-charcoal';
+  const phoneIconClasses = 'w-5 h-5 transition-colors duration-300 text-luxury-charcoal';
+  const hamburgerClasses = 'w-6 h-6 transition-colors duration-300 text-luxury-charcoal';
 
   return (
     <>
       <nav className={navbarClasses}>
         <div className="container-luxury">
           <div className="flex items-center justify-between h-20 lg:h-24">
-            {/* Logo - Larger size */}
+            {/* Logo - Left aligned */}
             <Link href="/" className="flex-shrink-0 group">
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -88,39 +90,37 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
               </motion.div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`relative py-2 font-medium transition-all duration-300 hover:text-luxury-gold ${textClasses} group`}
-                >
-                  {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-luxury-gold transition-all duration-300 group-hover:w-full" />
-                </Link>
-              ))}
+            {/* Desktop Navigation - Left aligned next to logo with proper spacing */}
+            <div className="hidden lg:flex items-center ml-16">
+              <div className="flex items-center space-x-10">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`relative py-3 px-1 font-medium text-sm tracking-wide transition-all duration-300 hover:text-luxury-gold ${textClasses} group whitespace-nowrap`}
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            {/* Contact CTA & Mobile Menu */}
+            {/* Contact CTA & Mobile Menu - Right aligned */}
             <div className="flex items-center space-x-4">
               <Link
                 href="tel:+2348000000000"
-                className={`flex items-center space-x-2 px-4 py-2 rounded-full border transition-all duration-300 hover:bg-luxury-gold hover:text-white hover:border-luxury-gold ${
-                  scrollState.isAtTop 
-                    ? 'border-white/30 text-white' 
-                    : 'border-luxury-charcoal/20 text-luxury-charcoal'
-                }`}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-full border transition-all duration-300 hover:bg-luxury-gold hover:text-white hover:border-luxury-gold border-luxury-charcoal ${textClasses} hidden md:flex`}
               >
                 <Phone className={phoneIconClasses} />
-                <span className="hidden sm:inline font-medium">Call Us</span>
+                <span className="font-medium">Call Us</span>
               </Link>
 
+              {/* Mobile Menu Button */}
               <button
                 onClick={toggleMobileMenu}
-                className={`lg:hidden p-2 rounded-lg transition-all duration-300 hover:bg-white/10 ${textClasses}`}
+                className="lg:hidden p-2 rounded-lg transition-colors duration-300 hover:bg-luxury-platinum/20"
                 aria-label="Toggle mobile menu"
-                aria-expanded={isMobileMenuOpen}
               >
                 {isMobileMenuOpen ? (
                   <X className={hamburgerClasses} />
@@ -133,92 +133,89 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
         </div>
       </nav>
 
-      {/* Mobile Menu - Same as before */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
-              onClick={closeMobileMenu}
-            />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={closeMobileMenu}
+          />
+        )}
+      </AnimatePresence>
 
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ 
-                type: 'spring', 
-                damping: 25, 
-                stiffness: 200,
-                duration: 0.5 
-              }}
-              className="fixed top-0 right-0 h-full w-80 bg-white z-50 lg:hidden shadow-2xl"
-            >
-              <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                <div>
-                  <h2 className="font-serif text-xl font-bold text-luxury-charcoal">
-                    <span className="text-luxury-gold">OLIVE</span>HAUS
-                  </h2>
-                  <p className="text-xs font-light tracking-[0.2em] uppercase text-luxury-charcoal/70">
-                    I N T E R I O R S
-                  </p>
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'tween', duration: 0.3 }}
+            className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 lg:hidden"
+          >
+            <div className="p-6">
+              {/* Mobile Menu Header */}
+              <div className="flex items-center justify-between mb-8 pt-4">
+                <div className="flex items-center">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <h1 className="font-serif text-2xl font-bold tracking-wide text-luxury-charcoal">
+                      <span className="text-luxury-gold">OLIVE</span>
+                      <span>HAUS</span>
+                    </h1>
+                    <p className="text-xs font-light tracking-[0.2em] uppercase text-luxury-charcoal opacity-80">
+                      I N T E R I O R S
+                    </p>
+                  </motion.div>
                 </div>
                 <button
                   onClick={closeMobileMenu}
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                  className="p-2 text-luxury-charcoal hover:bg-luxury-platinum/20 rounded-lg transition-colors duration-300"
                   aria-label="Close mobile menu"
                 >
-                  <X className="w-6 h-6 text-luxury-charcoal" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="py-8">
+              {/* Mobile Navigation Links */}
+              <nav className="space-y-2 mb-8">
                 {navigationItems.map((item, index) => (
                   <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, x: 20 }}
+                    key={item.href}
+                    initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 + 0.2 }}
+                    transition={{ delay: index * 0.1 }}
                   >
                     <Link
                       href={item.href}
                       onClick={closeMobileMenu}
-                      className="block px-6 py-4 text-lg font-medium text-luxury-charcoal hover:text-luxury-gold hover:bg-soft-sage/10 transition-all duration-300 border-b border-gray-50 last:border-b-0"
+                      className="block px-4 py-3 text-luxury-charcoal font-medium rounded-lg hover:bg-luxury-gold/10 hover:text-luxury-gold transition-all duration-300"
                     >
                       {item.label}
                     </Link>
                   </motion.div>
                 ))}
-              </div>
+              </nav>
 
-              <div className="absolute bottom-0 left-0 right-0 p-6 bg-soft-sage/5">
-                <div className="space-y-4">
-                  <Link
-                    href="tel:+2348000000000"
-                    onClick={closeMobileMenu}
-                    className="flex items-center justify-center space-x-2 w-full py-3 px-4 bg-luxury-gold text-white rounded-lg font-medium transition-all duration-300 hover:bg-luxury-gold/90"
-                  >
-                    <Phone className="w-5 h-5" />
-                    <span>Call Us Now</span>
-                  </Link>
-                  
-                  <Link
-                    href="https://wa.me/2348000000000"
-                    onClick={closeMobileMenu}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-full py-3 px-4 border border-luxury-gold text-luxury-gold rounded-lg font-medium transition-all duration-300 hover:bg-luxury-gold hover:text-white"
-                  >
-                    WhatsApp Us
-                  </Link>
-                </div>
+              {/* Mobile CTA */}
+              <div className="border-t border-luxury-platinum pt-6">
+                <Link
+                  href="tel:+2348000000000"
+                  onClick={closeMobileMenu}
+                  className="flex items-center justify-center space-x-2 w-full px-6 py-3 bg-luxury-gold text-white rounded-lg hover:bg-luxury-gold/90 transition-colors duration-300 font-medium"
+                >
+                  <Phone className="w-5 h-5" />
+                  <span>Call Us Now</span>
+                </Link>
               </div>
-            </motion.div>
-          </>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

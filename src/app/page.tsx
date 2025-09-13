@@ -6,6 +6,7 @@ import TestimonialSection from '@/components/ui/TestimonialSection';
 import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
 import { motion } from 'framer-motion';
 import { Phone } from 'lucide-react';
+import { useHydrationSafe } from '@/hooks/useHydrationSafe';
 
 interface HeroImage {
   src: string;
@@ -157,6 +158,8 @@ const videoContent: VideoContent = {
 };
 
 export default function HomePage() {
+  const { isClient } = useHydrationSafe();
+
   const handleHireUsClick = (): void => {
     window.location.href = '/contact';
   };
@@ -200,7 +203,7 @@ export default function HomePage() {
                 transition={{ duration: 0.8 }}
               >
                 <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
-                  For Nigeria&apos;s <span className="text-luxury-gold">Finest Homes</span>
+                  For Nigeria&apos;s <span className="text-luxury-gold">Finest Homes...</span>
                 </h2>
                 <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-sans">
                   <p>
@@ -522,16 +525,18 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* Floating CTA Button */}
-      <div className="fixed bottom-8 right-8 z-50 md:bottom-12 md:right-12">
-        <button
-          onClick={() => window.open('https://wa.me/2348000000000', '_blank')}
-          className="flex items-center space-x-2 bg-luxury-gold hover:bg-luxury-dark-gold text-luxury-charcoal px-6 py-3 rounded-full font-sans font-medium shadow-luxury-strong hover:shadow-luxury-soft hover:ring-2 hover:ring-luxury-gold/50 transition-all duration-300 transform hover:scale-105"
-        >
-          <Phone className="w-5 h-5" />
-          <span>Contact Us</span>
-        </button>
-      </div>
+      {/* Floating CTA Button - Only render after hydration to prevent mismatch */}
+      {isClient && (
+        <div className="fixed bottom-8 right-8 z-50 md:bottom-12 md:right-12">
+          <button
+            onClick={() => window.open('https://wa.me/2348000000000', '_blank')}
+            className="flex items-center space-x-2 bg-luxury-gold hover:bg-luxury-dark-gold text-luxury-charcoal px-6 py-3 rounded-full font-sans font-medium shadow-luxury-strong hover:shadow-luxury-soft hover:ring-2 hover:ring-luxury-gold/50 transition-all duration-300 transform hover:scale-105"
+          >
+            <Phone className="w-5 h-5" />
+            <span>Contact Us</span>
+          </button>
+        </div>
+      )}
     </>
   );
 }

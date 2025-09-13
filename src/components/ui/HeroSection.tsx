@@ -1,11 +1,11 @@
-//src/components/ui/HeroSection.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useHydrationSafe } from '@/hooks/useHydrationSafe';
 
 // Extend window type for gtag function
 declare global {
@@ -41,8 +41,6 @@ interface HeroSectionProps {
   };
   onHireUsClick: () => void;
   className?: string;
-  logoSrc?: string;
-  logoAlt?: string;
 }
 
 export default function HeroSection({
@@ -55,29 +53,25 @@ export default function HeroSection({
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
+  
+  // Fix hydration issues properly
+  const { isHydrated } = useHydrationSafe();
 
-  // Convert Vimeo URL to embed format
-  const getVimeoEmbedUrl = (vimeoUrl: string): string => {
-    // Extract video ID from URL like https://vimeo.com/1116723569
-    const videoId = vimeoUrl.split('/').pop() || '';
-    
-    // Return Vimeo player URL with necessary parameters for inline fullscreen playback
-    return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&controls=1&playsinline=1&title=0&byline=0&portrait=0&autopause=0`;
-  };
-
-  // Auto-advance slideshow (only when video is not playing)
+  // Auto-advance slideshow - only on client
   useEffect(() => {
-    if (isVideoPlaying) return;
+    if (!isHydrated || isVideoPlaying) return;
     
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [images.length, isVideoPlaying]);
+  }, [images.length, isVideoPlaying, isHydrated]);
 
   // Handle keyboard navigation
   useEffect(() => {
+    if (!isHydrated) return;
+    
     const handleKeyDown = (e: KeyboardEvent): void => {
       if (isVideoPlaying && e.key === 'Escape') {
         setIsVideoPlaying(false);
@@ -96,93 +90,104 @@ export default function HeroSection({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [images.length, isVideoPlaying]);
+  }, [images.length, isVideoPlaying, isHydrated]);
 
-  // Handle video play
-  const handleVideoPlay = (): void => {
+  const getVimeoEmbedUrl = useCallback((vimeoUrl: string): string => {
+    const videoId = vimeoUrl.split('/').pop() || '';
+    return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&controls=1&playsinline=1&title=0&byline=0&portrait=0&autopause=0`;
+  }, []);
+
+  const handleVideoPlay = useCallback((): void => {
     setIsVideoPlaying(true);
-    // Analytics tracking
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'video_play', {
         event_category: 'engagement',
         event_label: 'hero_video_inline',
       });
     }
-  };
+  }, []);
 
-  const handleVideoClose = (): void => {
+  const handleVideoClose = useCallback((): void => {
     setIsVideoPlaying(false);
     setIsVideoLoaded(false);
-  };
+  }, []);
 
-  // Navigation functions
-  const goToPrevious = (): void => {
-    if (!isVideoPlaying) {
-      setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-    }
-  };
+  // Safe navigation functions
+  const goToPrevious = useCallback((): void => {
+    if (!isHydrated || isVideoPlaying) return;
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  }, [images.length, isVideoPlaying, isHydrated]);
 
-  const goToNext = (): void => {
-    if (!isVideoPlaying) {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }
-  };
+  const goToNext = useCallback((): void => {
+    if (!isHydrated || isVideoPlaying) return;
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  }, [images.length, isVideoPlaying, isHydrated]);
 
-  const goToSlide = (index: number): void => {
-    if (!isVideoPlaying) {
-      setCurrentImageIndex(index);
-    }
-  };
+  const goToSlide = useCallback((index: number): void => {
+    if (!isHydrated || isVideoPlaying) return;
+    setCurrentImageIndex(index);
+  }, [isVideoPlaying, isHydrated]);
 
-  // Handle hire us click with analytics
-  const handleHireUsClick = (): void => {
+  const handleHireUsClick = useCallback((): void => {
     onHireUsClick();
-    
-    // Analytics tracking
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'click', {
         event_category: 'engagement',
         event_label: 'hero_hire_us',
       });
     }
-  };
+  }, [onHireUsClick]);
 
   // Get current image safely
-  const currentImage = images[currentImageIndex];
+  const currentImage = images[currentImageIndex] || images[0];
   if (!currentImage) {
-    return <div className="min-h-screen bg-luxury-charcoal">Loading...</div>;
+    return <div className="min-h-screen bg-luxury-charcoal animate-pulse">Loading...</div>;
   }
 
   return (
-    
-<section className={cn("relative min-h-screen overflow-hidden bg-pale-oat", className)}>
-      {/* Image Slideshow or Video */}
+    <section className={cn("relative min-h-screen overflow-hidden bg-pale-oat", className)}>
       <div className="relative h-screen">
+        {/* Image slideshow - always render first image, then animate */}
         {!isVideoPlaying ? (
-          // Image Slideshow
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentImageIndex}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={currentImage.src}
-                alt={currentImage.alt}
-                fill
-                priority
-                unoptimized={true} // Bypass Next.js optimization to avoid timeout
-                className="object-cover"
-                sizes="100vw"
-              />
-              <div className="gradient-overlay" />
-            </motion.div>
-          </AnimatePresence>
+          <div className="absolute inset-0">
+            {/* Base image - prevents hydration mismatch */}
+            <Image
+              src={currentImage.src}
+              alt={currentImage.alt}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+              style={{ zIndex: 1 }}
+            />
+            
+            {/* Animated overlay - only when hydrated */}
+            {isHydrated && (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`overlay-${currentImageIndex}`}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 1, ease: "easeInOut" }}
+                  className="absolute inset-0"
+                  style={{ zIndex: 2 }}
+                >
+                  <Image
+                    src={currentImage.src}
+                    alt={currentImage.alt}
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                  <div className="gradient-overlay" />
+                </motion.div>
+              </AnimatePresence>
+            )}
+            <div className="gradient-overlay" style={{ zIndex: 3 }} />
+          </div>
         ) : (
-          // Vimeo Video Player - Full screen with proper aspect ratio
+          // Video player
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -197,26 +202,18 @@ export default function HeroSection({
               </div>
             )}
             
-            {/* Close Video Button - Higher z-index and better positioning */}
             <button
               onClick={handleVideoClose}
               className="absolute top-4 right-4 w-14 h-14 bg-black/80 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 z-50 border-2 border-white/30 hover:border-red-500 shadow-lg"
               aria-label="Close video"
-              style={{ zIndex: 999 }}
             >
               <X className="w-7 h-7" />
             </button>
             
-            {/* Vimeo iframe with proper full-screen styling */}
             <iframe
               src={getVimeoEmbedUrl(video.videoSrc)}
               className="absolute inset-0 w-full h-full"
-              style={{
-                width: '100%',
-                height: '100%',
-                border: 'none',
-                pointerEvents: 'auto'
-              }}
+              style={{ width: '100%', height: '100%', border: 'none' }}
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
@@ -226,10 +223,9 @@ export default function HeroSection({
           </motion.div>
         )}
 
-        {/* Navigation Controls - Only show when not playing video */}
-        {!isVideoPlaying && (
+        {/* Navigation controls - only when hydrated */}
+        {isHydrated && !isVideoPlaying && (
           <>
-            {/* Navigation Arrows */}
             <button
               onClick={goToPrevious}
               className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/20 backdrop-blur-sm text-white rounded-full opacity-0 hover:opacity-100 transition-all duration-300 hover:bg-black/40 z-10"
@@ -246,7 +242,6 @@ export default function HeroSection({
               <ChevronRight className="w-6 h-6" />
             </button>
 
-            {/* Slide Indicators */}
             <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
               {images.map((_, index) => (
                 <button
@@ -255,8 +250,8 @@ export default function HeroSection({
                   className={cn(
                     "w-3 h-3 rounded-full transition-all duration-300",
                     index === currentImageIndex
-                      ? "bg-luxury-gold scale-125"
-                      : "bg-white/50 hover:bg-white/80"
+                      ? "bg-white scale-125"
+                      : "bg-white/50 hover:bg-white/75"
                   )}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -264,60 +259,60 @@ export default function HeroSection({
             </div>
           </>
         )}
-      </div>
 
-      {/* Content Overlay - Only show when not playing video */}
-      {!isVideoPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center z-20">
-          <div className="container-luxury text-center text-white">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="max-w-4xl mx-auto"
-            >
-              {/* Main Tagline */}
-              <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                <span className="block text-luxury-gold">{tagline.main}</span>
-                {tagline.sub && <span className="block text-white mt-2">{tagline.sub}</span>}
-              </h1>
-
-              {/* Subtitle */}
-              {/* <motion.p
+        {/* Hero content - render immediately, enhance when hydrated */}
+        {!isVideoPlaying && (
+          <div className="absolute inset-0 flex items-center justify-center text-center text-white z-20">
+            <div className="max-w-5xl mx-auto px-6">
+              {/* Content always visible */}
+              <motion.div
+                key={isHydrated ? currentImageIndex : 'static'}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.8 }}
-                className="text-xl md:text-2xl mb-12 text-white/90 font-light leading-relaxed max-w-3xl mx-auto"
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="mb-8"
               >
-                Creating bespoke, timeless, and functional spaces for discerning clients in Nigeria and internationally
-              </motion.p> */}
+               
+              </motion.div>
 
-              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="mb-8"
+              >
+                <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                  <span className="block">{tagline.main}</span>
+                  <span className="block text-luxury-gold">{tagline.sub}</span>
+                </h1>
+              </motion.div>
+
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1.1 }}
-                className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6"
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               >
                 <button
                   onClick={handleHireUsClick}
-                  className="btn-luxury text-xl px-12 py-5 bg-luxury-gold hover:bg-luxury-gold/90 text-white border-2 border-luxury-gold font-bold shadow-luxury-strong hover:shadow-luxury-glow transform hover:scale-105 transition-all duration-300"
+                  className="btn-luxury-outline text-white border-white hover:bg-white hover:text-luxury-charcoal transition-all duration-300"
                 >
                   Hire Us Now
                 </button>
-                
+
                 <button
                   onClick={handleVideoPlay}
-                  className="btn-luxury-outline text-lg px-8 py-4 flex items-center space-x-3 group border-2 border-white/50 hover:border-white transition-all duration-300"
+                  className="flex items-center space-x-3 px-8 py-4 bg-black/20 backdrop-blur-sm text-white rounded-full hover:bg-black/40 transition-all duration-300 group"
                 >
                   <Play className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-                  <span>Watch Our Work</span>
+                  <span className="font-medium">Watch Our Process</span>
                 </button>
               </motion.div>
-            </motion.div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }
