@@ -207,9 +207,9 @@ export default function HomePage() {
                 </h2>
                 <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-sans">
                   <p>
-                    OliveHaus Interiors is a premier interior design company serving luxury residential, corporate, and commercial clients in Nigeria and internationally. We specialize in creating bespoke, timeless, and functional spaces for discerning clients.
+                   OliveHaus Interiors is a premier interior design company serving luxury residential, corporate, and commercial clients in Nigeria and internationally. We specialize in creating bespoke, timeless, and functional spaces for discerning clients.
                   </p>
-                  <p className="text-soft-sage font-medium">
+                  <p className="text-luxury-charcoal/80 font-medium">
                     Our design process emphasizes luxurious personalized solutions, exceptional project management, and remote oversight for diaspora clients.
                   </p>
                 </div>
@@ -325,7 +325,7 @@ export default function HomePage() {
               <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 tracking-wide">
                 Our Track <span className="text-luxury-gold">Record</span>
               </h2>
-              <p className="text-xl text-black/90 max-w-3xl mx-auto font-sans leading-relaxed">
+              <p className="text-xl text-luxury-charcoal/80 max-w-3xl mx-auto font-sans leading-relaxed">
                 Numbers that speak of our commitment to luxury, quality, and client satisfaction across every project we undertake.
               </p>
             </motion.div>
@@ -371,6 +371,42 @@ export default function HomePage() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </section>
+
+          {/* Closing Tagline - Mist Grey Background */}
+        <section className="relative py-12 bg-mist-grey text-luxury-charcoal text-center overflow-hidden">
+          {/* Subtle pattern */}
+          <div 
+            className="absolute inset-0 opacity-[0.02] pointer-events-none"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 20% 20%, #D4AF37 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, #D4AF37 1px, transparent 1px),
+                radial-gradient(circle at 20% 80%, #D4AF37 1px, transparent 1px),
+                radial-gradient(circle at 80% 80%, #D4AF37 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, #D4AF37 0.5px, transparent 0.5px)
+              `,
+              backgroundSize: '60px 60px',
+            }}
+          />
+          <div className="container-luxury relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-luxury-charcoal tracking-wide">
+                <em>Designers who begin with the end in mind</em>
+              </h2>
+              <button
+                onClick={handleHireUsClick}
+                className="bg-clay-peach hover:bg-terracotta-blush text-white px-12 py-4 rounded-lg font-semibold text-lg font-sans transition-all duration-300 shadow-luxury-soft hover:shadow-luxury-strong transform hover:scale-105"
+              >
+                Bring Your Vision to Life
+              </button>
+            </motion.div>
           </div>
         </section>
 
@@ -488,41 +524,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Closing Tagline - Mist Grey Background */}
-        <section className="relative py-12 bg-mist-grey text-luxury-charcoal text-center overflow-hidden">
-          {/* Subtle pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.02] pointer-events-none"
-            style={{
-              backgroundImage: `
-                radial-gradient(circle at 20% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 20% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, #D4AF37 0.5px, transparent 0.5px)
-              `,
-              backgroundSize: '60px 60px',
-            }}
-          />
-          <div className="container-luxury relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-luxury-charcoal tracking-wide">
-                <em>Designers who begin with the end in mind</em>
-              </h2>
-              <button
-                onClick={handleHireUsClick}
-                className="bg-clay-peach hover:bg-terracotta-blush text-white px-12 py-4 rounded-lg font-semibold text-lg font-sans transition-all duration-300 shadow-luxury-soft hover:shadow-luxury-strong transform hover:scale-105"
-              >
-                Bring Your Vision to Life
-              </button>
-            </motion.div>
-          </div>
-        </section>
+      
+        
       </div>
 
       {/* Floating CTA Button - Only render after hydration to prevent mismatch */}

@@ -29,7 +29,7 @@ interface PortfolioTeaserProps {
 const portfolioProjects: PortfolioProject[] = [
   {
     id: '1',
-    title: 'Luxury Penthouse',
+    title: 'Project Casa Vitalis',
     category: 'Residential',
     location: 'Victoria Island, Lagos',
     image: {
@@ -38,12 +38,12 @@ const portfolioProjects: PortfolioProject[] = [
       width: 800,
       height: 600,
     },
-    description: 'A stunning 4-bedroom penthouse with panoramic city views and bespoke furnishings',
+    description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone, while kid-friendly areas bring warmth and playfulness into the design. A spa-like bathroom offers calm retreat, and modern finishes throughout elevate the interiors into a truly luxurious living experience stylish, functional, and deeply personal.',
     featured: true,
   },
   {
     id: '2',
-    title: 'Corporate Headquarters',
+    title: 'Project Officeland',
     category: 'Commercial',
     location: 'Ikoyi, Lagos',
     image: {
@@ -52,22 +52,22 @@ const portfolioProjects: PortfolioProject[] = [
       width: 800,
       height: 600,
     },
-    description: 'Modern corporate office design emphasizing productivity and luxury aesthetics',
+    description: 'We designed this workplace to balance functionality with impact creating a space that supports both staff well-being and productivity. From ergonomic layouts to comfortable communal areas, every detail was crafted to encourage collaboration, focus, and a strong sense of belonging. The result is a workplace that not only works beautifully but also inspires the people within it.',
     featured: true,
   },
  
   {
     id: '3',
-    title: 'Boutique Hotel',
+    title: 'Project Serenique',
     category: 'Hospitality',
-    location: 'Lekki Phase 1, Lagos',
+    location: 'Magodo, Lagos',
     image: {
       src: '/images/portfolio/hotel-main.webp',
       alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
       width: 800,
       height: 600,
     },
-    description: 'Intimate boutique hotel combining Nigerian heritage with modern luxury',
+    description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn. Luxurious yet understated, the space balances sophistication with serenity, offering guests a refreshing escape designed for complete renewal.',
     featured: true,
   },
  
@@ -117,13 +117,14 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-luxury-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            Our Signature
+          <h2 className="text-luxury-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
+            Our Signature Spaces 
             <span className="text-gradient-gold block mt-2">Projects</span>
           </h2>
-          <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-8">
-            Explore our portfolio of luxury interior design projects, each meticulously crafted to reflect our clients&apos; unique personalities and sophisticated tastes.
-          </p>
+          <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3">
+            Explore our portfolio of luxury interiors, created to mirror each client&apos;s distinct personality and style
+            
+            </p>
 
           {/* Decorative Line */}
           <motion.div
@@ -256,6 +257,9 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-center mt-16"
         >
+           <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3">
+            Bring Your Vision to Life, Let&apos;s design a space that&apos;s uniquely yours.
+            </p>
           <button
             onClick={handleViewAllPortfolio}
             className="btn-luxury group"

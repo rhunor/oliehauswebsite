@@ -126,8 +126,8 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
           className="text-center mb-16"
         >
           <h2 className="text-luxury-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            What Our Clients
-            <span className="text-gradient-gold block mt-2">Are Saying</span>
+            Trusted By Distinguished 
+            <span className="text-luxury-heading block mt-2">Clients…</span>
           </h2>
           <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed">
             Discover why discerning clients trust OliveHaus Interiors with their most important spaces
@@ -279,8 +279,8 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
               <div className="text-luxury-slate">Average Rating</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-luxury-gold mb-2">100%</div>
-              <div className="text-luxury-slate">Recommend Us</div>
+              <div className="text-4xl font-bold text-luxury-gold mb-2">94%</div>
+              <div className="text-luxury-slate">On-time Delivery</div>
             </div>
           </motion.div>
         </div>
