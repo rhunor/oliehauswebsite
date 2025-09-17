@@ -233,7 +233,7 @@ export default function HomePage() {
         {/* We Stand Out Section - White background with unique wave pattern */}
         <section className="relative pt-12 pb-0 bg-white overflow-hidden">
   {/* Reduced bottom padding to avoid unnecessary white space */}
-  <LuxuryWavePattern opacity={0.06} />
+  <LuxuryWavePattern opacity={0.5} />
 
   <div className="container-luxury relative z-10">
     <motion.div
@@ -254,25 +254,25 @@ export default function HomePage() {
           title: 'Seamless Project Experience',
           description:
             'Flawless client experience, before, during and after project execution',
-          icon: '✨'
+          icon: ''
         },
         {
           title: 'Design for High-Quality Living',
           description:
             'Luxurious, personalized interiors that tastefully blend functionality with timeless aesthetics.',
-          icon: '🏛️'
+          icon: ''
         },
         {
           title: 'Stress-free Project Oversight',
           description:
             'Stay in control from anywhere in the world with our Daily Manager Platform Updates—track progress, reports, and updates at your convenience',
-          icon: '📱'
+          icon: ''
         },
         {
           title: 'Constant Team Support',
           description:
             'A responsive, detail-driven team ensures your vision is executed to perfection.',
-          icon: '🤝'
+          icon: ''
         }
       ].map((value, index) => (
         <motion.div
