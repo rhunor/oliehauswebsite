@@ -5,8 +5,8 @@ import PortfolioTeaser from '@/components/ui/PortfolioTeaser';
 import TestimonialSection from '@/components/ui/TestimonialSection';
 import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
 import { motion } from 'framer-motion';
-import { Phone } from 'lucide-react';
-import { useHydrationSafe } from '@/hooks/useHydrationSafe';
+// import { Phone } from 'lucide-react';
+// import { useHydrationSafe } from '@/hooks/useHydrationSafe';
 
 interface HeroImage {
   src: string;
@@ -158,7 +158,7 @@ const videoContent: VideoContent = {
 };
 
 export default function HomePage() {
-  const { isClient } = useHydrationSafe();
+  // const { isClient } = useHydrationSafe();
 
   const handleHireUsClick = (): void => {
     window.location.href = '/contact';
@@ -529,7 +529,7 @@ export default function HomePage() {
       </div>
 
       {/* Floating CTA Button - Only render after hydration to prevent mismatch */}
-      {isClient && (
+      {/* {isClient && (
         <div className="fixed bottom-8 right-8 z-50 md:bottom-12 md:right-12">
           <button
             onClick={() => window.open('https://wa.me/2348000000000', '_blank')}
@@ -539,7 +539,7 @@ export default function HomePage() {
             <span>Contact Us</span>
           </button>
         </div>
-      )}
+      )} */}
     </>
   );
 }

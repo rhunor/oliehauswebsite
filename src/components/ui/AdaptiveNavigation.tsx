@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -23,21 +23,19 @@ interface AdaptiveNavigationProps {
 const navigationItems: NavigationItem[] = [
   { label: 'About Us', href: '/about' },
   { label: 'Projects', href: '/projects' },
-    { label: 'Services', href: '/services' },
+  { label: 'Services', href: '/services' },
   { label: 'Inside the Design', href: '/inside-the-design' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact Us', href: '/contact' },
 ];
 
 const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' }) => {
-  // Use comma to ignore the unused state value, only keep the setter
   const [, setScrollState] = useState<ScrollState>({
     scrollY: 0,
     isAtTop: true,
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  // Simple scroll detection - track scroll for potential animations but navbar always has background
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     const isAtTop = currentScrollY < 10;
@@ -56,16 +54,13 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
   const toggleMobileMenu = (): void => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = (): void => setIsMobileMenuOpen(false);
 
-  // Always visible navbar with solid background (no transparency)
   const navbarClasses = cn(
     'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
-    'bg-white/95 backdrop-blur-md shadow-lg', // Always have solid background
+    'bg-white/95 backdrop-blur-md shadow-lg',
     className
   );
 
-  // Always use dark text since we now have a light background
   const textClasses = 'text-luxury-charcoal';
-  // const phoneIconClasses = 'w-5 h-5 transition-colors duration-300 text-luxury-charcoal';
   const hamburgerClasses = 'w-6 h-6 transition-colors duration-300 text-luxury-charcoal';
 
   return (
@@ -73,24 +68,47 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
       <nav className={navbarClasses}>
         <div className="container-luxury">
           <div className="flex items-center justify-between h-20 lg:h-24">
-            {/* Logo - Left aligned */}
+            {/* Logo with Luxury Underline */}
             <Link href="/" className="flex-shrink-0 group">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
                 className="relative"
               >
-                <h1 className={`font-serif text-3xl lg:text-4xl font-bold tracking-wide ${textClasses}`}>
-                  <span className="text-luxury-gold">OLIVE</span>
-                  <span>HAUS</span>
+                <h1 className={`font-olivehaus text-3xl lg:text-4xl font-bold tracking-wide ${textClasses}`}>
+                  <span className="relative">
+                    <span className="text-luxury-gold">OLIVE</span>
+                    <span>HAUS</span>
+                    {/* Elegant Underline */}
+                    <motion.div
+                      className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-luxury-gold via-yellow-400 to-luxury-gold"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 1, delay: 0.5 }}
+                      style={{ transformOrigin: 'left' }}
+                    />
+                    {/* Decorative dots */}
+                    <motion.div
+                      className="absolute -bottom-2 left-0 w-1 h-1 bg-luxury-gold rounded-full"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 1 }}
+                    />
+                    <motion.div
+                      className="absolute -bottom-2 right-0 w-1 h-1 bg-luxury-gold rounded-full"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 1.2 }}
+                    />
+                  </span>
                 </h1>
-                <p className={`text-xs lg:text-sm font-light tracking-[0.2em] uppercase ${textClasses} opacity-80`}>
-                  I N T E R I O R S
+                <p className={`text-xs lg:text-sm font-light tracking-[0.3em] uppercase ${textClasses} opacity-80 mt-1`}>
+                  INTERIORS
                 </p>
               </motion.div>
             </Link>
 
-            {/* Desktop Navigation - Left aligned next to logo with proper spacing */}
+            {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center ml-16">
               <div className="flex items-center space-x-10">
                 {navigationItems.map((item) => (
@@ -106,29 +124,18 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
               </div>
             </div>
 
-            {/* Contact CTA & Mobile Menu - Right aligned */}
-            <div className="flex items-center space-x-4">
-              {/* <Link
-                href="tel:+2348000000000"
-                className={`flex items-center space-x-2 px-4 py-2 rounded-full border transition-all duration-300 hover:bg-luxury-gold hover:text-white hover:border-luxury-gold border-luxury-charcoal ${textClasses} hidden md:flex`}
-              >
-                <Phone className={phoneIconClasses} />
-                <span className="font-medium">Call Us</span>
-              </Link> */}
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={toggleMobileMenu}
-                className="lg:hidden p-2 rounded-lg transition-colors duration-300 hover:bg-luxury-platinum/20"
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? (
-                  <X className={hamburgerClasses} />
-                ) : (
-                  <Menu className={hamburgerClasses} />
-                )}
-              </button>
-            </div>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="lg:hidden p-2 rounded-lg transition-colors duration-300 hover:bg-luxury-platinum/20"
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className={hamburgerClasses} />
+              ) : (
+                <Menu className={hamburgerClasses} />
+              )}
+            </button>
           </div>
         </div>
       </nav>
@@ -170,7 +177,7 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
                       <span>HAUS</span>
                     </h1>
                     <p className="text-xs font-light tracking-[0.2em] uppercase text-luxury-charcoal opacity-80">
-                      I N T E R I O R S
+                      INTERIORS
                     </p>
                   </motion.div>
                 </div>
@@ -202,18 +209,6 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
                   </motion.div>
                 ))}
               </nav>
-
-              {/* Mobile CTA */}
-              <div className="border-t border-luxury-platinum pt-6">
-                <Link
-                  href="tel:+2348000000000"
-                  onClick={closeMobileMenu}
-                  className="flex items-center justify-center space-x-2 w-full px-6 py-3 bg-luxury-gold text-white rounded-lg hover:bg-luxury-gold/90 transition-colors duration-300 font-medium"
-                >
-                  <Phone className="w-5 h-5" />
-                  <span>Call Us Now</span>
-                </Link>
-              </div>
             </div>
           </motion.div>
         )}

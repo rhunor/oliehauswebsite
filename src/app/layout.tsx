@@ -1,28 +1,10 @@
+
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display, Lato } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import AdaptiveNavigation from '@/components/ui/AdaptiveNavigation';
 import RitzCarltonFooter from '@/components/ui/RitzCarltonFooter';
-
-// Font configurations - Updated with recommended fonts
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap',
-});
-
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['300', '400', '700', '900'],
-  variable: '--font-lato',
-  display: 'swap',
-});
+import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp';
 
 export const metadata: Metadata = {
   title: {
@@ -103,16 +85,18 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html 
-      lang="en" 
-      className={`${inter.variable} ${playfairDisplay.variable} ${lato.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Preconnect to external resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
+        
+        {/* Google Fonts - Luxury Typography */}
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&family=Oranienbaum&family=Playfair+Display:wght@400;700;900&display=swap" 
+          rel="stylesheet" 
+        />
         
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
@@ -130,9 +114,42 @@ export default function RootLayout({ children }: RootLayoutProps) {
         
         {/* Viewport for responsive design */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
+      
+      <body className="font-sans antialiased bg-ivory text-luxury-charcoal flex flex-col min-h-screen">
+        {/* Skip to main content for accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-luxury-gold text-white px-4 py-2 rounded-lg z-50 transition-all duration-300"
+        >
+          Skip to main content
+        </a>
         
+        {/* Adaptive Navigation Component */}
+        <AdaptiveNavigation />
+        
+        {/* Main content with proper spacing for fixed navbar */}
+        <main id="main-content" className="flex-grow">
+          {children}
+        </main>
+        
+        {/* Floating WhatsApp Button */}
+        <FloatingWhatsApp 
+          phoneNumber="+2348000000000"
+          whatsappNumber="+2348000000000"
+        />
+        
+        {/* Ritz Carlton-inspired Footer */}
+        <RitzCarltonFooter />
+        
+        {/* Loading indicator for better UX */}
+        <div id="loading-indicator" className="fixed top-0 left-0 w-full h-1 bg-luxury-gold/20 z-50 opacity-0 transition-opacity duration-300">
+          <div className="h-full bg-luxury-gold w-0 transition-all duration-300 ease-out" />
+        </div>
+
         {/* Structured Data for Local Business */}
-        <script
+        <Script
+          id="structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -159,51 +176,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {/* Google Analytics */}
         {process.env.NODE_ENV === 'production' && (
           <>
-            <script
-              async
+            <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
             />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                    page_title: document.title,
-                    page_location: window.location.href,
-                  });
-                `,
-              }}
-            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                  page_title: document.title,
+                  page_location: window.location.href,
+                });
+              `}
+            </Script>
           </>
         )}
-      </head>
-      
-      <body className="font-sans antialiased bg-ivory text-luxury-charcoal flex flex-col min-h-screen">
-        {/* Skip to main content for accessibility */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-luxury-gold text-white px-4 py-2 rounded-lg z-50 transition-all duration-300"
-        >
-          Skip to main content
-        </a>
-        
-        {/* Adaptive Navigation Component */}
-        <AdaptiveNavigation />
-        
-        {/* Main content with proper spacing for fixed navbar */}
-        <main id="main-content" className="flex-grow">
-          {children}
-        </main>
-        
-        {/* Ritz Carlton-inspired Footer */}
-        <RitzCarltonFooter />
-        
-        {/* Loading indicator for better UX */}
-        <div id="loading-indicator" className="fixed top-0 left-0 w-full h-1 bg-luxury-gold/20 z-50 opacity-0 transition-opacity duration-300">
-          <div className="h-full bg-luxury-gold w-0 transition-all duration-300 ease-out" />
-        </div>
       </body>
     </html>
   );
