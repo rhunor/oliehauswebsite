@@ -21,10 +21,10 @@ interface AdaptiveNavigationProps {
 }
 
 const navigationItems: NavigationItem[] = [
-  { label: 'Projects', href: '/projects' },
-  { label: 'Inside the Design', href: '/inside-the-design' },
   { label: 'About Us', href: '/about' },
-  { label: 'Services', href: '/services' },
+  { label: 'Projects', href: '/projects' },
+    { label: 'Services', href: '/services' },
+  { label: 'Inside the Design', href: '/inside-the-design' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact Us', href: '/contact' },
 ];
@@ -65,7 +65,7 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
 
   // Always use dark text since we now have a light background
   const textClasses = 'text-luxury-charcoal';
-  const phoneIconClasses = 'w-5 h-5 transition-colors duration-300 text-luxury-charcoal';
+  // const phoneIconClasses = 'w-5 h-5 transition-colors duration-300 text-luxury-charcoal';
   const hamburgerClasses = 'w-6 h-6 transition-colors duration-300 text-luxury-charcoal';
 
   return (
@@ -108,13 +108,13 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
 
             {/* Contact CTA & Mobile Menu - Right aligned */}
             <div className="flex items-center space-x-4">
-              <Link
+              {/* <Link
                 href="tel:+2348000000000"
                 className={`flex items-center space-x-2 px-4 py-2 rounded-full border transition-all duration-300 hover:bg-luxury-gold hover:text-white hover:border-luxury-gold border-luxury-charcoal ${textClasses} hidden md:flex`}
               >
                 <Phone className={phoneIconClasses} />
                 <span className="font-medium">Call Us</span>
-              </Link>
+              </Link> */}
 
               {/* Mobile Menu Button */}
               <button

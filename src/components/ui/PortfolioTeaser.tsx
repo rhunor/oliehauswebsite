@@ -38,7 +38,7 @@ const portfolioProjects: PortfolioProject[] = [
       width: 800,
       height: 600,
     },
-    description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone, while kid-friendly areas bring warmth and playfulness into the design. A spa-like bathroom offers calm retreat, and modern finishes throughout elevate the interiors into a truly luxurious living experience stylish, functional, and deeply personal.',
+    description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone.                            ',
     featured: true,
   },
   {
@@ -52,7 +52,7 @@ const portfolioProjects: PortfolioProject[] = [
       width: 800,
       height: 600,
     },
-    description: 'We designed this workplace to balance functionality with impact creating a space that supports both staff well-being and productivity. From ergonomic layouts to comfortable communal areas, every detail was crafted to encourage collaboration, focus, and a strong sense of belonging. The result is a workplace that not only works beautifully but also inspires the people within it.',
+    description: 'We designed this workplace to balance functionality with impact creating a space that supports both staff well-being and productivity.               ',
     featured: true,
   },
  
@@ -67,7 +67,7 @@ const portfolioProjects: PortfolioProject[] = [
       width: 800,
       height: 600,
     },
-    description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn. Luxurious yet understated, the space balances sophistication with serenity, offering guests a refreshing escape designed for complete renewal.',
+    description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn.',
     featured: true,
   },
  
