@@ -123,11 +123,6 @@ export default function HeroSection({
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
   }, [images.length, isVideoPlaying, isHydrated]);
 
-  const goToSlide = useCallback((index: number): void => {
-    if (!isHydrated || isVideoPlaying) return;
-    setCurrentImageIndex(index);
-  }, [isVideoPlaying, isHydrated]);
-
   const handleHireUsClick = useCallback((): void => {
     onHireUsClick();
     if (typeof window !== 'undefined' && window.gtag) {
@@ -223,7 +218,7 @@ export default function HeroSection({
           </motion.div>
         )}
 
-        {/* Navigation controls - only when hydrated */}
+        {/* Navigation controls - only when hydrated - NO DOTS */}
         {isHydrated && !isVideoPlaying && (
           <>
             <button
@@ -241,22 +236,6 @@ export default function HeroSection({
             >
               <ChevronRight className="w-6 h-6" />
             </button>
-
-            <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={cn(
-                    "w-3 h-3 rounded-full transition-all duration-300",
-                    index === currentImageIndex
-                      ? "bg-white scale-125"
-                      : "bg-white/50 hover:bg-white/75"
-                  )}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
           </>
         )}
 
@@ -264,18 +243,6 @@ export default function HeroSection({
         {!isVideoPlaying && (
           <div className="absolute inset-0 flex items-center justify-center text-center text-white z-20">
             <div className="max-w-5xl mx-auto px-6">
-              {/* Content always visible */}
-              <motion.div
-                key={isHydrated ? currentImageIndex : 'static'}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mb-8"
-              >
-               
-              </motion.div>
-
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}

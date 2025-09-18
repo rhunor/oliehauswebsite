@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Eye } from 'lucide-react';
-import { cn, trackEvent } from '@/lib/utils';
-import { PortfolioImage } from '@/components/ui/OptimizedImage';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 interface PortfolioProject {
   id: string;
@@ -12,7 +12,7 @@ interface PortfolioProject {
   category: string;
   location: string;
   image: {
-    src: string; // Changed from StaticImageData to string
+    src: string;
     alt: string;
     width: number;
     height: number;
@@ -38,7 +38,7 @@ const portfolioProjects: PortfolioProject[] = [
       width: 800,
       height: 600,
     },
-    description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone.                            ',
+    description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone.',
     featured: true,
   },
   {
@@ -52,10 +52,9 @@ const portfolioProjects: PortfolioProject[] = [
       width: 800,
       height: 600,
     },
-    description: 'We designed this workplace to balance functionality with impact creating a space that supports both staff well-being and productivity.               ',
+    description: 'We designed this workplace to balance functionality with impact creating a space that supports both staff well-being and productivity.',
     featured: true,
   },
- 
   {
     id: '3',
     title: 'Project Serenique',
@@ -70,8 +69,17 @@ const portfolioProjects: PortfolioProject[] = [
     description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn.',
     featured: true,
   },
- 
 ];
+
+// Analytics tracking helper - using the existing window.gtag type from FloatingWhatsApp
+const trackEvent = (action: string, category: string, label: string): void => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', action, {
+      event_category: category,
+      event_label: label,
+    });
+  }
+};
 
 export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -83,31 +91,19 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
     ? portfolioProjects 
     : portfolioProjects.filter(project => project.category === activeCategory);
 
-  const handleViewProject = (projectId: string) => {
-    // Enhanced analytics tracking
+  const handleViewProject = (projectId: string): void => {
     trackEvent('click', 'engagement', `portfolio_project_${projectId}`);
-
-    // In production, this would navigate to the project detail page
+    // In production, navigate to project detail
     console.log(`Viewing project: ${projectId}`);
-    // Example: router.push(`/portfolio/${projectId}`);
   };
 
-  const handleViewAllPortfolio = () => {
-    // Analytics tracking
-    trackEvent('click', 'engagement', 'view_all_portfolio');
-
-    // In production, this would navigate to the full portfolio page
-    console.log('Viewing full portfolio');
-    // Example: router.push('/portfolio');
-  };
-
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (category: string): void => {
     setActiveCategory(category);
     trackEvent('click', 'engagement', `portfolio_filter_${category.toLowerCase()}`);
   };
 
   return (
-    <section className={cn("py-20 bg-luxury-cream", className)}>
+    <section className={cn("py-12 bg-luxury-cream", className)}>
       <div className="container-luxury">
         {/* Section Header */}
         <motion.div
@@ -117,14 +113,13 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-luxury-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5  font-serif">
             Our Signature Spaces 
-            <span className="text-gradient-gold block mt-2">Projects</span>
-          </h2>
-          <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3">
-            Explore our portfolio of luxury interiors, created to mirror each client&apos;s distinct personality and style
             
-            </p>
+          </h2>
+          <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3 font-body ">
+            Explore our portfolio of luxury interiors, created to mirror each client&apos;s distinct personality
+          </p>
 
           {/* Decorative Line */}
           <motion.div
@@ -173,28 +168,29 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              onHoverStart={() => setHoveredProject(project.id)}
-              onHoverEnd={() => setHoveredProject(null)}
               className="group cursor-pointer"
               onClick={() => handleViewProject(project.id)}
             >
-              <div className="card-luxury overflow-hidden">
-                {/* Project Image with Enhanced Optimization */}
-                <div className="relative aspect-[4/3] mb-6 overflow-hidden rounded-xl">
-                  <PortfolioImage
+              <div className="card-luxury overflow-hidden h-full">
+                {/* Project Image Container */}
+                <div 
+                  className="relative aspect-[4/3] mb-6 overflow-hidden rounded-xl"
+                  onMouseEnter={() => setHoveredProject(project.id)}
+                  onMouseLeave={() => setHoveredProject(null)}
+                >
+                  {/* Image - starts at full brightness */}
+                  <Image
                     src={project.image.src}
                     alt={project.image.alt}
                     width={project.image.width}
                     height={project.image.height}
-                    className="transition-transform duration-500 group-hover:scale-110"
+                    className={cn(
+                      "object-cover w-full h-full transition-all duration-500",
+                      hoveredProject === project.id ? "scale-110 brightness-75" : "scale-100 brightness-100"
+                    )}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority={index < 3} // Prioritize first 3 images
-                    showLoadingState={true}
-                    hoverEffect={false} // Handled by container hover
+                    priority={index < 3}
                   />
-                  
-                  {/* Overlay */}
-                  <div className="image-overlay" />
                   
                   {/* Featured Badge */}
                   {project.featured && (
@@ -205,17 +201,17 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                     </div>
                   )}
 
-                  {/* Hover Button */}
+                  {/* Hover Eye Icon */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ 
                       opacity: hoveredProject === project.id ? 1 : 0,
                       scale: hoveredProject === project.id ? 1 : 0.8
                     }}
-                    className="absolute inset-0 flex items-center justify-center z-20"
+                    className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
                   >
-                    <div className="bg-luxury-gold text-white p-4 rounded-full shadow-luxury-soft">
-                      <Eye className="w-6 h-6" />
+                    <div className="bg-white p-4 rounded-full shadow-luxury-soft">
+                      <Eye className="w-6 h-6 text-luxury-gold" />
                     </div>
                   </motion.div>
                 </div>
@@ -223,7 +219,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                 {/* Project Details */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-luxury-gold text-sm font-medium">
+                    <span className="text-luxury-gold text-sm font-medium uppercase tracking-wider">
                       {project.category}
                     </span>
                     <span className="text-luxury-slate text-sm">
@@ -231,11 +227,11 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                     </span>
                   </div>
 
-                  <h3 className="text-luxury-heading text-xl font-bold group-hover:text-luxury-gold transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-luxury-charcoal group-hover:text-luxury-gold transition-colors duration-300 font-accent">
                     {project.title}
                   </h3>
 
-                  <p className="text-luxury-slate leading-relaxed">
+                  <p className="text-luxury-slate leading-relaxed font-body">
                     {project.description}
                   </p>
 
@@ -257,16 +253,16 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-center mt-16"
         >
-           <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3">
-            Bring Your Vision to Life, Let&apos;s design a space that&apos;s uniquely yours.
-            </p>
-          <button
-            onClick={handleViewAllPortfolio}
-            className="btn-luxury group"
+          {/* <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-8 font-body">
+            Bring Your Vision to Life. Let&apos;s design a space that&apos;s uniquely yours.
+          </p> */}
+          <a
+            href="/portfolio"
+            className="btn-luxury group inline-flex items-center space-x-2"
           >
             <span>View Full Portfolio</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>

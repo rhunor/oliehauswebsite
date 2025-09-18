@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
@@ -116,31 +115,36 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       
-      <body className="font-sans antialiased bg-ivory text-luxury-charcoal flex flex-col min-h-screen">
-        {/* Skip to main content for accessibility */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-luxury-gold text-white px-4 py-2 rounded-lg z-50 transition-all duration-300"
-        >
-          Skip to main content
-        </a>
-        
-        {/* Adaptive Navigation Component */}
-        <AdaptiveNavigation />
-        
-        {/* Main content with proper spacing for fixed navbar */}
-        <main id="main-content" className="flex-grow">
-          {children}
-        </main>
+      <body className="font-sans antialiased bg-ivory text-luxury-charcoal">
+        {/* Main wrapper - removing height:100% constraints that might hide footer */}
+        <div id="app-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          {/* Skip to main content for accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-luxury-gold text-white px-4 py-2 rounded-lg z-50 transition-all duration-300"
+          >
+            Skip to main content
+          </a>
+          
+          {/* Adaptive Navigation Component */}
+          <AdaptiveNavigation />
+          
+          {/* Main content - flex-1 to take remaining space */}
+          <main id="main-content" style={{ flex: 1, paddingTop: '80px' }}>
+            {children}
+          </main>
+          
+          {/* Footer - Force visibility with explicit background */}
+          <div className="bg-luxury-charcoal" style={{ backgroundColor: '#1C1C1C' }}>
+            <RitzCarltonFooter />
+          </div>
+        </div>
         
         {/* Floating WhatsApp Button */}
         <FloatingWhatsApp 
           phoneNumber="+2348000000000"
           whatsappNumber="+2348000000000"
         />
-        
-        {/* Ritz Carlton-inspired Footer */}
-        <RitzCarltonFooter />
         
         {/* Loading indicator for better UX */}
         <div id="loading-indicator" className="fixed top-0 left-0 w-full h-1 bg-luxury-gold/20 z-50 opacity-0 transition-opacity duration-300">

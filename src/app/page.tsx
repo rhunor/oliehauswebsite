@@ -4,9 +4,9 @@ import HeroSection from '@/components/ui/HeroSection';
 import PortfolioTeaser from '@/components/ui/PortfolioTeaser';
 import TestimonialSection from '@/components/ui/TestimonialSection';
 import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
-import { motion } from 'framer-motion';
-// import { Phone } from 'lucide-react';
-// import { useHydrationSafe } from '@/hooks/useHydrationSafe';
+import { motion, useMotionValue, animate, useInView } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 interface HeroImage {
   src: string;
@@ -20,6 +20,41 @@ interface VideoContent {
   videoSrc: string;
   title: string;
   description: string;
+}
+
+interface AnimatedCounterProps {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+}
+
+// Smooth Animated Counter Component with spring physics
+function AnimatedCounter({ value, suffix = '', prefix = '' }: AnimatedCounterProps): React.JSX.Element {
+  const [displayValue, setDisplayValue] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const motionValue = useMotionValue(0);
+
+  useEffect(() => {
+    if (inView) {
+      const controls = animate(motionValue, value, {
+        duration: 2,
+        ease: [0.25, 0.1, 0.25, 1], // Custom easing for smooth acceleration
+        onUpdate: (latest) => {
+          setDisplayValue(Math.round(latest));
+        }
+      });
+      return controls.stop;
+    }
+    // Explicitly return undefined for the else path to satisfy TypeScript
+    return undefined;
+  }, [inView, value, motionValue]);
+
+  return (
+    <span ref={ref} style={{ fontVariantNumeric: 'tabular-nums' }}>
+      {prefix}{displayValue}{suffix}
+    </span>
+  );
 }
 
 // Updated to use jsDelivr CDN for better performance and reliability
@@ -157,9 +192,7 @@ const videoContent: VideoContent = {
   description: 'Discover our luxury interior design process'
 };
 
-export default function HomePage() {
-  // const { isClient } = useHydrationSafe();
-
+export default function HomePage(): React.JSX.Element {
   const handleHireUsClick = (): void => {
     window.location.href = '/contact';
   };
@@ -209,7 +242,7 @@ export default function HomePage() {
                   <p>
                    OliveHaus Interiors is a premier interior design company serving luxury residential, corporate, and commercial clients in Nigeria and internationally. We specialize in creating bespoke, timeless, and functional spaces for discerning clients.
                   </p>
-                  <p className="text-luxury-charcoal/80 font-medium">
+                  <p>
                     Our design process emphasizes luxurious personalized solutions, exceptional project management, and remote oversight for diaspora clients.
                   </p>
                 </div>
@@ -222,9 +255,13 @@ export default function HomePage() {
                 transition={{ duration: 0.8, delay: 0.3 }}
                 className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden shadow-luxury-soft"
               >
-                <div className="w-full h-full bg-pale-oat flex items-center justify-center">
-                  <span className="text-luxury-charcoal font-medium font-sans">About Us Image</span>
-                </div>
+                <Image
+                  src={`${GITHUB_CDN_BASE}/about/28.jpeg`}
+                  alt="OliveHaus luxury interior design showcase"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
               </motion.div>
             </div>
           </div>
@@ -232,85 +269,80 @@ export default function HomePage() {
 
         {/* We Stand Out Section - White background with unique wave pattern */}
         <section className="relative pt-12 pb-0 bg-white overflow-hidden">
-  {/* Reduced bottom padding to avoid unnecessary white space */}
-  <LuxuryWavePattern opacity={0.5} />
+          <LuxuryWavePattern opacity={0.5} />
 
-  <div className="container-luxury relative z-10">
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="text-center mb-5"
-    >
-      <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
-        We Stand <span className="text-luxury-gold">Out</span>
-      </h2>
-    </motion.div>
+          <div className="container-luxury relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-5"
+            >
+              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
+                We Stand <span className="text-luxury-gold">Out</span>
+              </h2>
+            </motion.div>
 
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {[
-        {
-          title: 'Seamless Project Experience',
-          description:
-            'Flawless client experience, before, during and after project execution',
-          icon: ''
-        },
-        {
-          title: 'Design for High-Quality Living',
-          description:
-            'Luxurious, personalized interiors that tastefully blend functionality with timeless aesthetics.',
-          icon: ''
-        },
-        {
-          title: 'Stress-free Project Oversight',
-          description:
-            'Stay in control from anywhere in the world with our Daily Manager Platform Updates—track progress, reports, and updates at your convenience',
-          icon: ''
-        },
-        {
-          title: 'Constant Team Support',
-          description:
-            'A responsive, detail-driven team ensures your vision is executed to perfection.',
-          icon: ''
-        }
-      ].map((value, index) => (
-        <motion.div
-          key={value.title}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: index * 0.2 }}
-          className="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-luxury-soft hover:shadow-luxury-strong transition-all duration-300"
-        >
-          <div className="text-4xl mb-4">{value.icon}</div>
-          <h3 className="font-serif text-xl font-bold mb-4 text-luxury-charcoal tracking-wide">
-            {value.title}
-          </h3>
-          <p className="text-luxury-charcoal/80 leading-relaxed font-sans mb-0">
-            {value.description}
-          </p>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</section>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  title: 'Seamless Project Experience',
+                  description:
+                    'Flawless client experience, before, during and after project execution',
+                  icon: ''
+                },
+                {
+                  title: 'Design for High-Quality Living',
+                  description:
+                    'Luxurious, personalized interiors that tastefully blend functionality with timeless aesthetics.',
+                  icon: ''
+                },
+                {
+                  title: 'Stress-free Project Oversight',
+                  description:
+                    'Stay in control from anywhere in the world with our Daily Manager Platform Updates—track progress, reports, and updates at your convenience',
+                  icon: ''
+                },
+                {
+                  title: 'Constant Team Support',
+                  description:
+                    'A responsive, detail-driven team ensures your vision is executed to perfection.',
+                  icon: ''
+                }
+              ].map((value, index) => (
+                <motion.div
+                  key={value.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  className="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-luxury-soft hover:shadow-luxury-strong transition-all duration-300"
+                >
+                  <div className="text-4xl mb-4">{value.icon}</div>
+                  <h3 className="font-serif text-xl font-bold mb-4 text-luxury-charcoal tracking-wide">
+                    {value.title}
+                  </h3>
+                  <p className="text-luxury-charcoal/80 leading-relaxed font-sans mb-0">
+                    {value.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-
-        {/* Track Record Section - Enhanced with mist grey cards */}
-        <section className="py-12 bg-luxury-charcoal text-black relative overflow-hidden">
-          {/* Very subtle pattern */}
+        {/* Track Record Section - Clean animated counters with visible text */}
+        <section className="py-20 bg-luxury-charcoal relative overflow-hidden">
+          {/* Subtle animated pattern */}
           <div 
-            className="absolute inset-0 opacity-[0.008] pointer-events-none"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
               backgroundImage: `
                 radial-gradient(circle at 20% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 20% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, #D4AF37 0.5px, transparent 0.5px)
+                radial-gradient(circle at 80% 80%, #D4AF37 1px, transparent 1px)
               `,
-              backgroundSize: '60px 60px',
+              backgroundSize: '50px 50px',
             }}
           />
           
@@ -320,12 +352,12 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 tracking-wide">
+              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 tracking-wide" style={{ color: 'white' }}>
                 Our Track <span className="text-luxury-gold">Record</span>
               </h2>
-              <p className="text-xl text-luxury-charcoal/80 max-w-3xl mx-auto font-sans leading-relaxed">
+              <p className="text-xl max-w-3xl mx-auto font-sans leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
                 Numbers that speak of our commitment to luxury, quality, and client satisfaction across every project we undertake.
               </p>
             </motion.div>
@@ -333,48 +365,65 @@ export default function HomePage() {
             <div className="grid md:grid-cols-4 gap-8">
               {[
                 {
-                  number: '150+',
+                  number: 150,
+                  suffix: '+',
                   label: 'Luxury Spaces',
                   description: 'Exquisitely designed and completed projects across Nigeria'
                 },
                 {
-                  number: '200+',
+                  number: 200,
+                  suffix: '+',
                   label: 'Satisfied Clients',
                   description: 'Esteemed individuals who trust us with their luxury spaces'
                 },
                 {
-                  number: '12+',
+                  number: 12,
+                  suffix: '+',
                   label: 'Years of Experience',
                   description: 'Years of expertise in luxury interior design and project'
                 },
                 {
-                  number: '25',
+                  number: 25,
+                  suffix: '',
                   label: 'Active Projects',
                   description: 'Current luxury projects in various stages of design and execution'
                 }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.2 }}
-                  className="text-center bg-mist-grey/10 backdrop-blur-sm p-6 rounded-lg border border-mist-grey/20"
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: index * 0.15,
+                    ease: [0.25, 0.1, 0.25, 1]
+                  }}
+                  className="text-center"
                 >
-                  <div className="text-5xl md:text-6xl font-bold text-luxury-gold mb-4 font-serif">
-                    {stat.number}
+                  <div className="relative">
+                    <motion.div 
+                      className="text-5xl md:text-6xl font-bold mb-4 font-serif tabular-nums"
+                      style={{ color: '#D4AF37' }}
+                      whileInView={{ scale: [0.8, 1.05, 1] }}
+                      transition={{ duration: 0.6, delay: index * 0.15 + 0.2 }}
+                    >
+                      <AnimatedCounter value={stat.number} suffix={stat.suffix} />
+                    </motion.div>
+                    <h3 className="text-xl font-bold mb-3 font-serif tracking-wide" style={{ color: 'white' }}>
+                      {stat.label}
+                    </h3>
+                    <p className="text-sm leading-relaxed font-sans px-4" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                      {stat.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 font-serif tracking-wide">{stat.label}</h3>
-                  <p className="text-white/80 text-sm leading-relaxed font-sans">
-                    {stat.description}
-                  </p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-          {/* Closing Tagline - Mist Grey Background */}
+        {/* Closing Tagline - Mist Grey Background */}
         <section className="relative py-12 bg-mist-grey text-luxury-charcoal text-center overflow-hidden">
           {/* Subtle pattern */}
           <div 
@@ -400,12 +449,12 @@ export default function HomePage() {
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-luxury-charcoal tracking-wide">
                 <em>Designers who begin with the end in mind</em>
               </h2>
-              <button
+              {/* <button
                 onClick={handleHireUsClick}
                 className="bg-clay-peach hover:bg-terracotta-blush text-white px-12 py-4 rounded-lg font-semibold text-lg font-sans transition-all duration-300 shadow-luxury-soft hover:shadow-luxury-strong transform hover:scale-105"
               >
                 Bring Your Vision to Life
-              </button>
+              </button> */}
             </motion.div>
           </div>
         </section>
@@ -457,7 +506,7 @@ export default function HomePage() {
                 transition={{ duration: 0.8 }}
               >
                 <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
-                  This is How We Think About <span className="text-luxury-gold">Your Space</span>
+                  This is How We Think About <span className="text-luxury-gold">Your Space...</span>
                 </h2>
                 <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-sans">
                   <p>
@@ -489,9 +538,13 @@ export default function HomePage() {
                 className="relative"
               >
                 <div className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden shadow-luxury-soft">
-                  <div className="w-full h-full bg-mist-grey flex items-center justify-center">
-                    <span className="text-luxury-charcoal font-medium font-sans">Design Process Image</span>
-                  </div>
+                  <Image
+                    src={`${GITHUB_CDN_BASE}/about/28.jpeg`}
+                    alt="OliveHaus design process visualization"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
                 </div>
                 <div className="mt-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-luxury-soft border-l-4 border-clay-peach">
                   <p className="text-sm text-luxury-charcoal font-medium font-sans">
@@ -523,23 +576,7 @@ export default function HomePage() {
             <TestimonialSection />
           </div>
         </section>
-
-      
-        
       </div>
-
-      {/* Floating CTA Button - Only render after hydration to prevent mismatch */}
-      {/* {isClient && (
-        <div className="fixed bottom-8 right-8 z-50 md:bottom-12 md:right-12">
-          <button
-            onClick={() => window.open('https://wa.me/2348000000000', '_blank')}
-            className="flex items-center space-x-2 bg-luxury-gold hover:bg-luxury-dark-gold text-luxury-charcoal px-6 py-3 rounded-full font-sans font-medium shadow-luxury-strong hover:shadow-luxury-soft hover:ring-2 hover:ring-luxury-gold/50 transition-all duration-300 transform hover:scale-105"
-          >
-            <Phone className="w-5 h-5" />
-            <span>Contact Us</span>
-          </button>
-        </div>
-      )} */}
     </>
   );
 }
