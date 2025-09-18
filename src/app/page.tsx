@@ -410,7 +410,7 @@ export default function HomePage(): React.JSX.Element {
                     >
                       <AnimatedCounter value={stat.number} suffix={stat.suffix} />
                     </motion.div>
-                    <h3 className="text-xl font-bold mb-3 font-serif tracking-wide" style={{ color: 'white' }}>
+                    <h3 className="text-xl font-bold mb-3 font-serif tracking-wide" style={{ color: 'black' }}>
                       {stat.label}
                     </h3>
                     <p className="text-sm leading-relaxed font-sans px-4" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
@@ -481,8 +481,8 @@ export default function HomePage(): React.JSX.Element {
         </section>
 
         {/* Inside the Design Section - Pale Oat Background */}
-        <section className="relative py-12 bg-pale-oat overflow-hidden">
-          {/* Subtle pattern */}
+        {/* <section className="relative py-12 bg-pale-oat overflow-hidden">
+          
           <div 
             className="absolute inset-0 opacity-[0.02] pointer-events-none"
             style={{
@@ -554,7 +554,7 @@ export default function HomePage(): React.JSX.Element {
               </motion.div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Testimonial Section - Light Primrose Background */}
         <section className="relative bg-light-primrose overflow-hidden">
