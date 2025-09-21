@@ -45,14 +45,14 @@ const RitzCarltonFooter: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <Phone className="w-5 h-5 text-luxury-gold" />
-                  <a href="tel:+2348000000000" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
-                    +234 800 000 0000
+                  <a href="tel:+2348089533353" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
+                    +234 808 953 3353
                   </a>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="w-5 h-5 text-luxury-gold" />
-                  <a href="mailto:hello@olivehausinteriors.com" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
-                    hello@olivehausinteriors.com
+                  <a href="mailto:admin@olivehausinteriors.com" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
+                    admin@olivehausinteriors.com
                   </a>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -161,13 +161,13 @@ const RitzCarltonFooter: React.FC = () => {
               </h4>
               <div className="flex flex-col sm:flex-row lg:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                 <a 
-                  href="tel:+2348000000000"
+                  href="tel:+2348089533353"
                   className="inline-flex items-center justify-center px-6 py-3 bg-luxury-gold hover:bg-luxury-gold/90 text-luxury-charcoal font-semibold rounded-lg transition-all duration-300 font-sans text-sm"
                 >
                   Call Us
                 </a>
                 <a 
-                  href="https://wa.me/2348000000000"
+                  href="https://wa.me/2348089533353"
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="inline-flex items-center justify-center px-6 py-3 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-charcoal font-semibold rounded-lg transition-all duration-300 font-sans text-sm"

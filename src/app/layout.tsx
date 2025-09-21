@@ -142,8 +142,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         
         {/* Floating WhatsApp Button */}
         <FloatingWhatsApp 
-          phoneNumber="+2348000000000"
-          whatsappNumber="+2348000000000"
+          phoneNumber="+2348089533353"
+          whatsappNumber="+2348089533353"
         />
         
         {/* Loading indicator for better UX */}
@@ -163,7 +163,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               image: '/og-image.jpg',
               description: 'Premier luxury interior design company serving high-net-worth individuals in Nigeria and internationally.',
               url: 'https://olivehausinteriors.com',
-              telephone: '+234-800-000-0000',
+              telephone: '+234-808-953-3353',
               address: {
                 '@type': 'PostalAddress',
                 addressLocality: 'Lagos',

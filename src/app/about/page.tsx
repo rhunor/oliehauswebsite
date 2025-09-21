@@ -225,20 +225,12 @@ export default function AboutPage() {
               </motion.div>
             </div>
 
-            <motion.div
+            {/* <motion.div
               variants={fadeInUpVariants}
               className="mt-12 space-y-6 text-lg text-luxury-slate leading-relaxed"
             >
-              <p>
-                Trusted by homeowners, property investors, and Nigeria&apos;s elite from Lagos (Lekki, Ikoyi, Victoria Island, Maryland) to Abuja, Port Harcourt, and beyond we have completed more than 1,000 projects to date. Each space reflects our commitment to exceptional craftsmanship, meticulous attention to detail, and stress-free project management.
-              </p>
-              <p>
-                With daily updates, personalized solutions, and access to a dedicated design consultant, every client experiences a seamless journey from vision to completion. For diaspora clients, our proven remote oversight ensures the same uncompromising standard of excellence, wherever they are in the world.
-              </p>
-              <p className="font-semibold text-xl text-luxury-heading">
-                At OliveHaus Interiors, we design for high-quality living.
-              </p>
-            </motion.div>
+            
+            </motion.div> */}
           </motion.div>
 
           {/* Mission & Vision with Images */}
@@ -313,11 +305,20 @@ export default function AboutPage() {
               viewport={{ once: true, amount: 0.3 }}
               variants={slideInLeftVariants}
             >
-              <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
+              {/* <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
                 Our <span className="text-luxury-gold">Story</span>
-              </h2>
+              </h2> */}
               <div className="space-y-6 text-lg text-luxury-slate leading-relaxed">
-                <p>
+                  <p>
+                Trusted by homeowners, property investors, and Nigeria&apos;s elite from Lagos (Lekki, Ikoyi, Victoria Island, Maryland) to Abuja, Port Harcourt, and beyond we have completed more than 1,000 projects to date. Each space reflects our commitment to exceptional craftsmanship, meticulous attention to detail, and stress-free project management.
+              </p>
+              <p>
+                With daily updates, personalized solutions, and access to a dedicated design consultant, every client experiences a seamless journey from vision to completion. For diaspora clients, our proven remote oversight ensures the same uncompromising standard of excellence, wherever they are in the world.
+              </p>
+              {/* <p className="font-semibold text-xl text-luxury-heading">
+               
+              </p> */}
+                {/* <p>
                   We specialize in creating bespoke, timeless, and functional spaces for discerning clients. Our design process emphasizes luxurious personalized solutions, exceptional project management, and remote oversight for diaspora clients.
                 </p>
                 <p>
@@ -325,7 +326,7 @@ export default function AboutPage() {
                 </p>
                 <p>
                   Our philosophy is simple: <em>&apos;Designers who begin with the end in mind.&apos;</em> Every project we undertake is crafted with meticulous attention to detail and a deep understanding of our clients&apos; unique lifestyles and preferences.
-                </p>
+                </p> */}
               </div>
             </motion.div>
             
@@ -440,13 +441,13 @@ export default function AboutPage() {
             variants={fadeInUpVariants}
           >
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
-              <em>Designers who begin with the end in mind</em>
+              <em> At OliveHaus Interiors, we design for high-quality living.</em>
             </h2>
             <motion.button
               onClick={handleHireUsClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn-luxury text-lg px-12 py-4"
+              className="border border-luxury-gold btn-luxury text-lg px-12 py-4"
             >
               Experience our promise
             </motion.button>
