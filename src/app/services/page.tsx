@@ -1,52 +1,166 @@
-//src/app/services/page.tsx
-
 'use client';
-import { motion } from 'framer-motion';
-// import Navigation from '@/components/ui/Navigation';
 
+import {  useRef } from 'react';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
+import Image from 'next/image';
+import { 
+  Home, 
+  Briefcase, 
+  PaintBucket, 
+  Wrench,
+  Bath,
+  Building2,
+  Key,
+  Settings,
+  ChevronRight,
+  Check
+} from 'lucide-react';
+
+// GitHub CDN base URL for images
+const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+
+// Service interface
 interface Service {
   title: string;
   description: string;
   features: string[];
-  icon: string;
+  icon: React.ReactNode;
 }
 
+// Process step interface
+interface ProcessStep {
+  step: string;
+  title: string;
+  description: string;
+}
+
+// Service image interface
+interface ServiceImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+// Images configuration with const assertion
+const serviceImages = [
+  {
+    src: `${GITHUB_CDN_BASE}/images/hero/13.webp`,
+    alt: "Luxury interior design showcase",
+    width: 1920,
+    height: 800
+  },
+  {
+    src: `${GITHUB_CDN_BASE}/images/hero/14.webp`,
+    alt: "Modern living space",
+    width: 600,
+    height: 400
+  },
+  {
+    src: `${GITHUB_CDN_BASE}/images/hero/15.webp`,
+    alt: "Kitchen renovation",
+    width: 500,
+    height: 600
+  },
+  {
+    src: `${GITHUB_CDN_BASE}/images/hero/16.webp`,
+    alt: "Bathroom design",
+    width: 700,
+    height: 500
+  },
+  {
+    src: `${GITHUB_CDN_BASE}/images/hero/17.webp`,
+    alt: "Commercial space",
+    width: 450,
+    height: 450
+  }
+] as const;
+
+// Updated services data with new content
 const services: Service[] = [
   {
-    title: 'Residential Design',
-    description: 'Transform your home into a luxurious sanctuary that reflects your personality and lifestyle.',
+    title: 'Turnkey Renovation Solutions',
+    description: 'We handle every stage of your renovation with the highest level of precision and discretion. From structural planning to the final reveal, we orchestrate the process so you enjoy a seamless transformation without the stress.',
     features: [
-      'Complete home makeovers',
-      'Room-by-room design',
-      'Custom furniture design',
-      'Space planning & optimization',
-      'Color & material selection'
-    ],
-    icon: '🏠'
-  },
-  {
-    title: 'Commercial Design',
-    description: 'Create inspiring work environments that enhance productivity and reflect your brand identity.',
-    features: [
-      'Office space design',
-      'Retail interior design',
-      'Restaurant & hospitality design',
-      'Brand integration',
-      'Ergonomic workspace planning'
-    ],
-    icon: '🏢'
-  },
-  {
-    title: 'Project Management',
-    description: 'End-to-end project oversight ensuring seamless execution from concept to completion.',
-    features: [
-      'Remote project monitoring',
-      'Daily progress updates',
+      'Complete project management',
+      'Structural planning & execution',
       'Vendor coordination',
-      'Quality control',
-      'Timeline management'
+      'Quality control at every stage',
+      'Stress-free transformation'
     ],
-    icon: '📋'
+    icon: <Wrench className="w-8 h-8" />
+  },
+  {
+    title: 'Bespoke Furnishing & Styling',
+    description: 'We curate furnishings, art, and accessories that speak to your taste and lifestyle. Every piece is chosen to elevate your space and create an atmosphere of understated elegance and lasting comfort.',
+    features: [
+      'Custom furniture selection',
+      'Art & accessory curation',
+      'Personalized styling',
+      'Luxury material selection',
+      'Cohesive design execution'
+    ],
+    icon: <PaintBucket className="w-8 h-8" />
+  },
+  {
+    title: 'Accessibility-Focused Bathrooms',
+    description: 'We design bathrooms that balance refined luxury with ease of use. By blending safety, comfort, and sophistication, we ensure these spaces are both practical and beautifully discreet.',
+    features: [
+      'Safety-first design approach',
+      'Luxury finishes & fixtures',
+      'Ergonomic layouts',
+      'Discreet accessibility features',
+      'Sophisticated aesthetics'
+    ],
+    icon: <Bath className="w-8 h-8" />
+  },
+  {
+    title: 'Kitchen & Bathroom Remodeling',
+    description: 'We reimagine kitchens and bathrooms into spaces that feel indulgent yet functional. With fine finishes, thoughtful layouts, and a focus on modern living, we deliver rooms that inspire daily enjoyment.',
+    features: [
+      'Modern layout optimization',
+      'Premium appliance integration',
+      'Custom cabinetry design',
+      'Luxury finishes & materials',
+      'Functional elegance'
+    ],
+    icon: <Home className="w-8 h-8" />
+  },
+  {
+    title: 'Completion of Unfinished Interiors',
+    description: 'We take unfinished interiors and complete them to the highest standard. From bare walls to fully realized living spaces, we bring cohesion, polish, and luxury to every detail.',
+    features: [
+      'Semi-finished space completion',
+      'Carcass building finishing',
+      'Complete interior development',
+      'Cohesive design integration',
+      'Premium quality standards'
+    ],
+    icon: <Building2 className="w-8 h-8" />
+  },
+  {
+    title: 'Shortlet Design & Set-Up',
+    description: 'We design shortlet properties that command attention in a competitive market. Stylish, durable, and investment-focused, our interiors attract discerning guests and maximize your returns.',
+    features: [
+      'Investment-focused design',
+      'Durable material selection',
+      'Guest experience optimization',
+      'Market-competitive styling',
+      'ROI maximization'
+    ],
+    icon: <Key className="w-8 h-8" />
+  },
+  {
+    title: 'Shortlet Management Services',
+    description: 'We manage your property with the same meticulous care that defines our design work. From guest relations to property upkeep, we safeguard your investment while ensuring an exceptional experience for every stay.',
+    features: [
+      'Professional guest relations',
+      'Property maintenance',
+      'Booking management',
+      'Quality assurance',
+      'Investment protection'
+    ],
+    icon: <Settings className="w-8 h-8" />
   },
   {
     title: 'Design Consultation',
@@ -58,28 +172,153 @@ const services: Service[] = [
       'Material recommendations',
       'Budget planning'
     ],
-    icon: '💡'
+    icon: <Briefcase className="w-8 h-8" />
   }
 ];
 
+// Process steps
+const processSteps: ProcessStep[] = [
+  {
+    step: '01',
+    title: 'Discovery Call',
+    description: 'We understand your vision, requirements, and lifestyle needs through a detailed consultation.'
+  },
+  {
+    step: '02',
+    title: 'Concept Development',
+    description: 'Receive a tailored presentation with mood boards, preliminary renders, and a personalized project roadmap.'
+  },
+  {
+    step: '03',
+    title: 'Design Development',
+    description: 'We refine every detail from spatial layouts to materials, finishes, and bespoke elements.'
+  },
+  {
+    step: '04',
+    title: 'Project Execution',
+    description: 'We manage the project seamlessly, coordinating craftsmen, suppliers, and schedules.'
+  },
+  {
+    step: '05',
+    title: 'Progress Updates',
+    description: 'For international clients, we provide detailed remote progress updates and monitoring.'
+  },
+  {
+    step: '06',
+    title: 'Final Reveal',
+    description: 'Your dream space, exquisitely executed and ready to welcome you home.'
+  }
+];
+
+// Animation variants
+const fadeInUpVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    y: 50 
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 0.6, 
+      ease: "easeOut" 
+    }
+  }
+};
+
+const slideInLeftVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    x: -100 
+  },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { 
+      duration: 0.8, 
+      ease: "easeOut" 
+    }
+  }
+};
+
+const slideInRightVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    x: 100 
+  },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { 
+      duration: 0.8, 
+      ease: "easeOut" 
+    }
+  }
+};
+
+const scaleUpVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.9 
+  },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: { 
+      duration: 0.6, 
+      ease: "easeOut" 
+    }
+  }
+};
+
 export default function ServicesPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Parallax effects
+  const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
+  // const [selectedService, setSelectedService] = useState<number | null>(null);
+  
   const handleHireUsClick = (): void => {
     window.location.href = '/contact';
   };
 
+  // Safe image access helper
+  const getImage = (index: number): ServiceImage => {
+    const clampedIndex = Math.max(0, Math.min(index, serviceImages.length - 1));
+    return serviceImages[clampedIndex]!;
+  };
+
   return (
-    <div className="min-h-screen bg-ivory">
-      {/* <Navigation onHireUsClick={handleHireUsClick} /> */}
+    <div className="min-h-screen bg-ivory" ref={containerRef}>
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-luxury-charcoal text-white">
-        <div className="container-luxury">
-          <div className="text-center max-w-4xl mx-auto">
+      {/* Hero Section with Full-Width Landscape Image */}
+      <section className="relative h-screen">
+        <motion.div 
+          className="absolute inset-0"
+          style={{ y: heroParallax }}
+        >
+          <Image
+            src={getImage(0).src}
+            alt={getImage(0).alt}
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
+        </motion.div>
+        
+        <div className="relative h-full flex items-center justify-center text-white">
+          <div className="container-luxury text-center">
             <motion.h1 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
+              transition={{ duration: 1 }}
+              className="font-serif text-6xl md:text-7xl lg:text-8xl font-bold mb-6"
             >
               Our
               <span className="text-luxury-gold block mt-2">Services</span>
@@ -87,57 +326,132 @@ export default function ServicesPage() {
             <motion.p 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-xl md:text-2xl text-white/90 leading-relaxed"
+              transition={{ duration: 1, delay: 0.3 }}
+              className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto"
             >
-              Comprehensive luxury interior design services tailored to your unique vision and lifestyle.
+              Comprehensive luxury interior design services tailored to your unique vision and lifestyle
             </motion.p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.6 }}
+              className="mt-8"
+            >
+              <ChevronRight className="w-8 h-8 mx-auto animate-bounce" />
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-20">
+      {/* Services Section with Images */}
+      <section className="py-20 relative">
         <div className="container-luxury">
-          <div className="grid md:grid-cols-2 gap-12">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUpVariants}
+            className="text-center mb-16"
+          >
+            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
+              OUR <span className="text-luxury-gold">SERVICES</span>
+            </h2>
+          </motion.div>
+
+          {/* Services Grid */}
+          <div className="space-y-24">
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                className="bg-white p-8 rounded-lg shadow-luxury-soft hover:shadow-luxury-strong transition-all duration-300"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={index % 2 === 0 ? slideInLeftVariants : slideInRightVariants}
+                className={`grid lg:grid-cols-2 gap-12 items-center ${
+                  index % 2 === 1 ? 'lg:flex-row-reverse' : ''
+                }`}
               >
-                <div className="text-5xl mb-6">{service.icon}</div>
-                <h3 className="text-luxury-heading text-2xl font-bold mb-4">
-                  {service.title}
-                </h3>
-                <p className="text-luxury-slate leading-relaxed mb-6">
-                  {service.description}
-                </p>
-                <ul className="space-y-2">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-luxury-slate">
-                      <span className="w-2 h-2 bg-luxury-gold rounded-full mr-3 flex-shrink-0"></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                <div className={`${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+                  <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <div className="text-luxury-gold mb-6">
+                      {service.icon}
+                    </div>
+                    <h3 className="text-luxury-heading text-2xl font-bold mb-4">
+                      {service.title}
+                    </h3>
+                    <p className="text-luxury-slate leading-relaxed mb-6">
+                      {service.description}
+                    </p>
+                    <ul className="space-y-3">
+                      {service.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start text-luxury-slate">
+                          <Check className="w-5 h-5 text-luxury-gold mr-3 flex-shrink-0 mt-0.5" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                
+                {/* Service Image */}
+                <motion.div 
+                  className={`relative h-96 rounded-2xl overflow-hidden ${
+                    index % 2 === 1 ? 'lg:order-1' : ''
+                  }`}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {index < 4 && (
+                    <Image
+                      src={getImage(index + 1).src}
+                      alt={service.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  )}
+                  {index >= 4 && (
+                    <Image
+                      src={getImage(((index - 4) % 4) + 1).src}
+                      alt={service.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                </motion.div>
               </motion.div>
             ))}
           </div>
         </div>
+
+        {/* Decorative Images */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={scaleUpVariants}
+          className="absolute top-1/4 right-0 w-64 h-64 rounded-full overflow-hidden hidden xl:block opacity-10"
+        >
+          <Image
+            src={getImage(2).src}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="256px"
+          />
+        </motion.div>
       </section>
 
       {/* Process Section */}
-      <section className="py-20 bg-luxury-cream">
+      <section className="py-20 bg-luxury-cream relative">
         <div className="container-luxury">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            variants={fadeInUpVariants}
             className="text-center mb-16"
           >
             <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
@@ -149,45 +463,16 @@ export default function ServicesPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                step: '01',
-                title: 'Discovery Call',
-                description: 'We understand your vision, requirements, and lifestyle needs through a detailed consultation.'
-              },
-              {
-                step: '02',
-                title: 'Concept Development',
-                description: 'Receive a tailored presentation with mood boards, preliminary renders, and a personalized project roadmap.'
-              },
-              {
-                step: '03',
-                title: 'Design Development',
-                description: 'We refine every detail from spatial layouts to materials, finishes, and bespoke elements.'
-              },
-              {
-                step: '04',
-                title: 'Project Execution',
-                description: 'We manage the project seamlessly, coordinating craftsmen, suppliers, and schedules.'
-              },
-              {
-                step: '05',
-                title: 'Progress Updates',
-                description: 'For international clients, we provide detailed remote progress updates and monitoring.'
-              },
-              {
-                step: '06',
-                title: 'Final Reveal',
-                description: 'Your dream space, exquisitely executed and ready to welcome you home.'
-              }
-            ].map((item, index) => (
+            {processSteps.map((item, index) => (
               <motion.div
                 key={item.step}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                className="text-center"
+                variants={scaleUpVariants}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+                className="text-center bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <div className="w-16 h-16 bg-luxury-gold text-white rounded-full flex items-center justify-center font-bold text-lg mb-4 mx-auto">
                   {item.step}
@@ -202,30 +487,56 @@ export default function ServicesPage() {
             ))}
           </div>
         </div>
+
+        {/* Background Decorative Image */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="absolute bottom-0 left-0 w-full h-64"
+        >
+          <Image
+            src={getImage(3).src}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+        </motion.div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-luxury-charcoal text-white text-center">
-        <div className="container-luxury">
+      <section className="py-20 bg-luxury-charcoal text-white text-center relative overflow-hidden">
+        <div className="container-luxury relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            variants={fadeInUpVariants}
           >
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              Ready to Transform Your Space?
+              Let&apos;s Craft the Space You Deserve
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Let&apos;s discuss your project and create a space that&apos;s uniquely yours.
+              Your vision, our expertise. Together, we&apos;ll create a space that&apos;s uniquely yours.
             </p>
-            <button
+            <motion.button
               onClick={handleHireUsClick}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               className="btn-luxury text-lg px-12 py-4"
             >
               Start Your Project
-            </button>
+            </motion.button>
           </motion.div>
+        </div>
+
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)'
+          }} />
         </div>
       </section>
     </div>
