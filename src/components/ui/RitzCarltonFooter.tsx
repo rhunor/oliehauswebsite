@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
+import { Phone, Mail, MapPin, Instagram } from 'lucide-react';
 
 const RitzCarltonFooter: React.FC = () => {
   return (
@@ -34,7 +34,7 @@ const RitzCarltonFooter: React.FC = () => {
                   OLIVEHAUS INTERIORS
                 </h3>
                 <p className="text-sm font-light tracking-[0.3em] uppercase text-white/70 mb-6">
-                  L U X U R Y &nbsp;&nbsp; I N T E R I O R &nbsp;&nbsp; D E S I G N
+                  L U X U R Y &nbsp; I N T E R I O R &nbsp; D E S I G N&nbsp; S T U D I O
                 </p>
                 <p className="text-white/90 leading-relaxed max-w-lg font-sans text-base">
                   Creating bespoke, timeless, and functional spaces for discerning clients in Nigeria and internationally. Where luxury meets exceptional craftsmanship.
@@ -68,26 +68,32 @@ const RitzCarltonFooter: React.FC = () => {
                 Explore
               </h4>
               <ul className="space-y-3">
-                <li>
-                  <Link href="/portfolio" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
-                    Portfolio
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/inside-design" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
-                    Inside the Design
-                  </Link>
-                </li>
-                <li>
+                 <li>
                   <Link href="/about" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
                     About Us
                   </Link>
                 </li>
                 <li>
+                  <Link href="/projects" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
+                    Projects
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/services" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
+                    Services
+                  </Link>
+                </li>
+                 <li>
+                  <Link href="https://www.giftedhomesandapartments.com/" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
+                    Our Shortlets
+                  </Link>
+                </li> 
+                <li>
                   <Link href="/contact" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
                     Contact
                   </Link>
                 </li>
+                               
               </ul>
             </div>
 
@@ -98,19 +104,25 @@ const RitzCarltonFooter: React.FC = () => {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <span className="text-white/80 font-sans text-sm">Residential Design</span>
+                  <span className="text-white/80 font-sans text-sm">Turnkey Renovation Solutions</span>
                 </li>
                 <li>
-                  <span className="text-white/80 font-sans text-sm">Corporate Interiors</span>
+                  <span className="text-white/80 font-sans text-sm">Bespoke Furnishing & Styling</span>
                 </li>
                 <li>
-                  <span className="text-white/80 font-sans text-sm">Commercial Spaces</span>
+                  <span className="text-white/80 font-sans text-sm">Accessibility-Focused Bathrooms</span>
                 </li>
                 <li>
-                  <span className="text-white/80 font-sans text-sm">Remote Oversight</span>
+                  <span className="text-white/80 font-sans text-sm">Kitchen & Bathroom Remodeling</span>
                 </li>
                 <li>
-                  <span className="text-white/80 font-sans text-sm">Project Management</span>
+                  <span className="text-white/80 font-sans text-sm">Completion of Unfinished & Semi-Finished Interiors</span>
+                </li>
+                <li>
+                  <span className="text-white/80 font-sans text-sm">Shortlet Design & Set-Up</span>
+                </li>
+                <li>
+                  <span className="text-white/80 font-sans text-sm">Shortlet Management Services</span>
                 </li>
               </ul>
             </div>
@@ -135,7 +147,7 @@ const RitzCarltonFooter: React.FC = () => {
                 >
                   <Instagram className="w-5 h-5 text-white group-hover:text-luxury-charcoal" />
                 </a>
-                <a 
+                {/* <a 
                   href="https://linkedin.com/company/olivehaus-interiors" 
                   target="_blank" 
                   rel="noopener noreferrer"
@@ -150,7 +162,7 @@ const RitzCarltonFooter: React.FC = () => {
                   className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-luxury-gold transition-all duration-300 group"
                 >
                   <Facebook className="w-5 h-5 text-white group-hover:text-luxury-charcoal" />
-                </a>
+                </a> */}
               </div>
             </div>
 

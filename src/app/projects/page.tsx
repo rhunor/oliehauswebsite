@@ -355,7 +355,7 @@ export default function ProjectsPage() {
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectblue/OH-BR-100.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectblue/OH-BR-113.webp`,
         alt: 'Project blue luxury interior'
       },
       images: Array.from({ length: 24 }, (_, i) => ({
@@ -795,14 +795,14 @@ export default function ProjectsPage() {
               ))}
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               className="text-luxury-slate"
             >
               <span className="font-medium">{filteredProjects.length}</span> Projects
-            </motion.div>
+            </motion.div> */}
           </div>
         </div>
       </section>

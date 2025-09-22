@@ -69,6 +69,49 @@ const portfolioProjects: PortfolioProject[] = [
     description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn.',
     featured: true,
   },
+  {
+  id: '4',
+    title: 'Project Casa Vitalis',
+    category: 'Residential',
+    location: 'Victoria Island, Lagos',
+    image: {
+      src: '/images/portfolio/penthouse-main.webp',
+      alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
+      width: 800,
+      height: 600,
+    },
+    description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone.',
+    featured: true,
+  },
+  {
+    id: '5',
+    title: 'Project Officeland',
+    category: 'Commercial',
+    location: 'Ikoyi, Lagos',
+    image: {
+      src: '/images/portfolio/office-main.webp',
+      alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
+      width: 800,
+      height: 600,
+    },
+    description: 'We designed this workplace to balance functionality with impact creating a space that supports both staff well-being and productivity.',
+    featured: true,
+  },
+  {
+    id: '6',
+    title: 'Project Serenique',
+    category: 'Hospitality',
+    location: 'Magodo, Lagos',
+    image: {
+      src: '/images/portfolio/hotel-main.webp',
+      alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
+      width: 800,
+      height: 600,
+    },
+    description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn.',
+    featured: true,
+  },
+  
 ];
 
 // Analytics tracking helper - using the existing window.gtag type from FloatingWhatsApp

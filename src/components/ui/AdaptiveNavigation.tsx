@@ -24,9 +24,10 @@ const navigationItems: NavigationItem[] = [
   { label: 'About Us', href: '/about' },
   { label: 'Projects', href: '/projects' },
   { label: 'Services', href: '/services' },
-  { label: 'our shortlets', href: 'https://www.giftedhomesandapartments.com/' },
+  { label: 'Our Shortlets', href: 'https://www.giftedhomesandapartments.com/' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact Us', href: '/contact' },
+  { label: 'Project Tracker', href: '/blog' }
 ];
 
 const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' }) => {

@@ -7,6 +7,7 @@ import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
 import { motion, useMotionValue, animate, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 
 interface HeroImage {
   src: string;
@@ -245,8 +246,28 @@ export default function HomePage(): React.JSX.Element {
                   <p>
                     Our design process emphasizes luxurious personalized solutions, exceptional project management, and remote oversight for diaspora clients.
                   </p>
+                  <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.3 }}
+                        className="text-center mt-16"
+                      >
+                        {/* <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-8 font-body">
+                          Bring Your Vision to Life. Let&apos;s design a space that&apos;s uniquely yours.
+                        </p> */}
+                        <a
+                          href="/about"
+                          className="btn-luxury group inline-flex items-center space-x-2"
+                        >
+                          <span>know more about us</span>
+                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                        </a>
+                      </motion.div>
                 </div>
+                   
               </motion.div>
+             
               
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
@@ -263,6 +284,7 @@ export default function HomePage(): React.JSX.Element {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </motion.div>
+            
             </div>
           </div>
         </section>

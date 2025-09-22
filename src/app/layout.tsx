@@ -171,7 +171,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               },
               sameAs: [
                 'https://instagram.com/olivehausinteriors',
-                'https://linkedin.com/company/olivehaus-interiors',
+                
               ],
             }),
           }}

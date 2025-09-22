@@ -2,7 +2,7 @@
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
-import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
+// import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
 
 
 
@@ -350,7 +350,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* We Stand Out Section - White background with unique wave pattern */}
+      {/* We Stand Out Section - White background with unique wave pattern
               <section className="relative pt-12 pb-0 overflow-hidden">
                 <LuxuryWavePattern opacity={0.5} />
       
@@ -414,7 +414,7 @@ export default function AboutPage() {
                   </div>
                 </div>
               </section>
-      
+       */}
 
       {/* Tagline Section */}
       <section className="py-16 text-center">
