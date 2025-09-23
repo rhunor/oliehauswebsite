@@ -1,3 +1,4 @@
+/* src/app/global.css */
 @import 'tailwindcss';
 
 /* Defensive layout resets to avoid browser defaults / SVG baseline / scroll-anchoring problems */
@@ -213,6 +214,13 @@ body {
 @layer utilities {
   /* Custom utilities */
 /* Ensure serif overrides global font */
+
+
+
+
+.font-quintessential {
+  font-family: 'Quintessential', cursive !important;
+}
 
   .font-olivehaus {
     font-family: var(--font-serif) !important;

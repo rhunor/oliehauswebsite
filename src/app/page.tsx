@@ -1,3 +1,4 @@
+//src/app/page.tsx
 'use client';
 
 import HeroSection from '@/components/ui/HeroSection';
@@ -200,7 +201,7 @@ export default function HomePage(): React.JSX.Element {
 
   return (
     <>
-      <div>
+      <div >
         {/* Hero Section - Keep clean */}
         <HeroSection
           images={heroImages}
@@ -356,6 +357,7 @@ export default function HomePage(): React.JSX.Element {
 
         {/* Track Record Section - Clean animated counters with visible text */}
         <section className="py-20 bg-luxury-charcoal relative overflow-hidden">
+          <LuxuryWavePattern opacity={0.5} />
           {/* Subtle animated pattern */}
           <div 
             className="absolute inset-0 opacity-[0.03]"
@@ -376,10 +378,10 @@ export default function HomePage(): React.JSX.Element {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 tracking-wide" style={{ color: 'white' }}>
+              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-5 tracking-wide" style={{ color: 'black' }}>
                 Our Track <span className="text-luxury-gold">Record</span>
               </h2>
-              <p className="text-xl max-w-3xl mx-auto font-sans leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+              <p className="text-xl max-w-3xl mx-auto font-sans leading-relaxed" style={{ color: 'black' }}>
                 Numbers that speak of our commitment to luxury, quality, and client satisfaction across every project we undertake.
               </p>
             </motion.div>
@@ -446,7 +448,8 @@ export default function HomePage(): React.JSX.Element {
         </section>
 
         {/* Closing Tagline - Mist Grey Background */}
-        <section className="relative py-12 bg-mist-grey text-luxury-charcoal text-center overflow-hidden">
+        <section className="relative py-12 bg-warm-sand text-luxury-charcoal text-center overflow-hidden">
+          <LuxuryWavePattern opacity={0.5} />
           {/* Subtle pattern */}
           <div 
             className="absolute inset-0 opacity-[0.02] pointer-events-none"

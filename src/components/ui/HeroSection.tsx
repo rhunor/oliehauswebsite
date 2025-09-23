@@ -249,7 +249,7 @@ export default function HeroSection({
                 transition={{ duration: 1, delay: 0.5 }}
                 className="mb-8"
               >
-                <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <h1 className=" font-quintessential text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                   <span className="block">{tagline.main}</span>
                   <span className="block text-luxury-gold">{tagline.sub}</span>
                 </h1>

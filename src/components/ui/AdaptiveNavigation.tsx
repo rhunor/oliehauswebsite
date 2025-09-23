@@ -1,3 +1,4 @@
+//src/components/ui/AdaptiveNavigation.tsx
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -109,8 +110,8 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
             </Link>
 
             {/* Desktop Navigation with Slash Separators */}
-            <div className="hidden lg:flex items-center ml-16">
-              <div className="flex items-center space-x-2">
+            <div className="hidden lg:flex items-center ml-auto">
+              <div className="flex items-center ">
                 {navigationItems.map((item, index) => (
                   <React.Fragment key={item.label}>
                     <Link

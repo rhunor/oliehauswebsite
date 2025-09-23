@@ -5,6 +5,7 @@ import AdaptiveNavigation from '@/components/ui/AdaptiveNavigation';
 import RitzCarltonFooter from '@/components/ui/RitzCarltonFooter';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp';
 
+
 export const metadata: Metadata = {
   title: {
     default: 'OliveHaus Interiors - Luxury Interior Design',
@@ -92,10 +93,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="preconnect" href="https://res.cloudinary.com" />
         
         {/* Google Fonts - Luxury Typography */}
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&family=Oranienbaum&family=Playfair+Display:wght@400;700;900&display=swap" 
-          rel="stylesheet" 
-        />
+ <link
+  href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&family=Oranienbaum&family=Playfair+Display:wght@400;700;900&family=Quintessential&family=Almendra+Display&display=swap"
+  rel="stylesheet"
+/>
+
         
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
