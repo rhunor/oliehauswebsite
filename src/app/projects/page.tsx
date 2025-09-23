@@ -355,7 +355,7 @@ export default function ProjectsPage() {
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectblue/OH-BR-113.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectblue/OH-BR-101.webp`,
         alt: 'Project blue luxury interior'
       },
       images: Array.from({ length: 24 }, (_, i) => ({
@@ -376,6 +376,21 @@ export default function ProjectsPage() {
       images: Array.from({ length: 7 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/${i + 1}.webp`,
         alt: `Project Serenique interior ${i + 1}`
+      }))
+    },
+      {
+      id: 'landmark',
+      title: 'Project Landmark',
+      location: 'Lekki, Lagos',
+      description: 'This space captures the spirit of Paris vibrant, romantic, and effortlessly chic. Playful details meet refined finishes, blending whimsy with sophistication. Bold yet graceful',
+      category: 'residential',
+      thumbnail: {
+        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/1.webp`,
+        alt: 'Project Landmark interior'
+      },
+      images: Array.from({ length: 10 }, (_, i) => ({
+        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/${i + 1}.webp`,
+        alt: `Project Landmark interior ${i + 1}}`
       }))
     },
     {
@@ -507,7 +522,7 @@ export default function ProjectsPage() {
       description: 'This kitchen was designed to be both beautiful and practical — a cozy space where storage and style work hand in hand.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectlustre/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectlustre/7.webp`,
         alt: 'Project Lustre kitchen'
       },
       images: Array.from({ length: 10 }, (_, i) => ({
@@ -552,7 +567,7 @@ export default function ProjectsPage() {
       description: 'This project redefined the home with an urban edge and upscale sophistication.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projecturbanlekkilagos/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projecturbanlekkilagos/9.webp`,
         alt: 'Project Urban modern home'
       },
       images: Array.from({ length: 9 }, (_, i) => ({
@@ -881,7 +896,7 @@ export default function ProjectsPage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => window.location.href = '/contact'}
-            className="btn-luxury text-lg px-12 py-4"
+            className="border border-luxury-gold btn-luxury text-lg px-12 py-4"
           >
             Start Your Project
           </motion.button>

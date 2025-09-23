@@ -6,6 +6,9 @@ import { ArrowRight, Eye } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
+const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+
+
 interface PortfolioProject {
   id: string;
   title: string;
@@ -29,16 +32,16 @@ interface PortfolioTeaserProps {
 const portfolioProjects: PortfolioProject[] = [
   {
     id: '1',
-    title: 'Project Casa Vitalis',
+    title: 'Project Lumina',
     category: 'Residential',
-    location: 'Victoria Island, Lagos',
+    location: 'Lekki, Lagos',
     image: {
-      src: '/images/portfolio/penthouse-main.webp',
+      src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/11.webp`,
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
       width: 800,
       height: 600,
     },
-    description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone.',
+    description: 'This home embodies modern luxury with personality blending bold, saturated hues that make a statement, with serene spaces designed for rest and renewal.',
     featured: true,
   },
   {
@@ -47,7 +50,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Commercial',
     location: 'Ikoyi, Lagos',
     image: {
-      src: '/images/portfolio/office-main.webp',
+      src: `${GITHUB_CDN_BASE}/projects/projectofficeland/1.webp`,
       alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
       width: 800,
       height: 600,
@@ -61,7 +64,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Hospitality',
     location: 'Magodo, Lagos',
     image: {
-      src: '/images/portfolio/hotel-main.webp',
+      src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/8.webp`,
       alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
       width: 800,
       height: 600,
@@ -75,7 +78,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Residential',
     location: 'Victoria Island, Lagos',
     image: {
-      src: '/images/portfolio/penthouse-main.webp',
+      src: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/17.webp`,
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
       width: 800,
       height: 600,
@@ -85,21 +88,21 @@ const portfolioProjects: PortfolioProject[] = [
   },
   {
     id: '5',
-    title: 'Project Officeland',
-    category: 'Commercial',
-    location: 'Ikoyi, Lagos',
+    title: 'Project Landmark',
+    category: 'Residential',
+    location: 'Lekki, Lagos',
     image: {
-      src: '/images/portfolio/office-main.webp',
+      src: `${GITHUB_CDN_BASE}/projects/projectlandmark/5.webp`,
       alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
       width: 800,
       height: 600,
     },
-    description: 'We designed this workplace to balance functionality with impact creating a space that supports both staff well-being and productivity.',
+    description: 'This space captures the spirit of Paris vibrant, romantic, and effortlessly chic. Playful details meet refined finishes, blending whimsy with sophistication.',
     featured: true,
   },
   {
     id: '6',
-    title: 'Project Serenique',
+    title: 'Project Aiona',
     category: 'Hospitality',
     location: 'Magodo, Lagos',
     image: {
@@ -161,7 +164,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
             
           </h2>
           <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3 font-body ">
-            Explore our portfolio of luxury interiors, created to mirror each client&apos;s distinct personality
+            Explore our portfolio of luxury interiors, created to mirror each client&apos;s distinct personality and style
           </p>
 
           {/* Decorative Line */}

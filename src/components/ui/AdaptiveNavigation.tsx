@@ -103,7 +103,7 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
                   />
                 </h1>
                 <p className={`text-xs lg:text-sm font-light tracking-[0.3em] uppercase ${textClasses} opacity-80 mt-1`}>
-                  INTERIORS
+                 &nbsp;INTERIORS
                 </p>
               </motion.div>
             </Link>
@@ -138,7 +138,7 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
                           transition: { duration: 0.2 }
                         }}
                       >
-                        /
+                        |
                       </motion.span>
                     )}
                   </React.Fragment>

@@ -98,7 +98,7 @@ export default function AboutPage() {
   });
 
   // Parallax effects for images
-  const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
+  // const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
   const storyParallax = useTransform(scrollYProgress, [0.2, 0.5], [0, -30]);
   
   const handleHireUsClick = (): void => {
@@ -109,7 +109,7 @@ export default function AboutPage() {
     <div className="min-h-screen" style={{ backgroundColor: '#C8D1C0' }} ref={containerRef}>
       
       {/* Hero Section with scroll animations */}
-      <section className="pt-32 pb-20 bg-luxury-charcoal text-white relative overflow-hidden">
+      {/* <section className="pt-32 pb-20 bg-luxury-charcoal text-white relative overflow-hidden">
         <div className="container-luxury relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <motion.h1 
@@ -132,7 +132,7 @@ export default function AboutPage() {
           </div>
           
           {/* Hero Images with animations */}
-          <div className="absolute inset-0 pointer-events-none">
+          {/* <div className="absolute inset-0 pointer-events-none">
             <motion.div 
               style={{ y: heroParallax }}
               className="absolute top-20 left-10 hidden lg:block"
@@ -171,7 +171,7 @@ export default function AboutPage() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section>  */}
 
       {/* About Us Main Content */}
       <section className="py-20 relative">

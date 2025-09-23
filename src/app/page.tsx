@@ -260,7 +260,7 @@ export default function HomePage(): React.JSX.Element {
                           href="/about"
                           className="btn-luxury group inline-flex items-center space-x-2"
                         >
-                          <span>know more about us</span>
+                          <span>Read More</span>
                           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                         </a>
                       </motion.div>

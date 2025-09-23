@@ -340,7 +340,8 @@ export default function ContactPage() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-xl md:text-2xl text-white/90 leading-relaxed"
             >
-              Bring Your Vision to Life Let&apos;s design a space that&apos;s uniquely yours.
+              {/* Bring Your Vision to Life Let&apos;s design a space that&apos;s uniquely yours. */}
+              Designing with you for you
             </motion.p>
           </div>
         </div>
