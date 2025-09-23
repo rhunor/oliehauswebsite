@@ -106,7 +106,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Residential',
     location: 'Magodo, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/7.webp`,
+      src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/11.webp`,
       alt: 'Project Modern Nest family home',
       width: 800,
       height: 600,

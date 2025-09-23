@@ -381,7 +381,7 @@ export default function ProjectsPage() {
     {
       id: 'serene',
       title: 'Project Serene',
-      location: 'Magodo, Lagos',
+      location: 'Maryland, Lagos',
       description: 'Designed as a sanctuary, this bathroom embraces space, light, and calm. A breathy layout, soft finishes, and spa-inspired details create an atmosphere of ease and renewal — a retreat that feels both expansive and intimate',
       category: 'commercial',
       thumbnail: {
@@ -552,7 +552,7 @@ export default function ProjectsPage() {
       description: 'This project redefined the home with an urban edge and upscale sophistication.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projecturbanlekkilagos/9.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projecturbanlekkilagos/10.webp`,
         alt: 'Project Urban modern home'
       },
       images: Array.from({ length: 9 }, (_, i) => ({
