@@ -347,31 +347,16 @@ export default function ProjectsPage() {
   
   // Projects data with proper image paths
   const projects: Project[] = [
+
     {
-      id: 'blue',
-      title: 'Project Blue',
-      location: 'Maryland, Lagos',
-      description: 'A complete renovation of a four-bedroom home, reimagined with modern layouts, warm finishes, and bespoke details that balance luxury with everyday comfort.',
-      category: 'residential',
-      featured: true,
-      thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectblue/OH-BR-101.webp`,
-        alt: 'Project blue luxury interior'
-      },
-      images: Array.from({ length: 24 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectblue/OH-BR-${100 + i}.webp`,
-        alt: `Project Landmark interior ${i + 1}`
-      }))
-    },
-    {
-      id: 'serenique',
-      title: 'Project Serenique',
+      id: 'Edené',
+      title: 'Project Edené wellness',
       location: 'Magodo, Lagos',
       description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn.',
       category: 'commercial',
       thumbnail: {
         src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/1.webp`,
-        alt: 'Project Serenique spa interior'
+        alt: 'Project Edené spa interior'
       },
       images: Array.from({ length: 7 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/${i + 1}.webp`,
@@ -424,19 +409,19 @@ export default function ProjectsPage() {
       }))
     },
     {
-      id: 'lumina',
-      title: 'Project Lumina',
+      id: 'Keffi',
+      title: 'Project Keffi',
       location: 'Lekki, Lagos',
       description: 'This home embodies modern luxury with personality — blending bold, saturated hues with serene spaces designed for rest and renewal.',
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/1.webp`,
-        alt: 'Project Lumina luxury home'
+        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/3.webp`,
+        alt: 'Project Keffi luxury home'
       },
       images: Array.from({ length: 12 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/${i + 1}.webp`,
-        alt: `Project Lumina interior ${i + 1}`
+        alt: `Project Keffi interior ${i + 1}`
       }))
     },
     {
@@ -537,7 +522,7 @@ export default function ProjectsPage() {
       description: 'This bathroom balances softness with personality, blending soothing finishes with a touch of bold colour.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectblushgralagos_/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectblushgralagos_/2.webp`,
         alt: 'Project Blush bathroom'
       },
       images: Array.from({ length: 5 }, (_, i) => ({
