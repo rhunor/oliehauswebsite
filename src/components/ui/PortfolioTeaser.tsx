@@ -102,16 +102,16 @@ const portfolioProjects: PortfolioProject[] = [
   },
   {
     id: '6',
-    title: 'Project Aiona',
-    category: 'Hospitality',
+    title: 'Project Modern Nest',
+    category: 'Residential',
     location: 'Magodo, Lagos',
     image: {
-      src: '/images/portfolio/hotel-main.webp',
-      alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
+      src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/7.webp`,
+      alt: 'Project Modern Nest family home',
       width: 800,
       height: 600,
     },
-    description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn.',
+    description: 'This project brought together a soft nursery, cozy living room, warm dining space, and modern bedroom.',
     featured: true,
   },
   
