@@ -185,13 +185,13 @@ const processSteps: ProcessStep[] = [
   },
   {
     step: '02',
-    title: 'Concept Development',
-    description: 'Receive a tailored presentation with mood boards, preliminary renders, and a personalized project roadmap.'
+    title: 'Site Assessment',
+    description: 'Our team visits your property to evaluate its layout, structure, and potential, ensuring every design decision is grounded in accuracy and tailored to your space.'
   },
   {
     step: '03',
     title: 'Design Development',
-    description: 'We refine every detail from spatial layouts to materials, finishes, and bespoke elements.'
+    description: 'We refine every detail from spatial layouts to materials, finishes, bespoke elements and 3D Renders.'
   },
   {
     step: '04',
@@ -329,7 +329,7 @@ export default function ServicesPage() {
               transition={{ duration: 1, delay: 0.3 }}
               className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto"
             >
-              Comprehensive luxury interior design services tailored to your unique vision and lifestyle
+              From vision to completion, we deliver world-class interiors that define refined living.
             </motion.p>
             <motion.div
               initial={{ opacity: 0 }}

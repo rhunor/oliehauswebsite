@@ -712,7 +712,7 @@ export default function ProjectsPage() {
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" 
             style={{
-              backgroundImage: `linear-gradient(45deg, transparent 45%, #D4AF37 45%, #D4AF37 55%, transparent 55%)`,
+              backgroundImage: `${GITHUB_CDN_BASE}/projects/projectezra/4.webp`,
               backgroundSize: '20px 20px'
             }} 
           />
@@ -735,8 +735,7 @@ export default function ProjectsPage() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-xl md:text-2xl text-white/90 leading-relaxed font-sans"
             >
-              Explore our portfolio of luxury interiors, each meticulously crafted to mirror 
-              our clients&apos; distinct personalities and refined lifestyles
+              A showcase of the homes and spaces we’ve transformed with elegance and precision.
             </motion.p>
 
             {/* Stats */}
@@ -870,12 +869,12 @@ export default function ProjectsPage() {
       >
         <div className="container-luxury text-center">
           <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal">
-            Ready to Create Your
-            <span className="text-luxury-gold block mt-2">Dream Space?</span>
+           Love Our Spaces?
+            {/* <span className="text-luxury-gold block mt-2">Dream Space?</span> */}
           </h2>
           <p className="text-xl text-luxury-slate max-w-3xl mx-auto mb-8 leading-relaxed">
-            Let&apos;s design a space that&apos;s uniquely yours. 
-            Contact us today to begin your luxury interior transformation.
+            Your project deserves the same touch. 
+            Connect with us to begin.
           </p>
           <motion.button
             whileHover={{ scale: 1.05 }}
