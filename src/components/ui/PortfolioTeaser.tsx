@@ -36,7 +36,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Residential',
     location: 'Lekki, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/2.webp`,
+      src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/4.webp`,
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
       width: 800,
       height: 600,
@@ -50,7 +50,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Commercial',
     location: 'Ikoyi, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectofficeland/5.webp`,
+      src: `${GITHUB_CDN_BASE}/projects/projectofficeland/1.webp`,
       alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
       width: 800,
       height: 600,
@@ -92,7 +92,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Residential',
     location: 'Lekki, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectlandmark/1.webp`,
+      src: `${GITHUB_CDN_BASE}/projects/projectlandmark/6.webp`,
       alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
       width: 800,
       height: 600,

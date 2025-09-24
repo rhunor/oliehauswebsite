@@ -370,7 +370,7 @@ export default function ProjectsPage() {
       description: 'This space captures the spirit of Paris vibrant, romantic, and effortlessly chic. Playful details meet refined finishes, blending whimsy with sophistication. Bold yet graceful',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/6.webp`,
         alt: 'Project Landmark interior'
       },
       images: Array.from({ length: 10 }, (_, i) => ({
@@ -416,10 +416,10 @@ export default function ProjectsPage() {
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/3.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/4.webp`,
         alt: 'Project Keffi luxury home'
       },
-      images: Array.from({ length: 12 }, (_, i) => ({
+      images: Array.from({ length: 5 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/${i + 1}.webp`,
         alt: `Project Keffi interior ${i + 1}`
       }))
@@ -477,10 +477,10 @@ export default function ProjectsPage() {
       description: 'This project brought together a soft nursery, cozy living room, warm dining space, and modern bedroom.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/2.webp`,
         alt: 'Project Modern Nest family home'
       },
-      images: Array.from({ length: 12 }, (_, i) => ({
+      images: Array.from({ length: 3 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/${i + 1}.webp`,
         alt: `Project Modern Nest interior ${i + 1}`
       }))
@@ -632,7 +632,7 @@ export default function ProjectsPage() {
         src: `${GITHUB_CDN_BASE}/projects/projectofficeland/1.webp`,
         alt: 'Project Officeland corporate workspace'
       },
-      images: Array.from({ length: 35 }, (_, i) => ({
+      images: Array.from({ length: 9 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectofficeland/${i + 1}.webp`,
         alt: `Project Officeland interior ${i + 1}`
       }))
