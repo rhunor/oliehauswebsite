@@ -37,7 +37,7 @@ const RitzCarltonFooter: React.FC = () => {
                   L U X U R Y &nbsp; I N T E R I O R &nbsp; D E S I G N&nbsp; S T U D I O
                 </p>
                 <p className="text-white/90 leading-relaxed max-w-lg font-sans text-base">
-                  Creating bespoke, timeless, and functional spaces for discerning clients in Nigeria and internationally. Where luxury meets exceptional craftsmanship.
+                  Nigeria&apos;s Premier Luxury Interiors Studio, crafting timeless homes and elite spaces.
                 </p>
               </div>
               
@@ -45,14 +45,14 @@ const RitzCarltonFooter: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <Phone className="w-5 h-5 text-luxury-gold" />
-                  <a href="tel:+2348089533353" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
-                    +234 808 953 3353
+                  <a href="tel:+2347016163218" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
+                    +234 701 616 3218
                   </a>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="w-5 h-5 text-luxury-gold" />
-                  <a href="mailto:admin@olivehausinteriors.com" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
-                    admin@olivehausinteriors.com
+                  <a href="mailto:enquiry@olivehausinteriors.com" className="text-white/80 hover:text-luxury-gold transition-colors font-sans">
+                    enquiry@olivehausinteriors.com
                   </a>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -173,13 +173,13 @@ const RitzCarltonFooter: React.FC = () => {
               </h4>
               <div className="flex flex-col sm:flex-row lg:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                 <a 
-                  href="tel:+2348089533353"
+                  href="tel:+2347016163218"
                   className="inline-flex items-center justify-center px-6 py-3 bg-luxury-gold hover:bg-luxury-gold/90 text-luxury-charcoal font-semibold rounded-lg transition-all duration-300 font-sans text-sm"
                 >
                   Call Us
                 </a>
                 <a 
-                  href="https://wa.me/2348089533353"
+                  href="https://wa.me/2347016163218"
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="inline-flex items-center justify-center px-6 py-3 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-charcoal font-semibold rounded-lg transition-all duration-300 font-sans text-sm"

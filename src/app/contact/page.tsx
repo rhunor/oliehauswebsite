@@ -293,7 +293,7 @@ export default function ContactPage() {
   };
 
   const handleEmailClick = (): void => {
-    window.open('mailto:admin@olivehausinteriors.com?subject=Interior Design Inquiry', '_self');
+    window.open('mailto:enquiry@olivehausinteriors.com?subject=Interior Design Inquiry', '_self');
   };
 
   const getStepIcon = (step: number) => {
@@ -443,7 +443,7 @@ export default function ContactPage() {
                 Email
               </h3>
               <p className="text-luxury-gold font-medium mb-1">
-                admin@olivehausinteriors.com
+                enquiry@olivehausinteriors.com
               </p>
               <p className="text-luxury-slate text-sm">
                 Detailed project discussions
@@ -867,14 +867,14 @@ export default function ContactPage() {
                   <span>Monday - Friday:</span>
                   <span className="font-medium">9:00 AM - 6:00 PM</span>
                 </div>
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                   <span>Saturday:</span>
                   <span className="font-medium">10:00 AM - 4:00 PM</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Sunday:</span>
                   <span className="font-medium">By Appointment</span>
-                </div>
+                </div> */}
               </div>
             </motion.div>
 
@@ -890,7 +890,7 @@ export default function ContactPage() {
               </h3>
               <div className="text-luxury-slate space-y-2">
                 <p className="font-medium">OliveHaus Interiors</p>
-                <p>Victoria Island</p>
+                <p>4 Olatunbosun street, shonibare Estate, Maryland,</p>
                 <p>Lagos, Nigeria</p>
                 <p className="mt-4 text-sm">
                   <em>Serving clients across Nigeria and internationally</em>

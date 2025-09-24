@@ -278,7 +278,7 @@ export default function HomePage(): React.JSX.Element {
                 className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden shadow-luxury-soft"
               >
                 <Image
-                  src={`${GITHUB_CDN_BASE}/about/28.jpeg`}
+                  src={`${GITHUB_CDN_BASE}/about/28.webp`}
                   alt="OliveHaus luxury interior design showcase"
                   fill
                   className="object-cover"

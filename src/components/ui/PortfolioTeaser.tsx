@@ -34,9 +34,9 @@ const portfolioProjects: PortfolioProject[] = [
     id: '1',
     title: 'Project Keffi',
     category: 'Residential',
-    location: 'Lekki, Lagos',
+    location: 'ikoyi, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/4.webp`,
+      src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/6.webp`,
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
       width: 800,
       height: 600,
@@ -64,7 +64,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Hospitality',
     location: 'Magodo, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/8.webp`,
+      src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/9.webp`,
       alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
       width: 800,
       height: 600,
@@ -76,7 +76,7 @@ const portfolioProjects: PortfolioProject[] = [
   id: '4',
     title: 'Project Casa Vitalis',
     category: 'Residential',
-    location: 'Victoria Island, Lagos',
+    location: 'Lekki, Lagos',
     image: {
       src: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/21.webp`,
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
@@ -90,7 +90,7 @@ const portfolioProjects: PortfolioProject[] = [
     id: '5',
     title: 'Project Landmark',
     category: 'Residential',
-    location: 'Lekki, Lagos',
+    location: 'Oniru, Lagos',
     image: {
       src: `${GITHUB_CDN_BASE}/projects/projectlandmark/6.webp`,
       alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
@@ -104,9 +104,9 @@ const portfolioProjects: PortfolioProject[] = [
     id: '6',
     title: 'Project Modern Nest',
     category: 'Residential',
-    location: 'Magodo, Lagos',
+    location: 'Ikeja, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/11.webp`,
+      src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/1.webp`,
       alt: 'Project Modern Nest family home',
       width: 800,
       height: 600,
@@ -164,7 +164,8 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
             
           </h2>
           <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3 font-body ">
-            Explore our portfolio of luxury interiors, created to mirror each client&apos;s distinct personality and style
+            
+          A showcase of the homes and spaces we&apos;ve transformed with elegance and precision.
           </p>
 
           {/* Decorative Line */}

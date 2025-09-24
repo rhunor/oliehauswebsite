@@ -21,6 +21,9 @@ interface TestimonialSectionProps {
   className?: string;
 }
 
+// Updated to use jsDelivr CDN for better performance and reliability
+const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+
 // Sample testimonials data - In production, this would come from your database
 const testimonials: Testimonial[] = [
   {
@@ -31,7 +34,7 @@ const testimonials: Testimonial[] = [
     content: 'OliveHaus Interiors transformed our penthouse into a masterpiece that exceeds our wildest dreams. Their attention to detail and understanding of luxury design is unparalleled. Every corner tells a story of elegance and sophistication.',
     rating: 5,
     isHighProfile: true,
-    projectImage: '/images/testimonials/penthouse-client.jpg',
+    projectImage: `${GITHUB_CDN_BASE}/projects/projectlandmark/6.webp`,
   },
   {
     id: '2',
@@ -41,7 +44,7 @@ const testimonials: Testimonial[] = [
     content: 'Working with OliveHaus was an absolute pleasure. They created a workspace that not only impresses our clients but also inspires our team daily. The blend of functionality and luxury is exactly what we envisioned.',
     rating: 5,
     isHighProfile: true,
-    projectImage: '/images/testimonials/office-client.jpg',
+    projectImage: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/22.webp`,
   },
   {
     id: '3',
@@ -51,7 +54,7 @@ const testimonials: Testimonial[] = [
     content: 'From the initial consultation to the final reveal, OliveHaus demonstrated exceptional professionalism and creativity. Our villa now reflects our personality perfectly while maintaining the highest standards of luxury.',
     rating: 5,
     isHighProfile: false,
-    projectImage: '/images/testimonials/villa-client.jpg',
+    projectImage: `${GITHUB_CDN_BASE}/projects/projectezra/6.webp`,
   },
   {
     id: '4',
@@ -61,7 +64,7 @@ const testimonials: Testimonial[] = [
     content: 'The team at OliveHaus created the most beautiful and serene master suite. Their ability to balance luxury with comfort is remarkable. We feel like we are staying in a five-star resort every night.',
     rating: 5,
     isHighProfile: true,
-    projectImage: '/images/testimonials/suite-client.jpg',
+    projectImage: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/8.webp`,
   },
   {
     id: '5',
@@ -71,7 +74,7 @@ const testimonials: Testimonial[] = [
     content: 'OliveHaus delivered show homes that sold 40% faster than our previous projects. Their understanding of what luxury buyers want is exceptional, and the ROI on their design was immediate.',
     rating: 5,
     isHighProfile: false,
-    projectImage: '/images/testimonials/showhome-client.jpg',
+    projectImage: `${GITHUB_CDN_BASE}/images/hero/1.webp`,
   },
 ];
 

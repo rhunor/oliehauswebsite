@@ -358,7 +358,7 @@ export default function ProjectsPage() {
         src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/1.webp`,
         alt: 'Project Edené spa interior'
       },
-      images: Array.from({ length: 7 }, (_, i) => ({
+      images: Array.from({ length: 9 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/${i + 1}.webp`,
         alt: `Project Serenique interior ${i + 1}`
       }))
@@ -366,11 +366,11 @@ export default function ProjectsPage() {
       {
       id: 'landmark',
       title: 'Project Landmark',
-      location: 'Lekki, Lagos',
+      location: 'Oniru, Lagos',
       description: 'This space captures the spirit of Paris vibrant, romantic, and effortlessly chic. Playful details meet refined finishes, blending whimsy with sophistication. Bold yet graceful',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/6.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/1.webp`,
         alt: 'Project Landmark interior'
       },
       images: Array.from({ length: 10 }, (_, i) => ({
@@ -383,7 +383,7 @@ export default function ProjectsPage() {
       title: 'Project Serene',
       location: 'Maryland, Lagos',
       description: 'Designed as a sanctuary, this bathroom embraces space, light, and calm. A breathy layout, soft finishes, and spa-inspired details create an atmosphere of ease and renewal — a retreat that feels both expansive and intimate',
-      category: 'commercial',
+      category: 'residential',
       thumbnail: {
         src: `${GITHUB_CDN_BASE}/projects/projectserene/1.webp`,
         alt: 'Project Serenique spa interior'
@@ -396,14 +396,14 @@ export default function ProjectsPage() {
     {
       id: 'ezra',
       title: 'Project Ezra',
-      location: 'Victoria Island, Lagos',
+      location: 'Lekki, Lagos',
       description: 'Defined by clean lines, open flow, and thoughtful details, this modern space blends functionality with understated elegance.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectezra/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectezra/4.webp`,
         alt: 'Project Ezra modern interior'
       },
-      images: Array.from({ length: 5 }, (_, i) => ({
+      images: Array.from({ length: 6 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectezra/${i + 1}.webp`,
         alt: `Project Ezra interior ${i + 1}`
       }))
@@ -411,15 +411,15 @@ export default function ProjectsPage() {
     {
       id: 'Keffi',
       title: 'Project Keffi',
-      location: 'Lekki, Lagos',
+      location: 'ikoyi, Lagos',
       description: 'This home embodies modern luxury with personality — blending bold, saturated hues with serene spaces designed for rest and renewal.',
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/4.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/1.webp`,
         alt: 'Project Keffi luxury home'
       },
-      images: Array.from({ length: 5 }, (_, i) => ({
+      images: Array.from({ length: 6 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/${i + 1}.webp`,
         alt: `Project Keffi interior ${i + 1}`
       }))
@@ -427,11 +427,11 @@ export default function ProjectsPage() {
     {
       id: 'casa-vitalis',
       title: 'Project Casa Vitalis',
-      location: 'Ikoyi, Lagos',
+      location: 'Lekki, Lagos',
       description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/12.webp`,
         alt: 'Project Casa Vitalis luxury residence'
       },
       images: Array.from({ length: 25 }, (_, i) => ({
@@ -449,7 +449,7 @@ export default function ProjectsPage() {
         src: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/1.webp`,
         alt: 'Project Casa Serena modern home'
       },
-      images: Array.from({ length: 7 }, (_, i) => ({
+      images: Array.from({ length: 8 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/${i + 1}.webp`,
         alt: `Project Casa Serena interior ${i + 1}`
       }))
@@ -473,11 +473,11 @@ export default function ProjectsPage() {
     {
       id: 'modern-nest',
       title: 'Project Modern Nest',
-      location: 'Omole, Lagos',
+      location: 'Ikeja, Lagos',
       description: 'This project brought together a soft nursery, cozy living room, warm dining space, and modern bedroom.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/2.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/1.webp`,
         alt: 'Project Modern Nest family home'
       },
       images: Array.from({ length: 3 }, (_, i) => ({
@@ -492,10 +492,10 @@ export default function ProjectsPage() {
       description: 'A serene retreat designed with balance in mind — this bathroom combines clean lines and elegant finishes.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectgeraldlekkilagos/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectgeraldlekkilagos/2.webp`,
         alt: 'Project Gerald bathroom design'
       },
-      images: Array.from({ length: 3 }, (_, i) => ({
+      images: Array.from({ length: 2 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectgeraldlekkilagos/${i + 1}.webp`,
         alt: `Project Gerald interior ${i + 1}`
       }))
@@ -579,11 +579,11 @@ export default function ProjectsPage() {
     {
       id: 'holiday',
       title: 'Project Holiday',
-      location: 'Ikoyi, Lagos',
+      location: 'Lekki, Lagos',
       description: 'This high-end renovation reshaped the home into a modern sanctuary with thoughtful layouts.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectholiday/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectholiday/22.webp`,
         alt: 'Project Holiday renovation'
       },
       images: Array.from({ length: 25 }, (_, i) => ({
@@ -598,7 +598,7 @@ export default function ProjectsPage() {
       description: 'This project transformed everyday bathrooms into serene, spa-inspired retreats filled with colour and character.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projecttranquilmagodolagos_/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projecttranquilmagodolagos_/2.webp`,
         alt: 'Project Tranquil spa bathrooms'
       },
       images: Array.from({ length: 13 }, (_, i) => ({
@@ -608,15 +608,15 @@ export default function ProjectsPage() {
     },
     {
       id: 'london',
-      title: 'Project London',
+      title: 'Project Osapa London',
       location: 'Lekki, Lagos',
       description: 'A complete transformation of this residence into a refined, high-end home with bespoke details.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectlondon/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectlondon/20.webp`,
         alt: 'Project London luxury residence'
       },
-      images: Array.from({ length: 24 }, (_, i) => ({
+      images: Array.from({ length: 23 }, (_, i) => ({
         src: `${GITHUB_CDN_BASE}/projects/projectlondon/${i + 1}.webp`,
         alt: `Project London interior ${i + 1}`
       }))
@@ -624,12 +624,12 @@ export default function ProjectsPage() {
     {
       id: 'officeland',
       title: 'Project Officeland',
-      location: 'Victoria Island, Lagos',
+      location: 'Ikoyi, Lagos',
       description: 'We designed this workplace to balance functionality with impact — creating a space that supports both staff well-being and productivity.',
       category: 'corporate',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectofficeland/1.webp`,
+        src: `${GITHUB_CDN_BASE}/projects/projectofficeland/6.webp`,
         alt: 'Project Officeland corporate workspace'
       },
       images: Array.from({ length: 9 }, (_, i) => ({
