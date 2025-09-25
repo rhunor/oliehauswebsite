@@ -208,8 +208,8 @@ This is an automated email from the OliveHaus Interiors website contact form.
 
     // Send inquiry email to team
     const { data: sendData, error } = await resend.emails.send({
-      from: 'OliveHaus Contact Form <onboarding@resend.dev>',
-      to: ['johnighoshemu@gmail.com', 'enquiry@olivehausinteriors.com'],
+      from: 'OliveHaus Contact Form <enquiry@olivehausinteriors.com>',
+      to: [ 'enquiry@olivehausinteriors.com'],
       replyTo: data.email,
       subject: `New Project Inquiry: ${data.fullName} - ${data.budgetRange}`,
       html: emailHtml,
@@ -350,8 +350,8 @@ This is an automated email from the OliveHaus Interiors website contact form.
               <div class="contact-info">
                 <p style="margin-top: 0;"><strong>Need immediate assistance?</strong></p>
                 <p>
-                  Call us: <a href="tel:+2348089533353">+234 808 953 3353</a><br>
-                  WhatsApp: <a href="https://wa.me/2348089533353">Chat with us</a><br>
+                  Call us: <a href="tel:+2347016163218">234 701 616 3218</a><br>
+                  WhatsApp: <a href="https://wa.me/2347016163218">Chat with us</a><br>
                   Email: <a href="mailto:enquiry@olivehausinteriors.com">enquiry@olivehausinteriors.com</a>
                 </p>
               </div>
