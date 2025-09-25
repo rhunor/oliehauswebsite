@@ -15,41 +15,23 @@ import {
   Briefcase,
   MapPinIcon,
   User,
-  Calendar
+  Calendar,
+  Home
 } from 'lucide-react';
 import Image from 'next/image';
-
-// Remove custom gtag declaration to avoid conflicts with @types/gtag.js or other declarations
+import { sendContactEmail } from './actions';
+import type { ContactFormData, FormErrors } from './types';
 
 // GitHub CDN base URL for images
 const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
 
-// Properly typed interfaces
-interface ContactFormData {
-  // Step 1
-  budgetRange: string;
-  // Step 2
-  servicesRequired: string[];
-  // Step 3
-  projectLocation: string;
-  // Step 4
-  fullName: string;
-  email: string;
-  phone: string;
-  // Optional
-  projectTimeline: string;
-}
-
-interface FormErrors {
-  [key: string]: string;
-}
-
-// interface ContactImage {
-//   src: string;
-//   alt: string;
-//   width: number;
-//   height: number;
-// }
+// Project types
+const projectTypes = [
+  'Residential Home',
+  'Holiday/Second Home',
+  'Corporate Office',
+  'Commercial Space (e.g., Spa, Wellness Center, Hospitality)'
+] as const;
 
 // Budget ranges
 const budgetRanges = [
@@ -57,7 +39,7 @@ const budgetRanges = [
   '₦35M – ₦65M',
   '₦70M – ₦100M',
   '₦100M+'
-];
+] as const;
 
 // Services options
 const servicesOptions = [
@@ -65,14 +47,14 @@ const servicesOptions = [
   'Furnishing & Styling Service',
   'Bathroom & Kitchen Renovation',
   'Finishing for Unfinished/Semi-Finished (Carcass) Building'
-];
+] as const;
 
 // Project timeline options
 const timelineOptions = [
   'Immediately',
   'In 1–3 months',
   'In 6 months+'
-];
+] as const;
 
 // Contact images configuration
 const contactImages = [
@@ -136,18 +118,18 @@ const journeySteps = [
   },
   {
     step: '03',
-    title: 'Concept & Proposal',
-    description: 'You receive a tailored presentation with mood boards, preliminary renders, and a personalized project roadmap.'
+    title: 'Site Assessment',
+    description: 'Our team visits your property to evaluate its layout, structure, and potential, ensuring every design decision is grounded in accuracy and tailored to your space.'
   },
   {
     step: '04',
     title: 'Design Development',
-    description: 'Our team refines every detail—from spatial layouts to materials, finishes, and bespoke elements—ensuring your space reflects your individuality.'
+    description: 'Our team refines every detail—from spatial layouts to materials, finishes,bespoke elements and  3D Renders ensuring your space reflects your individuality.'
   },
   {
     step: '05',
     title: 'Execution & Oversight',
-    description: 'We manage the project seamlessly, coordinating craftsmen, suppliers, and schedules. For our international clients, we provide detailed remote progress updates.'
+    description: 'We manage the project seamlessly, coordinating craftsmen, suppliers, and schedules. We also provide detailed remote progress updates.'
   },
   {
     step: '06',
@@ -159,41 +141,49 @@ const journeySteps = [
 export default function ContactPage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<ContactFormData>({
+    projectType: '',
     budgetRange: '',
     servicesRequired: [],
     projectLocation: '',
     fullName: '',
     email: '',
     phone: '',
-    projectTimeline: ''
+    projectTimeline: '',
+    submittedAt: ''
   });
   
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitError, setSubmitError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
-  const totalSteps = 5; // Including optional step
+  const totalSteps = 6;
 
   const validateStep = (step: number): boolean => {
     const newErrors: FormErrors = {};
 
     switch(step) {
       case 1:
+        if (!formData.projectType) {
+          newErrors.projectType = 'Please select a project type';
+        }
+        break;
+      case 2:
         if (!formData.budgetRange) {
           newErrors.budgetRange = 'Please select a budget range';
         }
         break;
-      case 2:
+      case 3:
         if (formData.servicesRequired.length === 0) {
           newErrors.servicesRequired = 'Please select at least one service';
         }
         break;
-      case 3:
+      case 4:
         if (!formData.projectLocation.trim()) {
           newErrors.projectLocation = 'Project location is required';
         }
         break;
-      case 4:
+      case 5:
         if (!formData.fullName.trim()) {
           newErrors.fullName = 'Full name is required';
         }
@@ -257,39 +247,48 @@ export default function ContactPage() {
   };
 
   const handleSubmit = async (): Promise<void> => {
-    if (!validateStep(4)) {
+    if (!validateStep(5)) {
       return;
     }
 
+    const dataToSend: ContactFormData = {
+      ...formData,
+      submittedAt: new Date().toISOString()
+    };
+
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log('Form submitted:', formData);
+      const result = await sendContactEmail(dataToSend);
       
-      if ('gtag' in window && typeof window.gtag === 'function') {
-        (window as typeof window & { 
-          gtag: (command: string, action: string, parameters?: Record<string, unknown>) => void 
-        }).gtag('event', 'form_submit', {
-          event_category: 'engagement',
-          event_label: 'contact_form',
-        });
+      if (result.success) {
+        if ('gtag' in window && typeof window.gtag === 'function') {
+          (window as typeof window & { 
+            gtag: (command: string, action: string, parameters?: Record<string, unknown>) => void 
+          }).gtag('event', 'form_submit', {
+            event_category: 'engagement',
+            event_label: 'contact_form',
+          });
+        }
+        setIsSubmitted(true);
+      } else {
+        setSubmitError(result.error || 'An unexpected error occurred.');
       }
-      
-      setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
+      setSubmitError('Failed to send email. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleCallClick = (): void => {
-    window.open('tel:+2348089533353', '_self');
+    window.open('tel:+2347016163218', '_self');
   };
 
   const handleWhatsAppClick = (): void => {
-    window.open('https://wa.me/2348089533353?text=Hello! I would like to discuss an interior design project.', '_blank');
+    window.open('https://wa.me/2347016163218?text=Hello! I would like to discuss an interior design project.', '_blank');
   };
 
   const handleEmailClick = (): void => {
@@ -298,22 +297,24 @@ export default function ContactPage() {
 
   const getStepIcon = (step: number) => {
     switch(step) {
-      case 1: return <DollarSign className="w-5 h-5" />;
-      case 2: return <Briefcase className="w-5 h-5" />;
-      case 3: return <MapPinIcon className="w-5 h-5" />;
-      case 4: return <User className="w-5 h-5" />;
-      case 5: return <Calendar className="w-5 h-5" />;
+      case 1: return <Home className="w-5 h-5" />;
+      case 2: return <DollarSign className="w-5 h-5" />;
+      case 3: return <Briefcase className="w-5 h-5" />;
+      case 4: return <MapPinIcon className="w-5 h-5" />;
+      case 5: return <User className="w-5 h-5" />;
+      case 6: return <Calendar className="w-5 h-5" />;
       default: return null;
     }
   };
 
   const getStepTitle = (step: number) => {
     switch(step) {
-      case 1: return 'Budget Range';
-      case 2: return 'Services Required';
-      case 3: return 'Project Location';
-      case 4: return 'Contact Information';
-      case 5: return 'Project Timeline (Optional)';
+      case 1: return 'Project Type';
+      case 2: return 'Budget Range';
+      case 3: return 'Services Required';
+      case 4: return 'Project Location';
+      case 5: return 'Contact Information';
+      case 6: return 'Project Timeline (Optional)';
       default: return '';
     }
   };
@@ -340,7 +341,6 @@ export default function ContactPage() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-xl md:text-2xl text-white/90 leading-relaxed"
             >
-              {/* Bring Your Vision to Life Let&apos;s design a space that&apos;s uniquely yours. */}
               Designing with you for you
             </motion.p>
           </div>
@@ -397,7 +397,7 @@ export default function ContactPage() {
                 Call Us
               </h3>
               <p className="text-luxury-gold font-medium mb-1">
-                +234 808 953 3353
+                +234 701 616 3218
               </p>
               <p className="text-luxury-slate text-sm">
                 Speak directly with our team
@@ -450,23 +450,6 @@ export default function ContactPage() {
               </p>
             </motion.div>
           </div>
-
-          {/* Decorative Image */}
-          {/* <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={slideInRightVariants}
-            className="absolute top-0 right-0 w-72 h-96 rounded-[3rem] overflow-hidden hidden xl:block opacity-30"
-          >
-            <Image
-              src={getContactImage(2).src}
-              alt={getContactImage(2).alt}
-              fill
-              className="object-cover"
-              sizes="288px"
-            />
-          </motion.div> */}
         </div>
       </section>
 
@@ -492,7 +475,7 @@ export default function ContactPage() {
             {/* Progress Steps */}
             {!isSubmitted && (
               <div className="flex justify-between items-center mb-8 px-4">
-                {[1, 2, 3, 4, 5].map((step) => (
+                {[1, 2, 3, 4, 5, 6].map((step) => (
                   <div key={step} className="flex items-center">
                     <div className={`
                       w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300
@@ -502,7 +485,7 @@ export default function ContactPage() {
                     `}>
                       {getStepIcon(step)}
                     </div>
-                    {step < 5 && (
+                    {step < 6 && (
                       <div className={`
                         hidden sm:block w-16 lg:w-24 h-1 ml-2 transition-all duration-300
                         ${currentStep > step ? 'bg-luxury-gold' : 'bg-gray-200'}
@@ -536,14 +519,17 @@ export default function ContactPage() {
                       setIsSubmitted(false);
                       setCurrentStep(1);
                       setFormData({
+                        projectType: '',
                         budgetRange: '',
                         servicesRequired: [],
                         projectLocation: '',
                         fullName: '',
                         email: '',
                         phone: '',
-                        projectTimeline: ''
+                        projectTimeline: '',
+                        submittedAt: ''
                       });
+                      setSubmitError('');
                     }}
                     className="btn-luxury-outline"
                   >
@@ -557,10 +543,51 @@ export default function ContactPage() {
                   </h3>
 
                   <AnimatePresence mode="wait">
-                    {/* Step 1: Budget Range */}
+                    {/* Step 1: Project Type */}
                     {currentStep === 1 && (
                       <motion.div
                         key="step1"
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -50 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="text-luxury-slate mb-6">
+                          Select one that best describes your project
+                        </p>
+                        <div className="space-y-3">
+                          {projectTypes.map((type) => (
+                            <label
+                              key={type}
+                              className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-luxury-cream/50 transition-colors duration-200"
+                              style={{
+                                borderColor: formData.projectType === type ? '#DAA520' : '#E5E5E5'
+                              }}
+                            >
+                              <input
+                                type="radio"
+                                name="projectType"
+                                value={type}
+                                checked={formData.projectType === type}
+                                onChange={handleInputChange}
+                                className="mr-3 text-luxury-gold focus:ring-luxury-gold"
+                              />
+                              <span className="text-lg font-medium text-luxury-charcoal">
+                                {type}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                        {errors.projectType && (
+                          <p className="text-red-500 text-sm mt-2">{errors.projectType}</p>
+                        )}
+                      </motion.div>
+                    )}
+
+                    {/* Step 2: Budget Range */}
+                    {currentStep === 2 && (
+                      <motion.div
+                        key="step2"
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -50 }}
@@ -598,10 +625,10 @@ export default function ContactPage() {
                       </motion.div>
                     )}
 
-                    {/* Step 2: Services Required */}
-                    {currentStep === 2 && (
+                    {/* Step 3: Services Required */}
+                    {currentStep === 3 && (
                       <motion.div
-                        key="step2"
+                        key="step3"
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -50 }}
@@ -637,10 +664,10 @@ export default function ContactPage() {
                       </motion.div>
                     )}
 
-                    {/* Step 3: Project Location */}
-                    {currentStep === 3 && (
+                    {/* Step 4: Project Location */}
+                    {currentStep === 4 && (
                       <motion.div
-                        key="step3"
+                        key="step4"
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -50 }}
@@ -665,10 +692,10 @@ export default function ContactPage() {
                       </motion.div>
                     )}
 
-                    {/* Step 4: Contact Information */}
-                    {currentStep === 4 && (
+                    {/* Step 5: Contact Information */}
+                    {currentStep === 5 && (
                       <motion.div
-                        key="step4"
+                        key="step5"
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -50 }}
@@ -735,10 +762,10 @@ export default function ContactPage() {
                       </motion.div>
                     )}
 
-                    {/* Step 5: Project Timeline (Optional) */}
-                    {currentStep === 5 && (
+                    {/* Step 6: Project Timeline (Optional) */}
+                    {currentStep === 6 && (
                       <motion.div
-                        key="step5"
+                        key="step6"
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -50 }}
@@ -774,6 +801,10 @@ export default function ContactPage() {
                     )}
                   </AnimatePresence>
 
+                  {submitError && (
+                    <p className="text-red-500 text-sm mt-4 text-center">{submitError}</p>
+                  )}
+
                   {/* Navigation Buttons */}
                   <div className="flex justify-between mt-8">
                     <button
@@ -789,7 +820,7 @@ export default function ContactPage() {
                       Previous
                     </button>
 
-                    {currentStep < 5 ? (
+                    {currentStep < 6 ? (
                       <button
                         onClick={handleNext}
                         className="flex items-center px-6 py-3 bg-gray-200 text-black rounded-lg font-medium hover:bg-opacity-90 transition-all duration-200"
@@ -799,9 +830,9 @@ export default function ContactPage() {
                       </button>
                     ) : (
                       <button
-                        onClick={currentStep === 5 ? handleSubmit : handleNext}
+                        onClick={handleSubmit}
                         disabled={isSubmitting}
-                        className="flex items-center px-6 py-3 bg-luxury-gold text-white rounded-lg font-medium hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center px-6 py-3 bg-luxury-gold text-black rounded-lg font-medium hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? 'Submitting...' : 'Submit'}
                         <CheckCircle className="w-5 h-5 ml-2" />
@@ -863,18 +894,10 @@ export default function ContactPage() {
                 Business Hours
               </h3>
               <div className="space-y-3 text-luxury-slate">
-                <div className="flex justify-between">
+                <div className="flex justify-start gap-16">
                   <span>Monday - Friday:</span>
                   <span className="font-medium">9:00 AM - 6:00 PM</span>
                 </div>
-                {/* <div className="flex justify-between">
-                  <span>Saturday:</span>
-                  <span className="font-medium">10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday:</span>
-                  <span className="font-medium">By Appointment</span>
-                </div> */}
               </div>
             </motion.div>
 

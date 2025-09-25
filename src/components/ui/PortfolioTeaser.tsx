@@ -34,7 +34,7 @@ const portfolioProjects: PortfolioProject[] = [
     id: '1',
     title: 'Project Keffi',
     category: 'Residential',
-    location: 'ikoyi, Lagos',
+    location: 'Ikoyi, Lagos',
     image: {
       src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/6.webp`,
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
@@ -304,7 +304,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
             Bring Your Vision to Life. Let&apos;s design a space that&apos;s uniquely yours.
           </p> */}
           <a
-            href="/portfolio"
+            href="/projects"
             className="btn-luxury group inline-flex items-center space-x-2"
           >
             <span>View Full Portfolio</span>
