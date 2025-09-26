@@ -4,10 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Eye } from 'lucide-react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
-
-const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
-
+import { cn, getGitHubCdnCacheBustedUrl, generateImageBlurDataUrl, responsiveSizes, imageQuality } from '@/lib/utils';
 
 interface PortfolioProject {
   id: string;
@@ -28,7 +25,7 @@ interface PortfolioTeaserProps {
   className?: string;
 }
 
-// Enhanced portfolio data with string paths instead of static imports
+// Enhanced portfolio data with cache-busted URLs
 const portfolioProjects: PortfolioProject[] = [
   {
     id: '1',
@@ -36,7 +33,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Residential',
     location: 'Ikoyi, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/6.webp`,
+      src: getGitHubCdnCacheBustedUrl('/projects/projectluminalekkilagos/6.webp', 'moderate'),
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
       width: 800,
       height: 600,
@@ -50,7 +47,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Commercial',
     location: 'Ikoyi, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectofficeland/1.webp`,
+      src: getGitHubCdnCacheBustedUrl('/projects/projectofficeland/1.webp', 'moderate'),
       alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
       width: 800,
       height: 600,
@@ -64,7 +61,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Hospitality',
     location: 'Magodo, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/9.webp`,
+      src: getGitHubCdnCacheBustedUrl('/projects/projectsereniquemagodolagos_/9.webp', 'moderate'),
       alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
       width: 800,
       height: 600,
@@ -73,12 +70,12 @@ const portfolioProjects: PortfolioProject[] = [
     featured: true,
   },
   {
-  id: '4',
+    id: '4',
     title: 'Project Casa Vitalis',
     category: 'Residential',
     location: 'Lekki, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/21.webp`,
+      src: getGitHubCdnCacheBustedUrl('/projects/projectcasavitalis/21.webp', 'moderate'),
       alt: 'Luxury penthouse living room with panoramic Lagos city views, contemporary furniture, and premium finishes',
       width: 800,
       height: 600,
@@ -92,7 +89,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Residential',
     location: 'Oniru, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectlandmark/6.webp`,
+      src: getGitHubCdnCacheBustedUrl('/projects/projectlandmark/6.webp', 'moderate'),
       alt: 'Modern corporate office with open-plan design, ergonomic furniture, and sophisticated lighting',
       width: 800,
       height: 600,
@@ -106,7 +103,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Residential',
     location: 'Ikeja, Lagos',
     image: {
-      src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/1.webp`,
+      src: getGitHubCdnCacheBustedUrl('/projects/projectmodernnestomolelagos/1.webp', 'moderate'),
       alt: 'Project Modern Nest family home',
       width: 800,
       height: 600,
@@ -114,7 +111,6 @@ const portfolioProjects: PortfolioProject[] = [
     description: 'This project brought together a soft nursery, cozy living room, warm dining space, and modern bedroom.',
     featured: true,
   },
-  
 ];
 
 // Analytics tracking helper - using the existing window.gtag type from FloatingWhatsApp
@@ -161,11 +157,9 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5  font-serif">
             Our Signature Spaces 
-            
           </h2>
           <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-3 font-body ">
-            
-          A showcase of the homes and spaces we&apos;ve transformed with elegance and precision.
+            A showcase of the homes and spaces we&apos;ve transformed with elegance and precision.
           </p>
 
           {/* Decorative Line */}
@@ -225,7 +219,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                   onMouseEnter={() => setHoveredProject(project.id)}
                   onMouseLeave={() => setHoveredProject(null)}
                 >
-                  {/* Image - starts at full brightness */}
+                  {/* Image with cache-busted URL and optimizations */}
                   <Image
                     src={project.image.src}
                     alt={project.image.alt}
@@ -235,8 +229,11 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                       "object-cover w-full h-full transition-all duration-500",
                       hoveredProject === project.id ? "scale-110 brightness-75" : "scale-100 brightness-100"
                     )}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes={responsiveSizes.threeColumn}
                     priority={index < 3}
+                    placeholder="blur"
+                    blurDataURL={generateImageBlurDataUrl(10, 8)}
+                    quality={imageQuality.standard}
                   />
                   
                   {/* Featured Badge */}
@@ -300,9 +297,6 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-center mt-16"
         >
-          {/* <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-8 font-body">
-            Bring Your Vision to Life. Let&apos;s design a space that&apos;s uniquely yours.
-          </p> */}
           <a
             href="/projects"
             className="btn-luxury group inline-flex items-center space-x-2"

@@ -1,4 +1,3 @@
-//src/app/projects/page.tsx
 'use client';
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -7,10 +6,7 @@ import Image from 'next/image';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { ChevronRight, Grid3X3, Home, Building2, Eye } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-// GitHub CDN Base URL
-const GITHUB_CDN_BASE = 'https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main';
+import { cn, getGitHubCdnCacheBustedUrl, generateImageBlurDataUrl, responsiveSizes, imageQuality } from '@/lib/utils';
 
 // Project types
 interface ProjectImage {
@@ -43,7 +39,14 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewProject }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Cache-busted thumbnail URL
+  const cacheBustedThumbnail = useMemo(() => 
+    getGitHubCdnCacheBustedUrl(project.thumbnail.src.replace('https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main', ''), 'moderate'),
+    [project.thumbnail.src]
+  );
 
   return (
     <motion.div
@@ -65,16 +68,26 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewProject
       <div className="relative bg-white rounded-2xl overflow-hidden shadow-luxury-soft hover:shadow-luxury-strong transition-all duration-500">
         <div className="relative aspect-[4/3] overflow-hidden bg-mist-grey">
           <Image
-            src={project.thumbnail.src}
+            src={cacheBustedThumbnail}
             alt={project.thumbnail.alt}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority={index < 3}
-            loading={index >= 3 ? 'lazy' : undefined}
+            className={cn(
+              "object-cover transition-all duration-700 group-hover:scale-110",
+              imageLoaded ? "opacity-100" : "opacity-0"
+            )}
+            sizes={responsiveSizes.threeColumn}
+            priority={index < 6} // Priority for first 6 images
+            loading={index >= 6 ? 'lazy' : undefined}
             placeholder="blur"
-            blurDataURL={`${project.thumbnail.src}?w=10&h=10`}
+            blurDataURL={generateImageBlurDataUrl(10, 8)}
+            quality={imageQuality.standard}
+            onLoad={() => setImageLoaded(true)}
           />
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-mist-grey">
+              <div className="w-8 h-8 border-2 border-luxury-gold border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           {project.featured && (
             <div className="absolute top-4 right-4 bg-luxury-gold text-white px-3 py-1 rounded-full text-xs font-medium">
@@ -89,7 +102,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewProject
             }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <Eye className="w-6 h-6 text-luxury-charcoal" />
+            <Eye className="w-6 h-6 text-white" />
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -130,7 +143,15 @@ export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'residential' | 'corporate' | 'commercial'>('all');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Memoized projects data
+  // Helper function to create cache-busted image arrays
+  const createImageArray = useCallback((basePath: string, count: number, altPrefix: string) => 
+    Array.from({ length: count }, (_, i) => ({
+      src: getGitHubCdnCacheBustedUrl(`${basePath}/${i + 1}.webp`, 'moderate'),
+      alt: `${altPrefix} ${i + 1}`,
+    })), []
+  );
+
+  // Memoized projects data with cache-busted URLs
   const projects = useMemo<Project[]>(() => [
     {
       id: 'Edené',
@@ -139,13 +160,10 @@ export default function ProjectsPage() {
       description: 'This renovation reimagined the spa into a sanctuary of calm, where muted tones, refined textures, and seamless design invite relaxation at every turn.',
       category: 'commercial',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectsereniquemagodolagos_/1.webp', 'moderate'),
         alt: 'Project Edené spa interior',
       },
-      images: Array.from({ length: 9 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectsereniquemagodolagos_/${i + 1}.webp`,
-        alt: `Project Serenique interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectsereniquemagodolagos_', 9, 'Project Serenique interior'),
     },
     {
       id: 'landmark',
@@ -154,28 +172,22 @@ export default function ProjectsPage() {
       description: 'This space captures the spirit of Paris vibrant, romantic, and effortlessly chic. Playful details meet refined finishes, blending whimsy with sophistication. Bold yet graceful',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectlandmark/1.webp', 'moderate'),
         alt: 'Project Landmark interior',
       },
-      images: Array.from({ length: 10 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectlandmark/${i + 1}.webp`,
-        alt: `Project Landmark interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectlandmark', 10, 'Project Landmark interior'),
     },
     {
       id: 'serene',
       title: 'Project Serene',
       location: 'Maryland, Lagos',
-      description: 'Designed as a sanctuary, this bathroom embraces space, light, and calm. A breathy layout, soft finishes, and spa-inspired details create an atmosphere of ease and renewal &apos; a retreat that feels both expansive and intimate',
+      description: 'Designed as a sanctuary, this bathroom embraces space, light, and calm. A breathy layout, soft finishes, and spa-inspired details create an atmosphere of ease and renewal — a retreat that feels both expansive and intimate',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectserene/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectserene/1.webp', 'moderate'),
         alt: 'Project Serenique spa interior',
       },
-      images: Array.from({ length: 4 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectserene/${i + 1}.webp`,
-        alt: `Project serene interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectserene', 4, 'Project serene interior'),
     },
     {
       id: 'ezra',
@@ -184,29 +196,23 @@ export default function ProjectsPage() {
       description: 'Defined by clean lines, open flow, and thoughtful details, this modern space blends functionality with understated elegance.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectezra/4.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectezra/4.webp', 'moderate'),
         alt: 'Project Ezra modern interior',
       },
-      images: Array.from({ length: 6 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectezra/${i + 1}.webp`,
-        alt: `Project Ezra interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectezra', 6, 'Project Ezra interior'),
     },
     {
       id: 'Keffi',
       title: 'Project Keffi',
       location: 'ikoyi, Lagos',
-      description: 'This home embodies modern luxury with personality &apos; blending bold, saturated hues with serene spaces designed for rest and renewal.',
+      description: 'This home embodies modern luxury with personality — blending bold, saturated hues with serene spaces designed for rest and renewal.',
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectluminalekkilagos/1.webp', 'moderate'),
         alt: 'Project Keffi luxury home',
       },
-      images: Array.from({ length: 6 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectluminalekkilagos/${i + 1}.webp`,
-        alt: `Project Keffi interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectluminalekkilagos', 6, 'Project Keffi interior'),
     },
     {
       id: 'casa-vitalis',
@@ -215,13 +221,10 @@ export default function ProjectsPage() {
       description: 'This home strikes a rare balance between bold expression and refined luxury. Rich statement hues set a dramatic tone.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/12.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectcasavitalis/12.webp', 'moderate'),
         alt: 'Project Casa Vitalis luxury residence',
       },
-      images: Array.from({ length: 25 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/${i + 1}.webp`,
-        alt: `Project Casa Vitalis interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectcasavitalis', 25, 'Project Casa Vitalis interior'),
     },
     {
       id: 'casa-serena',
@@ -230,13 +233,10 @@ export default function ProjectsPage() {
       description: 'A stylish home with a modern edge, Casa Serena combines clean lines, contemporary finishes, and subtle warmth.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectcasaserenalekkilagos/1.webp', 'moderate'),
         alt: 'Project Casa Serena modern home',
       },
-      images: Array.from({ length: 8 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/${i + 1}.webp`,
-        alt: `Project Casa Serena interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectcasaserenalekkilagos', 8, 'Project Casa Serena interior'),
     },
     {
       id: 'horizon',
@@ -246,13 +246,10 @@ export default function ProjectsPage() {
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projecthorizonlekkilagos/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projecthorizonlekkilagos/1.webp', 'moderate'),
         alt: 'Project Horizon kitchen design',
       },
-      images: Array.from({ length: 4 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projecthorizonlekkilagos/${i + 1}.webp`,
-        alt: `Project Horizon interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projecthorizonlekkilagos', 4, 'Project Horizon interior'),
     },
     {
       id: 'modern-nest',
@@ -261,43 +258,34 @@ export default function ProjectsPage() {
       description: 'This project brought together a soft nursery, cozy living room, warm dining space, and modern bedroom.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectmodernnestomolelagos/1.webp', 'moderate'),
         alt: 'Project Modern Nest family home',
       },
-      images: Array.from({ length: 3 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectmodernnestomolelagos/${i + 1}.webp`,
-        alt: `Project Modern Nest interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectmodernnestomolelagos', 3, 'Project Modern Nest interior'),
     },
     {
       id: 'gerald',
       title: 'Project Gerald',
       location: 'Lekki, Lagos',
-      description: 'A serene retreat designed with balance in mind &apos; this bathroom combines clean lines and elegant finishes.',
+      description: 'A serene retreat designed with balance in mind — this bathroom combines clean lines and elegant finishes.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectgeraldlekkilagos/2.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectgeraldlekkilagos/2.webp', 'moderate'),
         alt: 'Project Gerald bathroom design',
       },
-      images: Array.from({ length: 2 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectgeraldlekkilagos/${i + 1}.webp`,
-        alt: `Project Gerald interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectgeraldlekkilagos', 2, 'Project Gerald interior'),
     },
     {
       id: 'lustre',
       title: 'Project Lustre',
       location: 'Victoria Island, Lagos',
-      description: 'This kitchen was designed to be both beautiful and practical &apos; a cozy space where storage and style work hand in hand.',
+      description: 'This kitchen was designed to be both beautiful and practical — a cozy space where storage and style work hand in hand.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectlustre/7.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectlustre/7.webp', 'moderate'),
         alt: 'Project Lustre kitchen',
       },
-      images: Array.from({ length: 10 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectlustre/${i + 1}.webp`,
-        alt: `Project Lustre interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectlustre', 10, 'Project Lustre interior'),
     },
     {
       id: 'blush',
@@ -306,28 +294,22 @@ export default function ProjectsPage() {
       description: 'This bathroom balances softness with personality, blending soothing finishes with a touch of bold colour.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectblushgralagos_/2.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectblushgralagos_/2.webp', 'moderate'),
         alt: 'Project Blush bathroom',
       },
-      images: Array.from({ length: 5 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectblushgralagos_/${i + 1}.webp`,
-        alt: `Project Blush interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectblushgralagos_', 5, 'Project Blush interior'),
     },
     {
       id: 'haven',
       title: 'Project Haven',
       location: 'Lekki, Lagos',
-      description: 'This shortlet was designed for comfort and ease &apos; a refreshing retreat with warm finishes and thoughtful layouts.',
+      description: 'This shortlet was designed for comfort and ease — a refreshing retreat with warm finishes and thoughtful layouts.',
       category: 'commercial',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projecthavenlekkilagos/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projecthavenlekkilagos/1.webp', 'moderate'),
         alt: 'Project Haven shortlet',
       },
-      images: Array.from({ length: 4 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projecthavenlekkilagos/${i + 1}.webp`,
-        alt: `Project Haven interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projecthavenlekkilagos', 4, 'Project Haven interior'),
     },
     {
       id: 'urban',
@@ -336,13 +318,10 @@ export default function ProjectsPage() {
       description: 'This project redefined the home with an urban edge and upscale sophistication.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projecturbanlekkilagos/10.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projecturbanlekkilagos/10.webp', 'moderate'),
         alt: 'Project Urban modern home',
       },
-      images: Array.from({ length: 9 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projecturbanlekkilagos/${i + 1}.webp`,
-        alt: `Project Urban interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projecturbanlekkilagos', 9, 'Project Urban interior'),
     },
     {
       id: 'roche',
@@ -352,13 +331,10 @@ export default function ProjectsPage() {
       category: 'residential',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectroche/1.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectroche/1.webp', 'moderate'),
         alt: 'Project Roche luxury renovation',
       },
-      images: Array.from({ length: 20 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectroche/${i + 1}.webp`,
-        alt: `Project Roche interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectroche', 20, 'Project Roche interior'),
     },
     {
       id: 'holiday',
@@ -367,13 +343,10 @@ export default function ProjectsPage() {
       description: 'This high-end renovation reshaped the home into a modern sanctuary with thoughtful layouts.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectholiday/22.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectholiday/22.webp', 'moderate'),
         alt: 'Project Holiday renovation',
       },
-      images: Array.from({ length: 25 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectholiday/${i + 1}.webp`,
-        alt: `Project Holiday interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectholiday', 25, 'Project Holiday interior'),
     },
     {
       id: 'tranquil',
@@ -382,13 +355,10 @@ export default function ProjectsPage() {
       description: 'This project transformed everyday bathrooms into serene, spa-inspired retreats filled with colour and character.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projecttranquilmagodolagos_/2.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projecttranquilmagodolagos_/2.webp', 'moderate'),
         alt: 'Project Tranquil spa bathrooms',
       },
-      images: Array.from({ length: 13 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projecttranquilmagodolagos_/${i + 1}.webp`,
-        alt: `Project Tranquil interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projecttranquilmagodolagos_', 13, 'Project Tranquil interior'),
     },
     {
       id: 'london',
@@ -397,31 +367,25 @@ export default function ProjectsPage() {
       description: 'A complete transformation of this residence into a refined, high-end home with bespoke details.',
       category: 'residential',
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectlondon/20.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectlondon/20.webp', 'moderate'),
         alt: 'Project London luxury residence',
       },
-      images: Array.from({ length: 23 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectlondon/${i + 1}.webp`,
-        alt: `Project London interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectlondon', 23, 'Project London interior'),
     },
     {
       id: 'officeland',
       title: 'Project Officeland',
       location: 'Ikoyi, Lagos',
-      description: 'We designed this workplace to balance functionality with impact &apos; creating a space that supports both staff well-being and productivity.',
+      description: 'We designed this workplace to balance functionality with impact — creating a space that supports both staff well-being and productivity.',
       category: 'corporate',
       featured: true,
       thumbnail: {
-        src: `${GITHUB_CDN_BASE}/projects/projectofficeland/6.webp`,
+        src: getGitHubCdnCacheBustedUrl('/projects/projectofficeland/6.webp', 'moderate'),
         alt: 'Project Officeland corporate workspace',
       },
-      images: Array.from({ length: 9 }, (_, i) => ({
-        src: `${GITHUB_CDN_BASE}/projects/projectofficeland/${i + 1}.webp`,
-        alt: `Project Officeland interior ${i + 1}`,
-      })),
+      images: createImageArray('/projects/projectofficeland', 9, 'Project Officeland interior'),
     },
-  ], []);
+  ], [createImageArray]);
 
   const filteredProjects = useMemo(
     () => (activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter)),
@@ -440,14 +404,14 @@ export default function ProjectsPage() {
 
   const handleNextImage = useCallback(() => {
     if (selectedProject) {
-      const project = selectedProject as Project; // Explicit narrowing for TS
+      const project = selectedProject as Project;
       setLightboxIndex((prev) => (prev + 1) % project.images.length);
     }
   }, [selectedProject]);
 
   const handlePreviousImage = useCallback(() => {
     if (selectedProject) {
-      const project = selectedProject as Project; // Explicit narrowing for TS
+      const project = selectedProject as Project;
       setLightboxIndex((prev) => (prev === 0 ? project.images.length - 1 : prev - 1));
     }
   }, [selectedProject]);
@@ -506,7 +470,7 @@ export default function ProjectsPage() {
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage: `${GITHUB_CDN_BASE}/projects/projectezra/4.webp`,
+                backgroundImage: `linear-gradient(45deg, transparent 45%, #D4AF37 45%, #D4AF37 55%, transparent 55%)`,
                 backgroundSize: '20px 20px',
               }}
             />
@@ -528,7 +492,7 @@ export default function ProjectsPage() {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-xl md:text-2xl text-white/90 leading-relaxed font-sans"
               >
-                A showcase of the homes and spaces we’ve transformed with elegance and precision.
+                A showcase of the homes and spaces we&apos;ve transformed with elegance and precision.
               </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
