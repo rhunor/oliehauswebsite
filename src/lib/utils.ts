@@ -1,13 +1,10 @@
-//src/lib/utils.ts - Enhanced version with your existing code + new image functions
+//src/lib/utils.ts - Enhanced version with your existing code + cache busting functions
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-
-
 
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
-
 
 // Date utilities
 export function formatDate(date: Date): string {
@@ -91,13 +88,165 @@ export function buildPhoneUrl(phone: string): string {
   return `tel:${phone}`;
 }
 
-// Enhanced Image utilities for OliveHaus
+// ==========================================
+// CACHE BUSTING UTILITIES - NEW ADDITIONS
+// ==========================================
+
+/**
+ * Cache busting configuration
+ */
+interface CacheBustingConfig {
+  strategy: 'timestamp' | 'build-version' | 'content-hash' | 'manual';
+  buildVersion?: string;
+  manualVersion?: string;
+}
+
+/**
+ * Default cache busting configuration
+ */
+const defaultCacheBustingConfig: CacheBustingConfig = {
+  strategy: 'build-version',
+  buildVersion: process.env.NEXT_PUBLIC_BUILD_VERSION || process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 8) || Date.now().toString(),
+};
+
+/**
+ * Primary cache busting function - handles multiple strategies
+ */
+export function getCacheBustedUrl(
+  baseUrl: string, 
+  config: Partial<CacheBustingConfig> = {}
+): string {
+  const finalConfig = { ...defaultCacheBustingConfig, ...config };
+  
+  let versionParam: string;
+  
+  switch (finalConfig.strategy) {
+    case 'timestamp':
+      versionParam = Date.now().toString();
+      break;
+    case 'build-version':
+      versionParam = finalConfig.buildVersion || Date.now().toString();
+      break;
+    case 'manual':
+      versionParam = finalConfig.manualVersion || '1';
+      break;
+    case 'content-hash':
+      // For content-hash, you'd need to implement file hashing logic
+      // Fallback to build version for now
+      versionParam = finalConfig.buildVersion || Date.now().toString();
+      break;
+    default:
+      versionParam = Date.now().toString();
+  }
+  
+  const separator = baseUrl.includes('?') ? '&' : '?';
+  return `${baseUrl}${separator}v=${versionParam}`;
+}
+
+/**
+ * Simple timestamp-based cache busting (always fresh)
+ */
+export function getTimestampedUrl(baseUrl: string): string {
+  return getCacheBustedUrl(baseUrl, { strategy: 'timestamp' });
+}
+
+/**
+ * Build version-based cache busting (consistent per deployment)
+ */
+export function getBuildVersionUrl(baseUrl: string): string {
+  return getCacheBustedUrl(baseUrl, { strategy: 'build-version' });
+}
+
+/**
+ * Manual version cache busting (for controlled releases)
+ */
+export function getManualVersionUrl(baseUrl: string, version: string): string {
+  return getCacheBustedUrl(baseUrl, { 
+    strategy: 'manual', 
+    manualVersion: version 
+  });
+}
+
+/**
+ * GitHub CDN specific cache busting for your JSDelivr setup
+ */
+export function getGitHubCdnCacheBustedUrl(
+  imagePath: string,
+  strategy: 'aggressive' | 'moderate' | 'conservative' = 'moderate'
+): string {
+  const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+  const fullUrl = `${GITHUB_CDN_BASE}${imagePath}`;
+  
+  switch (strategy) {
+    case 'aggressive':
+      // Always fetch fresh (use for critical updates)
+      return getTimestampedUrl(fullUrl);
+    case 'moderate':
+      // Use build version (balanced approach)
+      return getBuildVersionUrl(fullUrl);
+    case 'conservative':
+      // Use manual versioning (most stable)
+      const version = process.env.NEXT_PUBLIC_IMAGE_VERSION || '1.0.0';
+      return getManualVersionUrl(fullUrl, version);
+    default:
+      return getBuildVersionUrl(fullUrl);
+  }
+}
+
+/**
+ * JSDelivr specific purge utility
+ */
+export function getJsDelivrPurgeUrl(imagePath: string): string {
+  const GITHUB_CDN_BASE = "https://purge.jsdelivr.net/gh/rhunor/olivehausimages@main";
+  return `${GITHUB_CDN_BASE}${imagePath}`;
+}
+
+/**
+ * Batch cache bust multiple URLs
+ */
+export function batchCacheBustUrls(
+  urls: string[],
+  config: Partial<CacheBustingConfig> = {}
+): string[] {
+  return urls.map(url => getCacheBustedUrl(url, config));
+}
+
+/**
+ * Project-specific image cache busting
+ */
+export function getProjectImageUrl(
+  projectId: string,
+  imageName: string,
+  strategy: 'aggressive' | 'moderate' | 'conservative' = 'moderate'
+): string {
+  const imagePath = `/projects/${projectId}/${imageName}`;
+  return getGitHubCdnCacheBustedUrl(imagePath, strategy);
+}
+
+/**
+ * Hero image cache busting
+ */
+export function getHeroImageUrl(
+  imageName: string,
+  strategy: 'aggressive' | 'moderate' | 'conservative' = 'moderate'
+): string {
+  const imagePath = `/images/hero/${imageName}`;
+  return getGitHubCdnCacheBustedUrl(imagePath, strategy);
+}
+
+// ==========================================
+// ENHANCED IMAGE UTILITIES WITH CACHE BUSTING
+// ==========================================
+
 export function getOptimizedImageUrl(
   originalUrl: string,
   width?: number,
   height?: number,
-  quality: number = 80
+  quality: number = 80,
+  enableCacheBusting: boolean = true
 ): string {
+  let optimizedUrl = originalUrl;
+  
   // For Cloudinary URLs
   if (originalUrl.includes('cloudinary') || originalUrl.includes('res.cloudinary.com')) {
     const baseUrl = originalUrl.split('/upload/')[0] + '/upload/';
@@ -113,11 +262,15 @@ export function getOptimizedImageUrl(
     if (width) transformations.push(`w_${width}`);
     if (height) transformations.push(`h_${height}`);
     
-    return `${baseUrl}${transformations.join(',')}/${imagePath}`;
+    optimizedUrl = `${baseUrl}${transformations.join(',')}/${imagePath}`;
   }
   
-  // For other URLs, return as-is (Next.js will handle optimization)
-  return originalUrl;
+  // Apply cache busting if enabled
+  if (enableCacheBusting) {
+    optimizedUrl = getBuildVersionUrl(optimizedUrl);
+  }
+  
+  return optimizedUrl;
 }
 
 export function generateImageBlurDataUrl(width: number = 10, height: number = 10): string {
@@ -230,6 +383,7 @@ export function shuffleArray<T>(array: T[]): T[] {
   }
   return shuffled;
 }
+
 export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
   return array.reduce((groups: Record<string, T[]>, item) => {
     const group = String(item[key]);
@@ -239,7 +393,9 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
     groups[group].push(item);
     return groups;
   }, {});
-}/**
+}
+
+/**
  * Scroll utilities for adaptive navigation
  */
 export const scrollUtils = {
