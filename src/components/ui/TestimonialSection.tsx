@@ -202,7 +202,7 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
 
               {/* Project Image */}
               <div className="relative">
-                <div className="aspect-[4/3] relative overflow-hidden rounded-2xl shadow-luxury">
+                <div className="aspect-[3/3] relative overflow-hidden rounded-2xl shadow-luxury">
                   <img
                     src={currentTestimonialData.projectImage}
                     alt={`${currentTestimonialData.projectType} project`}
@@ -212,17 +212,17 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
                 </div>
 
                 {/* Floating Badge */}
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5 }}
-                  className="absolute -bottom-6 -right-6 bg-luxury-gold text-white p-4 rounded-2xl shadow-luxury"
+                  className="absolute -bottom-8 -right-8 bg-luxury-gold text-white p-4 rounded-2xl shadow-luxury"
                 >
                   <div className="text-center">
                     <div className="text-2xl font-bold">5.0</div>
                     <div className="text-xs opacity-90">Rating</div>
                   </div>
-                </motion.div>
+                </motion.div> */}
               </div>
             </motion.div>
           </AnimatePresence>

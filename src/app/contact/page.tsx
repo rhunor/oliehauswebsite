@@ -109,7 +109,7 @@ const journeySteps = [
   {
     step: '01',
     title: 'Your First Contact',
-    description: 'The moment you reach out via WhatsApp, Call, or our form, our Client Concierge responds promptly—ensuring you feel attended to from the start.'
+    description: 'The moment you reach out via WhatsApp, Call, or our form, our Client Concierge responds promptly ensuring you feel attended to from the start.'
   },
   {
     step: '02',
@@ -124,7 +124,7 @@ const journeySteps = [
   {
     step: '04',
     title: 'Design Development',
-    description: 'Our team refines every detail—from spatial layouts to materials, finishes,bespoke elements and  3D Renders ensuring your space reflects your individuality.'
+    description: 'Our team refines every detail from spatial layouts to materials, finishes,bespoke elements and  3D Renders ensuring your space reflects your individuality.'
   },
   {
     step: '05',
@@ -938,7 +938,7 @@ export default function ContactPage() {
               Your OliveHaus <span className="text-luxury-gold">Experience</span>
             </h2>
             <p className="text-xl text-luxury-slate max-w-3xl mx-auto">
-              From First Hello to Final Reveal — Here&apos;s How We Work With You
+              From First Hello to Final Reveal,  Here&apos;s How We Work With You
             </p>
           </motion.div>
 
