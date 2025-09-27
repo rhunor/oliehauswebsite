@@ -202,7 +202,7 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
 
               {/* Project Image */}
               <div className="relative">
-                <div className="aspect-[3/3] relative overflow-hidden rounded-2xl shadow-luxury">
+                <div className="aspect-[3/2] relative overflow-hidden rounded-2xl shadow-luxury">
                   <img
                     src={currentTestimonialData.projectImage}
                     alt={`${currentTestimonialData.projectType} project`}
