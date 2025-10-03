@@ -1,10 +1,11 @@
+// src/app/layout.tsx - FIXED GTM PROP TO gtmId (TS-SAFE)
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { GoogleTagManager } from '@next/third-parties/google';
 import './globals.css';
 import AdaptiveNavigation from '@/components/ui/AdaptiveNavigation';
 import RitzCarltonFooter from '@/components/ui/RitzCarltonFooter';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp';
-
 
 export const metadata: Metadata = {
   title: {
@@ -93,12 +94,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="preconnect" href="https://res.cloudinary.com" />
         
         {/* Google Fonts - Luxury Typography */}
- <link
-  href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&family=Oranienbaum&family=Playfair+Display:wght@400;700;900&family=Quintessential&family=Almendra+Display&display=swap"
-  rel="stylesheet"
-/>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&family=Oranienbaum&family=Playfair+Display:wght@400;700;900&family=Quintessential&family=Almendra+Display&display=swap"
+          rel="stylesheet"
+        />
 
-        
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />
@@ -118,6 +118,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </head>
       
       <body className="font-sans antialiased bg-ivory text-luxury-charcoal">
+        {/* GTM - Production only */}
+        {process.env.NODE_ENV === 'production' && (
+          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />
+        )}
+
         {/* Main wrapper - removing height:100% constraints that might hide footer */}
         <div id="app-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
           {/* Skip to main content for accessibility */}
@@ -173,7 +178,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
               },
               sameAs: [
                 'https://instagram.com/olivehausinteriors',
-                
               ],
             }),
           }}
