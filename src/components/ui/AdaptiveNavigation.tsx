@@ -28,7 +28,7 @@ const navigationItems: NavigationItem[] = [
   { label: 'Our Shortlets', href: 'https://www.giftedhomesandapartments.com/' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact Us', href: '/contact' },
-  { label: 'Project Tracker', href: '/blog' }
+  { label: 'Project Tracker', href: 'https://olivehausdailymanager.com/' }
 ];
 
 const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' }) => {
