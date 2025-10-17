@@ -271,6 +271,54 @@ const scaleUpVariants: Variants = {
   }
 };
 
+// Timeline item component for the Process section
+interface TimelineItemProps {
+  item: ProcessStep;
+  index: number;
+}
+
+function TimelineItem({ item }: TimelineItemProps) {
+  const itemRef = useRef<HTMLLIElement>(null);
+  const { scrollYProgress: itemProgress } = useScroll({
+    target: itemRef,
+    offset: ["start end", "center center"]
+  });
+
+  return (
+    <li
+      ref={itemRef}
+      className="relative my-14 first:mt-0 last:mb-0 w-full pl-10"
+    >
+      {/* Animated circle icon */}
+      <motion.span
+        className="absolute left-0 top-2 -translate-x-1/2 w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-luxury-gold bg-[#1A1513] shadow-[0_0_0_4px_rgba(212,165,116,0.2)]"
+        style={{ scale: itemProgress }}
+      />
+
+      {/* Number & card */}
+      <div className="grid grid-cols-[auto,1fr] gap-4 md:gap-6 items-start">
+        <div className="font-serif text-4xl md:text-5xl text-white/90 leading-none pt-1">
+          {item.step}
+        </div>
+        <motion.div
+          initial={{ y: 40, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.6, type: "spring" }}
+          className="rounded-lg p-5 md:p-7 shadow-2xl bg-gradient-to-br from-white/8 to-white/5 ring-1 ring-white/10"
+        >
+          <h3 className="text-2xl md:text-3xl font-semibold tracking-wide text-white mb-2">
+            {item.title}
+          </h3>
+          <p className="text-white/80 leading-relaxed md:text-base text-sm">
+            {item.description}
+          </p>
+        </motion.div>
+      </div>
+    </li>
+  );
+}
+
 export default function ServicesPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -282,9 +330,7 @@ export default function ServicesPage() {
   const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
   // const [selectedService, setSelectedService] = useState<number | null>(null);
   
-  const handleHireUsClick = (): void => {
-    window.location.href = '/contact';
-  };
+  // CTA handler kept in services hero; currently unused here after CTA removal
 
   // Safe image access helper
   const getImage = (index: number): ServiceImage => {
@@ -444,8 +490,8 @@ export default function ServicesPage() {
         </motion.div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-20 bg-luxury-cream relative">
+      {/* Process Section - Vertical timeline with scroll-driven line & dots */}
+      <section className="pt-20 pb-12 relative bg-[#1A1513] text-white">
         <div className="container-luxury">
           <motion.div
             initial="hidden"
@@ -454,91 +500,49 @@ export default function ServicesPage() {
             variants={fadeInUpVariants}
             className="text-center mb-16"
           >
-            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Our <span className="text-luxury-gold">Process</span>
             </h2>
-            <p className="text-xl text-luxury-slate max-w-3xl mx-auto">
+            <p className="text-xl text-white/80 max-w-3xl mx-auto">
               From first hello to final reveal, here&apos;s how we work with you to create your dream space.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {processSteps.map((item, index) => (
-              <motion.div
-                key={item.step}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={scaleUpVariants}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="text-center bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <div className="w-16 h-16 bg-luxury-gold text-white rounded-full flex items-center justify-center font-bold text-lg mb-4 mx-auto">
-                  {item.step}
-                </div>
-                <h3 className="text-luxury-heading text-xl font-bold mb-4">
-                  {item.title}
-                </h3>
-                <p className="text-luxury-slate leading-relaxed">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+          {/* Timeline container */}
+          <Timeline />
         </div>
 
-        {/* Background Decorative Image */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="absolute bottom-0 left-0 w-full h-64"
-        >
-          <Image
-            src={getImage(3).src}
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-        </motion.div>
+        {/* Background Decorative Image removed to avoid extra perceived gap before footer */}
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-luxury-charcoal text-white text-center relative overflow-hidden">
-        <div className="container-luxury relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUpVariants}
-          >
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              Let&apos;s Craft the Space You Deserve
-            </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Your vision, our expertise. Together, we&apos;ll create a space that&apos;s uniquely yours.
-            </p>
-            <motion.button
-              onClick={handleHireUsClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn-luxury text-lg px-12 py-4"
-            >
-              Start Your Project
-            </motion.button>
-          </motion.div>
-        </div>
+      {/* CTA Section removed to allow the Process section to connect directly to the global footer */}
+    </div>
+  );
+}
 
-        {/* Decorative background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)'
-          }} />
-        </div>
-      </section>
+// Timeline component (separate to keep ServicesPage clean)
+function Timeline() {
+  const lineRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: lineRef,
+    offset: ["start end", "center start"]
+  });
+
+  return (
+    <div className="relative w-[75%] mx-auto lg:w-[75%] md:w-[90%]" ref={lineRef}>
+      {/* Track */}
+      <div className="absolute left-6 md:left-8 top-0 w-[2px] md:w-[3px] h-full bg-white/15" />
+      {/* Animated vertical line that grows with scroll */}
+      <motion.div
+        className="absolute left-6 md:left-8 top-0 w-[2px] md:w-[3px] h-full bg-luxury-gold origin-top"
+        style={{ scaleY: scrollYProgress }}
+      />
+
+      <ul className="w-full flex flex-col items-start justify-between ml-10 md:ml-12">
+        {processSteps.map((item, index) => (
+          <TimelineItem key={item.step} item={item} index={index} />
+        ))}
+      </ul>
     </div>
   );
 }

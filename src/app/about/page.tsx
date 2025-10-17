@@ -2,44 +2,34 @@
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
-// import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
-
-
 
 // GitHub CDN base URL for images
 const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
 
-
-
-// Use a const object with known keys to avoid undefined issues
-const aboutImages = {
-  hero: [
-    { src: `${GITHUB_CDN_BASE}/images/hero/1.webp`, alt: "Luxury interior design", width: 600, height: 400, shape: 'rounded' as const },
-    { src: `${GITHUB_CDN_BASE}/images/hero/2.webp`, alt: "Modern living space", width: 500, height: 500, shape: 'oval' as const }
-  ],
-  story: [
-    { src: `${GITHUB_CDN_BASE}/images/hero/3.webp`, alt: "Designer workspace", width: 500, height: 600, shape: 'square' as const },
-    { src: `${GITHUB_CDN_BASE}/images/hero/4.webp`, alt: "Team collaboration", width: 400, height: 400, shape: 'oval' as const }
-  ],
-  mission: [
-    { src: `${GITHUB_CDN_BASE}/images/hero/5.webp`, alt: "Office interior", width: 550, height: 450, shape: 'rounded' as const },
-    { src: `${GITHUB_CDN_BASE}/images/hero/6.webp`, alt: "Creative space", width: 450, height: 550, shape: 'square' as const }
-  ]
-} as const;
-
-
-
-// Properly typed animation variants using Framer Motion's Variants type
+// Properly typed animation variants
 const fadeInUpVariants: Variants = {
   hidden: { 
     opacity: 0, 
-    y: 50 
+    y: 60 
   },
   visible: { 
     opacity: 1, 
     y: 0,
     transition: { 
       duration: 0.8, 
+      ease: [0.6, -0.05, 0.01, 0.99]
+    }
+  }
+};
+
+const fadeInVariants: Variants = {
+  hidden: { 
+    opacity: 0
+  },
+  visible: { 
+    opacity: 1,
+    transition: { 
+      duration: 1, 
       ease: "easeOut" 
     }
   }
@@ -48,14 +38,14 @@ const fadeInUpVariants: Variants = {
 const slideInLeftVariants: Variants = {
   hidden: { 
     opacity: 0, 
-    x: -100 
+    x: -80 
   },
   visible: { 
     opacity: 1, 
     x: 0,
     transition: { 
-      duration: 1, 
-      ease: "easeOut" 
+      duration: 0.9, 
+      ease: [0.6, -0.05, 0.01, 0.99]
     }
   }
 };
@@ -63,14 +53,14 @@ const slideInLeftVariants: Variants = {
 const slideInRightVariants: Variants = {
   hidden: { 
     opacity: 0, 
-    x: 100 
+    x: 80 
   },
   visible: { 
     opacity: 1, 
     x: 0,
     transition: { 
-      duration: 1, 
-      ease: "easeOut" 
+      duration: 0.9, 
+      ease: [0.6, -0.05, 0.01, 0.99]
     }
   }
 };
@@ -78,14 +68,25 @@ const slideInRightVariants: Variants = {
 const scaleUpVariants: Variants = {
   hidden: { 
     opacity: 0, 
-    scale: 0.8 
+    scale: 0.85
   },
   visible: { 
     opacity: 1, 
     scale: 1,
     transition: { 
-      duration: 0.8, 
-      ease: "easeOut" 
+      duration: 0.9, 
+      ease: [0.6, -0.05, 0.01, 0.99]
+    }
+  }
+};
+
+const staggerContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.1
     }
   }
 };
@@ -97,237 +98,221 @@ export default function AboutPage() {
     offset: ["start start", "end end"]
   });
 
-  // Parallax effects for images
-  // const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
-  const storyParallax = useTransform(scrollYProgress, [0.2, 0.5], [0, -30]);
-  
-  const handleHireUsClick = (): void => {
+  // Parallax effect for full-bleed overlay cards
+  const fullBleedOverlayY = useTransform(scrollYProgress, [0.25, 0.7], [20, -20]);
+
+  const handleExperienceClick = (): void => {
     window.location.href = '/contact';
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#C8D1C0' }} ref={containerRef}>
+    <div className="min-h-screen bg-white" ref={containerRef}>
       
-      {/* Hero Section with scroll animations */}
-      {/* <section className="pt-32 pb-20 bg-luxury-charcoal text-white relative overflow-hidden">
-        <div className="container-luxury relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
-            >
-              For Nigeria&apos;s
-              <span className="text-luxury-gold block mt-2">Finest Homes</span>
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-xl md:text-2xl text-white/90 leading-relaxed"
-            >
-              OliveHaus Interiors is a premier interior design company serving luxury residential, corporate, and commercial clients in Nigeria and internationally.
-            </motion.p>
-          </div>
-          
-          {/* Hero Images with animations */}
-          {/* <div className="absolute inset-0 pointer-events-none">
-            <motion.div 
-              style={{ y: heroParallax }}
-              className="absolute top-20 left-10 hidden lg:block"
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 0.3, scale: 1 }}
-                transition={{ duration: 1.5, delay: 0.5 }}
-                className="relative w-64 h-64 rounded-full overflow-hidden"
-              >
-                <Image
-                  src={aboutImages.hero[0].src}
-                  alt={aboutImages.hero[0].alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 256px"
-                />
-              </motion.div>
-            </motion.div>
-            
-            <motion.div 
-              className="absolute bottom-10 right-10 hidden lg:block"
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 0.2, x: 0 }}
-              transition={{ duration: 1.5, delay: 0.8 }}
-            >
-              <div className="relative w-72 h-48 rounded-lg overflow-hidden">
-                <Image
-                  src={aboutImages.hero[1].src}
-                  alt={aboutImages.hero[1].alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 288px"
-                />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>  */}
+      {/* Top Header */}
+      <section className="pt-24 md:pt-32 pb-6 text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.6 }}
+          variants={fadeInUpVariants}
+          className="container-luxury"
+        >
+          <h1 className="font-serif text-4xl md:text-6xl font-bold tracking-wide text-luxury-heading">
+            ABOUT <span className="text-luxury-gold">US</span>
+          </h1>
+        </motion.div>
+      </section>
 
-      {/* About Us Main Content */}
-      <section className="py-20 relative">
+      {/* Full-bleed Hero with centered overlay card */}
+      <section className="relative h-[60vh] md:h-[72vh] lg:h-[78vh] overflow-hidden">
+                <Image
+          src={`${GITHUB_CDN_BASE}/images/hero/3.webp`}
+          alt="Warm contemporary kitchen interior"
+                  fill
+          priority
+                  className="object-cover"
+          sizes="100vw"
+                />
+            <motion.div 
+          style={{ y: fullBleedOverlayY }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+          variants={scaleUpVariants}
+          className="absolute inset-0 flex items-center justify-center p-4"
+        >
+          <div className="max-w-3xl w-full bg-white/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-6 md:p-10 text-center">
+            <p className="uppercase tracking-[0.25em] text-xs md:text-sm text-luxury-slate/70 mb-3">
+              Philosophy
+            </p>
+            <p className="text-luxury-slate text-base md:text-lg leading-relaxed">
+              OliveHaus Interiors is Nigeria&apos;s leading premier luxury interior design and renovation company, serving discerning residential, corporate, and commercial clients in Nigeria and internationally. We specialize in bespoke, timeless, and functional spaces tailored for clients with a taste for discreet elegance and refined luxury.
+            </p>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Bordered “Meet OliveHaus” card with portrait */}
+      <section className="py-16 md:py-24">
         <div className="container-luxury">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUpVariants}
-            className="max-w-5xl mx-auto mb-20"
+            variants={staggerContainerVariants}
+            className="mx-auto bg-white border border-black/10 rounded-lg shadow-xl px-4 py-6 md:p-10"
           >
-            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-8 text-center">
-              ABOUT <span className="text-luxury-gold">US</span>
-            </h2>
-            
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <motion.div 
-                variants={slideInLeftVariants}
-                className="space-y-6 text-lg text-luxury-slate leading-relaxed"
-              >
+            <motion.p variants={fadeInVariants} className="text-center uppercase tracking-[0.3em] text-xs md:text-sm text-luxury-slate/70 mb-6">
+              Meet OliveHaus
+            </motion.p>
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+              <motion.div variants={slideInLeftVariants} className="order-2 md:order-1">
+                <h3 className="font-serif text-2xl md:text-3xl font-bold text-luxury-heading mb-4">Our Story</h3>
+                <div className="space-y-5 text-base md:text-lg text-luxury-slate leading-relaxed">
                 <p>
                   OliveHaus Interiors is Nigeria&apos;s leading premier luxury interior design and renovation company, serving discerning residential, corporate, and commercial clients in Nigeria and internationally. We specialize in bespoke, timeless, and functional spaces tailored for clients with a taste for discreet elegance and refined luxury.
                 </p>
                 <p>
                   From high-end holiday homes and exclusive residences to modern commercial spaces such as wellness centers, ultra-modern spas, and status-defining offices, we craft environments that inspire, endure, and elevate.
                 </p>
-              </motion.div>
-              
-              <motion.div 
-                variants={slideInRightVariants}
-                className="relative grid grid-cols-2 gap-4"
-              >
-                <div className="relative h-64 rounded-lg overflow-hidden">
-                  <Image
-                    src={aboutImages.story[0].src}
-                    alt={aboutImages.story[0].alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  />
                 </div>
-                <div className="relative h-64 rounded-full overflow-hidden mt-8">
+              </motion.div>
+              <motion.div variants={slideInRightVariants} className="order-1 md:order-2">
+                <div className="relative h-72 md:h-80 lg:h-96 rounded-md overflow-hidden shadow-lg">
                   <Image
-                    src={aboutImages.story[1].src}
-                    alt={aboutImages.story[1].alt}
+                    src={`${GITHUB_CDN_BASE}/images/hero/2.webp`}
+                    alt="Founder portrait"
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
               </motion.div>
             </div>
-
-            {/* <motion.div
-              variants={fadeInUpVariants}
-              className="mt-12 space-y-6 text-lg text-luxury-slate leading-relaxed"
-            >
-            
-            </motion.div> */}
           </motion.div>
-
-          {/* Mission & Vision with Images */}
-          <div className="grid lg:grid-cols-2 gap-16 mb-20">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={slideInLeftVariants}
-              className="relative"
-            >
-              <div className="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-xl relative z-10">
-                <h3 className="text-luxury-heading text-2xl font-bold mb-4">
-                  Our <span className="text-luxury-gold">Mission</span>
-                </h3>
-                <p className="text-luxury-slate leading-relaxed">
-                  To be a global brand known for creating personalized interior environments that increase productivity and overall quality of life.
-                </p>
-              </div>
-              <motion.div 
-                style={{ y: storyParallax }}
-                className="absolute -top-10 -right-10 w-48 h-48 rounded-full overflow-hidden opacity-50"
-              >
-                <Image
-                  src={aboutImages.mission[0].src}
-                  alt={aboutImages.mission[0].alt}
-                  fill
-                  className="object-cover"
-                  sizes="192px"
-                />
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={slideInRightVariants}
-              className="relative"
-            >
-              <div className="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-xl relative z-10">
-                <h3 className="text-luxury-heading text-2xl font-bold mb-4">
-                  Our <span className="text-luxury-gold">Vision</span>
-                </h3>
-                <p className="text-luxury-slate leading-relaxed">
-                  To be a global brand known for creating personalized interior environments that increase productivity and overall quality of life.
-                </p>
-              </div>
-              <motion.div 
-                className="absolute -bottom-10 -left-10 w-56 h-56 rounded-lg overflow-hidden opacity-50"
-              >
-                <Image
-                  src={aboutImages.mission[1].src}
-                  alt={aboutImages.mission[1].alt}
-                  fill
-                  className="object-cover"
-                  sizes="224px"
-                />
-              </motion.div>
-            </motion.div>
-          </div>
         </div>
       </section>
 
-      {/* Company Story Section */}
-      <section className="py-20">
+      {/* Three‑image strip */}
+      <section className="py-6 md:py-10">
         <div className="container-luxury">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={slideInLeftVariants}
-            >
-              {/* <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
-                Our <span className="text-luxury-gold">Story</span>
-              </h2> */}
-              <div className="space-y-6 text-lg text-luxury-slate leading-relaxed">
-                  <p>
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainerVariants}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          >
+            {[
+              `${GITHUB_CDN_BASE}/images/hero/5.webp`,
+              `${GITHUB_CDN_BASE}/images/hero/6.webp`,
+              `${GITHUB_CDN_BASE}/images/hero/7.webp`
+            ].map((src, index) => (
+              <motion.div key={src} variants={fadeInUpVariants} className="relative h-52 md:h-64 lg:h-72 rounded-md overflow-hidden shadow-md">
+                <Image src={src} alt={`Project ${index + 1}`} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 33vw" />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Our Experience - full‑bleed with centered overlay */}
+      <section className="relative h-[60vh] md:h-[70vh] lg:h-[76vh] my-10 md:my-16 overflow-hidden">
+        <Image
+          src={`${GITHUB_CDN_BASE}/images/hero/2.webp`}
+          alt="Grand staircase and living area"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <motion.div
+          style={{ y: fullBleedOverlayY }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+          variants={scaleUpVariants}
+          className="absolute inset-0 flex items-center justify-center p-4"
+        >
+          <div className="max-w-3xl w-full bg-white/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-6 md:p-10 text-center">
+            <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-luxury-slate/70 mb-3">Our Experience</p>
+            <div className="text-luxury-slate text-base md:text-lg leading-relaxed space-y-4">
+              <p>
                 Trusted by homeowners, property investors, and Nigeria&apos;s elite from Lagos (Lekki, Ikoyi, Victoria Island, Maryland) to Abuja, Port Harcourt, and beyond we have completed more than 1,000 projects to date. Each space reflects our commitment to exceptional craftsmanship, meticulous attention to detail, and stress-free project management.
               </p>
               <p>
                 With daily updates, personalized solutions, and access to a dedicated design consultant, every client experiences a seamless journey from vision to completion. For diaspora clients, our proven remote oversight ensures the same uncompromising standard of excellence, wherever they are in the world.
-              </p>
-              {/* <p className="font-semibold text-xl text-luxury-heading">
-               
-              </p> */}
-                {/* <p>
-                  We specialize in creating bespoke, timeless, and functional spaces for discerning clients. Our design process emphasizes luxurious personalized solutions, exceptional project management, and remote oversight for diaspora clients.
                 </p>
-                <p>
-                  With over 12 years of experience in the luxury interior design industry, we have established ourselves as the go-to firm for Nigeria&apos;s elite and international clientele seeking exceptional design solutions.
-                </p>
-                <p>
-                  Our philosophy is simple: <em>&apos;Designers who begin with the end in mind.&apos;</em> Every project we undertake is crafted with meticulous attention to detail and a deep understanding of our clients&apos; unique lifestyles and preferences.
-                </p> */}
               </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Mission (full‑bleed) */}
+      <section className="relative h-[55vh] md:h-[64vh] lg:h-[70vh] overflow-hidden">
+                <Image
+          src={`${GITHUB_CDN_BASE}/images/hero/1.webp`}
+          alt="Soft light living room"
+                  fill
+                  className="object-cover"
+          sizes="100vw"
+                />
+            <motion.div
+          style={{ y: fullBleedOverlayY }}
+              initial="hidden"
+              whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+          variants={scaleUpVariants}
+          className="absolute inset-0 flex items-center justify-center p-4"
+        >
+          <div className="max-w-2xl w-full bg-white/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-6 md:p-10 text-center">
+            <h3 className="font-serif text-2xl md:text-3xl font-bold text-luxury-heading mb-4">Our Mission</h3>
+            <p className="text-luxury-slate text-base md:text-lg leading-relaxed">
+                  To be a global brand known for creating personalized interior environments that increase productivity and overall quality of life.
+                </p>
+              </div>
+        </motion.div>
+      </section>
+
+      {/* Vision (full‑bleed) */}
+      <section className="relative h-[55vh] md:h-[64vh] lg:h-[70vh] overflow-hidden">
+                <Image
+          src={`${GITHUB_CDN_BASE}/images/hero/6.webp`}
+          alt="Refined contemporary bedroom"
+                  fill
+                  className="object-cover"
+          sizes="100vw"
+        />
+        <motion.div
+          style={{ y: fullBleedOverlayY }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+          variants={scaleUpVariants}
+          className="absolute inset-0 flex items-center justify-center p-4"
+        >
+          <div className="max-w-2xl w-full bg-white/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-6 md:p-10 text-center">
+            <h3 className="font-serif text-2xl md:text-3xl font-bold text-luxury-heading mb-4">Our Vision</h3>
+            <p className="text-luxury-slate text-base md:text-lg leading-relaxed">
+              To be a global brand known for creating personalized interior environments that increase productivity and overall quality of life.
+            </p>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Tagline Section with Image */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-[#f8f6f3] to-white relative overflow-hidden">
+        <div className="container-luxury">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUpVariants}
+              className="text-center lg:text-left px-4 md:px-0"
+            >
+              <p className="font-serif text-3xl md:text-4xl lg:text-5xl italic text-luxury-heading leading-tight">
+                Timeless luxury, for everyday comfort…
+              </p>
             </motion.div>
             
             <motion.div
@@ -335,121 +320,56 @@ export default function AboutPage() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
               variants={scaleUpVariants}
-              className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden"
+              className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-xl"
             >
               <Image
-                src={`${GITHUB_CDN_BASE}/images/hero/7.webp`}
-                alt="OliveHaus team at work"
+                src={`${GITHUB_CDN_BASE}/images/hero/6.webp`}
+                alt="Timeless luxury interiors"
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* We Stand Out Section - White background with unique wave pattern
-              <section className="relative pt-12 pb-0 overflow-hidden">
-                <LuxuryWavePattern opacity={0.5} />
-      
-                <div className="container-luxury relative z-10">
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    className="text-center mb-5"
-                  >
-                    <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
-                      We Stand <span className="text-luxury-gold">Out</span>
-                    </h2>
-                  </motion.div>
-      
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {[
-                      {
-                        title: 'Seamless Project Experience',
-                        description:
-                          'Flawless client experience, before, during and after project execution',
-                        icon: ''
-                      },
-                      {
-                        title: 'Design for High-Quality Living',
-                        description:
-                          'Luxurious, personalized interiors that tastefully blend functionality with timeless aesthetics.',
-                        icon: ''
-                      },
-                      {
-                        title: 'Stress-free Project Oversight',
-                        description:
-                          'Stay in control from anywhere in the world with our Daily Manager Platform Updates—track progress, reports, and updates at your convenience',
-                        icon: ''
-                      },
-                      {
-                        title: 'Constant Team Support',
-                        description:
-                          'A responsive, detail-driven team ensures your vision is executed to perfection.',
-                        icon: ''
-                      }
-                    ].map((value, index) => (
-                      <motion.div
-                        key={value.title}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: index * 0.2 }}
-                        className=" backdrop-blur-sm p-8 rounded-lg shadow-luxury-soft hover:shadow-luxury-strong transition-all duration-300"
-                      >
-                        <div className="text-4xl mb-4">{value.icon}</div>
-                        <h3 className="font-serif text-xl font-bold mb-4 text-luxury-charcoal tracking-wide">
-                          {value.title}
-                        </h3>
-                        <p className="text-luxury-charcoal/80 leading-relaxed font-sans mb-0">
-                          {value.description}
-                        </p>
-                      </motion.div>
-                    ))}
-                  </div>
+      {/* Closing CTA Section - Founder Style */}
+      <section className="py-20 md:py-28 bg-luxury-charcoal text-white text-center relative overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <Image
+            src={`${GITHUB_CDN_BASE}/images/hero/7.webp`}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
                 </div>
-              </section>
-       */}
+        {/* Contrast overlay for readability over photo */}
+        <div className="absolute inset-0 bg-black/35" />
 
-      {/* Tagline Section */}
-      <section className="py-16 text-center">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={fadeInUpVariants}
-          className="container-luxury"
-        >
-          <p className="font-serif text-3xl md:text-4xl italic text-luxury-heading mb-12">
-            Timeless luxury, for everyday comfort…
-          </p>
-        </motion.div>
-      </section>
-
-      {/* Closing CTA Section */}
-      <section className="py-20 bg-luxury-charcoal text-white text-center">
-        <div className="container-luxury">
+        <div className="container-luxury relative z-10 px-4">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUpVariants}
+            className="max-w-4xl mx-auto"
           >
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
-              <em> At OliveHaus Interiors, we design for high-quality living.</em>
+            <p className="font-serif text-sm md:text-base uppercase tracking-[0.3em] text-luxury-gold mb-6">
+              Our Promise
+            </p>
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 md:mb-12 leading-tight">
+              At OliveHaus Interiors, we design for high-quality living.
             </h2>
             <motion.button
-              onClick={handleHireUsClick}
+              onClick={handleExperienceClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="border border-luxury-gold btn-luxury text-lg px-12 py-4"
+              className="inline-block bg-luxury-gold text-luxury-charcoal font-semibold text-base md:text-lg px-10 md:px-14 py-4 md:py-5 rounded-sm hover:bg-luxury-gold/90 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              Experience our promise
+              Experience Our Promise
             </motion.button>
           </motion.div>
         </div>
