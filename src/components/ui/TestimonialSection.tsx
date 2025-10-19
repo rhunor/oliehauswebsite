@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Testimonial {
@@ -155,74 +155,36 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start"
             >
               {/* Testimonial Content */}
-              <div className="space-y-8">
-                {/* Quote Icon */}
-                <div className="w-16 h-16 bg-luxury-gold/10 rounded-2xl flex items-center justify-center">
-                  <Quote className="w-8 h-8 text-luxury-gold" />
-                </div>
-
-                {/* Stars */}
-                <div className="flex items-center space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={cn(
-                        "w-6 h-6",
-                        i < currentTestimonialData.rating
-                          ? "text-luxury-gold fill-current"
-                          : "text-luxury-platinum"
-                      )}
-                    />
-                  ))}
-                </div>
-
-                {/* Testimonial Text */}
-                <blockquote className="text-2xl md:text-3xl font-elegant leading-relaxed text-luxury-charcoal italic">
+              <div className="space-y-6">
+                {/* Pull Quote / Narrative */}
+                <blockquote className="font-serif italic text-[18px] md:text-[20px] leading-8 md:leading-9 text-justify text-luxury-charcoal/90">
                   &ldquo;{currentTestimonialData.content}&rdquo;
                 </blockquote>
-
-                {/* Client Info */}
-                <div className="space-y-2">
-                  <div className="font-serif text-xl font-bold text-luxury-charcoal">
-                    {currentTestimonialData.clientName}
-                  </div>
-                  <div className="text-luxury-slate">
-                    {currentTestimonialData.projectType} • {currentTestimonialData.location}
-                  </div>
-                  {currentTestimonialData.isHighProfile && (
-                    <div className="inline-flex items-center text-xs bg-luxury-gold/10 text-luxury-gold px-3 py-1 rounded-full font-medium">
-                      High-Profile Client
-                    </div>
-                  )}
+                {/* Attribution */}
+                <div className="text-xs uppercase tracking-[0.18em] text-luxury-slate/70">
+                  – {currentTestimonialData.clientName}, {currentTestimonialData.location}
                 </div>
               </div>
 
-              {/* Project Image */}
+              {/* Project Image + Floating Info Box */}
               <div className="relative">
-                <div className="aspect-[3/2] relative overflow-hidden rounded-2xl shadow-luxury">
+                <div className="aspect-[3/2] relative overflow-hidden rounded-2xl shadow-luxury-soft">
                   <img
                     src={currentTestimonialData.projectImage}
                     alt={`${currentTestimonialData.projectType} project`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
                 </div>
 
-                {/* Floating Badge */}
-                {/* <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="absolute -bottom-8 -right-8 bg-luxury-gold text-white p-4 rounded-2xl shadow-luxury"
-                >
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">5.0</div>
-                    <div className="text-xs opacity-90">Rating</div>
-                  </div>
-                </motion.div> */}
+                {/* Floating Info Box (desktop), stacked on mobile */}
+                <div className="max-w-md lg:max-w-sm bg-[rgb(var(--color-pale-oat))] text-luxury-charcoal/90 border border-black/5 rounded-xl shadow-luxury-soft p-6 md:p-7 lg:absolute lg:-bottom-8 lg:-right-8 mt-6 lg:mt-0">
+                  <h3 className="font-serif text-xl font-bold mb-2">{currentTestimonialData.projectType}</h3>
+                  <p className="text-sm md:text-base leading-7">{currentTestimonialData.location}</p>
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>
