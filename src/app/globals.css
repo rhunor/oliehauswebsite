@@ -222,6 +222,8 @@ body {
   font-family: 'Quintessential', cursive !important;
 }
 
+/* (removed temporary Laguna alias) */
+
   .font-olivehaus {
     font-family: var(--font-serif) !important;
   }

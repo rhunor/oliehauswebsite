@@ -99,6 +99,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
           rel="stylesheet"
         />
 
+        {/* Optional Adobe Fonts (Ivy Mode) - set NEXT_PUBLIC_ADOBE_FONTS_KIT_ID env var */}
+        {process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID && (
+          <link
+            rel="stylesheet"
+            href={`https://use.typekit.net/${process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID}.css`}
+          />
+        )}
+
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />

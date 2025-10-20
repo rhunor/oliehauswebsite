@@ -273,28 +273,10 @@ export function getOptimizedImageUrl(
   return optimizedUrl;
 }
 
-export function generateImageBlurDataUrl(width: number = 10, height: number = 10): string {
-  if (typeof document === 'undefined') {
-    // Server-side fallback - luxury cream color blur
-    return 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAKAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAhEQACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/9oADAMBAAIRAxEAPwCdABmX/9k=';
-  }
-  
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  
-  if (!ctx) return generateImageBlurDataUrl(); // Fallback to server-side
-  
-  // Create luxury cream gradient
-  const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, '#F8F6F0'); // luxury-cream
-  gradient.addColorStop(1, '#F0EDE5'); // slightly darker cream
-  
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, width, height);
-  
-  return canvas.toDataURL('image/jpeg', 0.1);
+export function generateImageBlurDataUrl(_width: number = 10, _height: number = 10): string {
+  // Return the same small neutral placeholder on both server and client
+  // to avoid hydration mismatches caused by dynamic canvas rendering.
+  return 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAKAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAhEQACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/9oADAMBAAIRAxEAPwCdABmX/9k=';
 }
 
 export function getImageDimensions(url: string): Promise<{ width: number; height: number }> {

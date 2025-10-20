@@ -116,6 +116,8 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
                   <React.Fragment key={item.label}>
                     <Link
                       href={item.href}
+                      target={item.href.startsWith('http') ? '_blank' : undefined}
+                      rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       className={`relative py-3 px-4 font-medium text-sm tracking-wide transition-all duration-300 hover:text-luxury-gold ${textClasses} group whitespace-nowrap`}
                     >
                       {item.label}
@@ -236,6 +238,8 @@ const AdaptiveNavigation: React.FC<AdaptiveNavigationProps> = ({ className = '' 
                   >
                     <Link
                       href={item.href}
+                      target={item.href.startsWith('http') ? '_blank' : undefined}
+                      rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       onClick={closeMobileMenu}
                       className="block px-4 py-3 text-luxury-charcoal font-medium rounded-lg hover:bg-luxury-gold/10 hover:text-luxury-gold transition-all duration-300"
                     >

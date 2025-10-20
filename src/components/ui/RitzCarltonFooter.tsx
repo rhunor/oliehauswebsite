@@ -83,8 +83,8 @@ const RitzCarltonFooter: React.FC = () => {
                     Services
                   </Link>
                 </li>
-                 <li>
-                  <Link href="https://www.giftedhomesandapartments.com/" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
+                <li>
+                  <Link href="https://www.giftedhomesandapartments.com/" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-luxury-gold transition-colors font-sans text-sm">
                     Our Shortlets
                   </Link>
                 </li> 
