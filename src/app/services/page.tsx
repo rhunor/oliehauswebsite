@@ -256,21 +256,6 @@ const slideInRightVariants: Variants = {
   }
 };
 
-const scaleUpVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    scale: 0.9 
-  },
-  visible: { 
-    opacity: 1, 
-    scale: 1,
-    transition: { 
-      duration: 0.6, 
-      ease: "easeOut" 
-    }
-  }
-};
-
 // Timeline item component for the Process section
 interface TimelineItemProps {
   item: ProcessStep;
@@ -389,105 +374,144 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Services Section with Images */}
-      <section className="py-20 relative">
-        <div className="container-luxury">
+      {/* Services Section with Images - Editorial Style */}
+      <section className="py-20 relative bg-ivory">
+        {/* Top Editorial Border */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-luxury-gold/30 to-transparent mb-20" />
+        
+        <div className="container-luxury max-w-7xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUpVariants}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
             <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
               OUR <span className="text-luxury-gold">SERVICES</span>
             </h2>
+            {/* Decorative underline */}
+            <div className="w-24 h-px bg-luxury-gold mx-auto mt-6" />
           </motion.div>
 
-          {/* Services Grid */}
-          <div className="space-y-24">
-            {services.map((service, index) => (
-              <motion.div
-                key={service.title}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={index % 2 === 0 ? slideInLeftVariants : slideInRightVariants}
-                className={`grid lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-                }`}
-              >
-                <div className={`${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
-                    <div className="text-luxury-gold mb-6">
-                      {service.icon}
-                    </div>
-                    <h3 className="text-luxury-heading text-2xl font-bold mb-4">
-                      {service.title}
-                    </h3>
-                    <p className="text-luxury-slate leading-relaxed mb-6">
-                      {service.description}
-                    </p>
-                    <ul className="space-y-3">
-                      {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start text-luxury-slate">
-                          <Check className="w-5 h-5 text-luxury-gold mr-3 flex-shrink-0 mt-0.5" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                
-                {/* Service Image */}
-                <motion.div 
-                  className={`relative h-96 rounded-2xl overflow-hidden ${
-                    index % 2 === 1 ? 'lg:order-1' : ''
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
+          {/* Continuous Vertical Line Through Entire Section */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-32 bottom-32 w-[1.5px] bg-luxury-slate/25 hidden lg:block" />
+
+          {/* Services Grid - Editorial Layout with Hard Shadows */}
+          <div className="space-y-32 md:space-y-40 relative">
+            {services.map((service, index) => {
+              // Define shadow colors for variety - using your color palette
+              const shadowColors = [
+                'bg-[#C8D1C0]',      // soft-sage
+                'bg-[#E7B9A9]',      // clay-peach
+                'bg-[#D4AF37]',      // luxury-gold
+                'bg-[#C99789]',      // desert-rose
+                'bg-[#E8E2DA]',      // warm-sand
+                'bg-[#B6C2AD]',      // misty-olive
+                'bg-[#D8A48F]',      // terracotta-blush
+                'bg-[#F2EDE7]',      // pale-oat
+              ];
+              
+              const shadowColor = shadowColors[index % shadowColors.length];
+              
+              return (
+                <motion.div
+                  key={service.title}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={index % 2 === 0 ? slideInLeftVariants : slideInRightVariants}
+                  className="relative"
                 >
-                  {index < 4 && (
-                    <Image
-                      src={getImage(index + 1).src}
-                      alt={service.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                  {/* Editorial Border Frame */}
+                  <div className="absolute -inset-x-4 -inset-y-8 border-l border-r border-luxury-slate/10 hidden lg:block" />
+                  
+                  <div className={`grid lg:grid-cols-2 gap-8 md:gap-16 items-center ${
+                    index % 2 === 1 ? 'lg:grid-flow-dense' : ''
+                  }`}>
+                    {/* Text Content */}
+                    <div className={`${index % 2 === 1 ? 'lg:col-start-2' : ''} px-4 md:px-0`}>
+                      <div className="max-w-xl">
+                        <div className="text-luxury-gold mb-6">
+                          {service.icon}
+                        </div>
+                        <h3 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-luxury-charcoal leading-tight">
+                          {service.title}
+                        </h3>
+                        <p className="text-luxury-slate text-base md:text-lg leading-relaxed mb-8">
+                          {service.description}
+                        </p>
+                        <ul className="space-y-3">
+                          {service.features.map((feature, featureIndex) => (
+                            <li key={featureIndex} className="flex items-start text-luxury-slate">
+                              <Check className="w-5 h-5 text-luxury-gold mr-3 flex-shrink-0 mt-0.5" />
+                              <span className="text-sm md:text-base">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    {/* Image with Hard Shadow - Editorial Style */}
+                    <div className={`${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''} px-4 md:px-0 flex ${index % 2 === 1 ? 'justify-end' : 'justify-start'}`}>
+                      <div className="relative w-full max-w-md">
+                        {/* Hard Shadow Rectangle - Offset Behind - More Pronounced */}
+                        <div 
+                          className={`absolute ${shadowColor} opacity-60 rounded-sm`}
+                          style={{
+                            width: '85%',
+                            height: '85%',
+                            top: index % 2 === 0 ? '30px' : '-30px',
+                            left: index % 2 === 0 ? '30px' : '-30px',
+                            right: index % 2 === 0 ? 'auto' : '30px',
+                            zIndex: 0
+                          }}
+                        />
+                        
+                        {/* Main Image - Smaller for pronounced shadow */}
+                        <motion.div 
+                          className="relative h-[350px] md:h-[420px] w-full max-w-sm overflow-hidden bg-white shadow-lg"
+                          style={{ zIndex: 1 }}
+                          whileHover={{ 
+                            scale: 1.02,
+                            transition: { duration: 0.4, ease: "easeOut" }
+                          }}
+                        >
+                          {index < 4 && (
+                            <Image
+                              src={getImage(index + 1).src}
+                              alt={service.title}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 400px"
+                            />
+                          )}
+                          {index >= 4 && (
+                            <Image
+                              src={getImage(((index - 4) % 4) + 1).src}
+                              alt={service.title}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 400px"
+                            />
+                          )}
+                        </motion.div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Decorative horizontal line between services */}
+                  {index < services.length - 1 && (
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-luxury-slate/10 to-transparent mt-16 md:mt-20" />
                   )}
-                  {index >= 4 && (
-                    <Image
-                      src={getImage(((index - 4) % 4) + 1).src}
-                      alt={service.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </motion.div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* Decorative Images */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={scaleUpVariants}
-          className="absolute top-1/4 right-0 w-64 h-64 rounded-full overflow-hidden hidden xl:block opacity-10"
-        >
-          <Image
-            src={getImage(2).src}
-            alt=""
-            fill
-            className="object-cover"
-            sizes="256px"
-          />
-        </motion.div>
+        {/* Bottom Editorial Border */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-luxury-gold/30 to-transparent mt-20" />
       </section>
 
       {/* Process Section - Vertical timeline with scroll-driven line & dots */}
