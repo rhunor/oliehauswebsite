@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Eye } from 'lucide-react';
 import Image from 'next/image';
 import { cn, getGitHubCdnCacheBustedUrl, generateImageBlurDataUrl, responsiveSizes, imageQuality } from '@/lib/utils';
 
@@ -212,10 +212,10 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
               className="group cursor-pointer"
               onClick={() => handleViewProject(project.id)}
             >
-              <div className="relative overflow-hidden rounded-lg h-full aspect-[3/4]">
-                {/* Project Image Container - Full Background */}
+              <div className="card-luxury overflow-hidden h-full">
+                {/* Project Image Container */}
                 <div 
-                  className="absolute inset-0"
+                  className="relative aspect-[4/3] mb-6 overflow-hidden rounded-xl"
                   onMouseEnter={() => setHoveredProject(project.id)}
                   onMouseLeave={() => setHoveredProject(null)}
                 >
@@ -227,7 +227,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                     height={project.image.height}
                     className={cn(
                       "object-cover w-full h-full transition-all duration-500",
-                      hoveredProject === project.id ? "scale-105" : "scale-100"
+                      hoveredProject === project.id ? "scale-110 brightness-75" : "scale-100 brightness-100"
                     )}
                     sizes={responsiveSizes.threeColumn}
                     priority={index < 3}
@@ -235,19 +235,60 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                     blurDataURL={generateImageBlurDataUrl(10, 8)}
                     quality={imageQuality.standard}
                   />
+                  
+                  {/* Featured Badge */}
+                  {project.featured && (
+                    <div className="absolute top-4 right-4 z-10">
+                      <div className="bg-luxury-gold text-white text-xs px-3 py-1 rounded-full font-medium">
+                        Featured
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Hover Eye Icon */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ 
+                      opacity: hoveredProject === project.id ? 1 : 0,
+                      scale: hoveredProject === project.id ? 1 : 0.8
+                    }}
+                    className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
+                  >
+                    <div className="bg-white p-4 rounded-full shadow-luxury-soft">
+                      <Eye className="w-6 h-6 text-luxury-gold" />
+                    </div>
+                  </motion.div>
                 </div>
 
-                {/* Text Overlay Box at Bottom Center */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white rounded-sm shadow-lg px-8 py-6 text-center z-10 w-[85%]">
-                  <h3 className="text-base font-bold text-luxury-charcoal mb-1 font-serif uppercase tracking-wider">
+                {/* Project Details */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-luxury-gold text-sm font-medium uppercase tracking-wider">
+                      {project.category}
+                    </span>
+                    <span className="text-luxury-slate text-sm">
+                      {project.location}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-luxury-charcoal group-hover:text-luxury-gold transition-colors duration-300 font-accent">
                     {project.title}
                   </h3>
-                  <p className="text-xs text-luxury-slate font-body mb-3">
-                    {project.category}, {project.location}
-                  </p>
-                  <p className="text-xs text-luxury-slate font-body leading-relaxed">
+
+                  <p className="text-luxury-slate leading-relaxed font-body">
                     {project.description}
                   </p>
+
+                  <div className="flex items-center text-luxury-gold font-medium group-hover:gap-3 gap-2 transition-all duration-300">
+                    <a
+                    href="/projects"
+                    >
+                       <span>View Project</span>
+                    </a>
+                   
+
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
                 </div>
               </div>
             </motion.div>
