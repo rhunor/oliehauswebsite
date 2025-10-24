@@ -123,12 +123,13 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
         </div>
 
         {/* Project Title - Large and Editorial */}
-        <div className="px-8 pt-12 pb-6 text-center">
+        <div className="px-8 pt-12 pb-6 text-center min-h-[150px] md:min-h-[180px] flex flex-col justify-center">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="font-serif text-4xl md:text-5xl font-bold text-luxury-charcoal tracking-wide mb-3 uppercase"
+            style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
           >
             {project.title.replace('Project ', '')}
           </motion.h2>
@@ -175,12 +176,12 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
         </div>
 
         {/* Description Section */}
-        <div className="px-8 py-8">
-          <h3 className="font-serif text-xl md:text-2xl font-semibold text-luxury-charcoal mb-4 leading-relaxed">
-            {project.description.split('.')[0]}
-          </h3>
-          <p className="text-luxury-slate/80 leading-relaxed text-sm md:text-base">
-            {project.description.split('.').slice(1).join('.')}
+        <div className="px-8 py-8 min-h-[140px] md:min-h-[160px]">
+          <p
+            className="text-luxury-slate/80 leading-relaxed text-sm md:text-base"
+            style={{ display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+          >
+            {project.description}
           </p>
         </div>
 
@@ -228,7 +229,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
               className="overflow-hidden border-t border-luxury-slate/10"
             >
               {/* Film Roll Effect - Vertical Image Gallery */}
-              <div className="bg-gradient-to-b from-luxury-slate/5 to-white">
+              <div className="bg-gradient-to-b from-luxury-slate/5 to-[#F3EEE8]">
                 {/* Gallery Header */}
                 <div className="px-8 py-6 border-b border-luxury-slate/10">
                   <p className="text-xs tracking-widest text-luxury-slate/60 uppercase">
@@ -363,7 +364,7 @@ export default function ProjectsPage() {
       id: 'serene',
       title: 'Project Serene',
       location: 'Maryland, Lagos',
-      description: 'Designed as a sanctuary, this bathroom embraces space, light, and calm. A breathy layout, soft finishes, and spa-inspired details create an atmosphere of ease and renewal — a retreat that feels both expansive and intimate',
+      description: 'Designed as a sanctuary, this bathroom embraces space, light, and calm. A breathy layout, soft finishes, and spa-inspired details create an atmosphere of ease and renewal',
       category: 'residential',
       area: '45 m²',
       thumbnail: {
@@ -624,7 +625,7 @@ export default function ProjectsPage() {
       <Head>
         <title>Our Signature Projects | Olivehaus Interiors</title>
       </Head>
-      <div className="min-h-screen bg-[#FAF9F6] relative">
+      <div className="min-h-screen bg-[#F3EEE8] relative">
         {/* Subtle Background Pattern */}
         <div
           className="diamond-pattern"
@@ -675,7 +676,7 @@ export default function ProjectsPage() {
             transition={{ duration: 0.9, delay: 0.2, ease: [0.6, -0.05, 0.01, 0.99] }}
             className="absolute inset-0 flex items-center justify-center p-4"
           >
-            <div className="max-w-4xl w-full bg-white/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-8 md:p-12 text-center">
+            <div className="max-w-4xl w-full bg-[#F3EEE8]/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-8 md:p-12 text-center">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -708,14 +709,14 @@ export default function ProjectsPage() {
         </motion.section>
 
         {/* Filter Section - Magazine Style */}
-        <section className="sticky top-0 z-40 bg-white/98 backdrop-blur-md shadow-sm border-b border-luxury-slate/10">
+        <section className="sticky top-0 z-40 bg-[#F3EEE8]/98 backdrop-blur-md shadow-sm border-b border-luxury-slate/10">
           <div className="container-luxury py-5">
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="max-w-xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="flex flex-wrap gap-2 justify-center"
+                className="grid grid-cols-2 md:grid-cols-4 gap-2"
               >
                 {[
                   { value: 'all' as const, label: 'All' },
@@ -727,7 +728,7 @@ export default function ProjectsPage() {
                     key={filter.value}
                     onClick={() => setActiveFilter(filter.value)}
                     className={cn(
-                      'px-8 py-2.5 text-xs tracking-[0.2em] uppercase font-medium transition-all duration-300',
+                      'w-full py-2.5 text-center text-xs tracking-[0.2em] uppercase font-medium transition-all duration-300',
                       activeFilter === filter.value
                         ? 'bg-luxury-charcoal text-white'
                         : 'bg-transparent text-luxury-slate/60 hover:text-luxury-charcoal border border-luxury-slate/20 hover:border-luxury-slate/40'
@@ -830,8 +831,8 @@ export default function ProjectsPage() {
                 Let&apos;s Create Together
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-100 drop-shadow-lg">
-                Ready to Transform
-                <span className="text-luxury-gold block mt-2 drop-shadow-lg">Your Space?</span>
+              Love Our Spaces? . 
+                <span className="text-luxury-gold block mt-2 drop-shadow-lg">Your project deserves the same touch</span>
               </h2>
               <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed font-light drop-shadow-md">
                 Every exceptional space starts with a conversation. Let&apos;s discuss your vision.
@@ -842,7 +843,7 @@ export default function ProjectsPage() {
                 onClick={() => window.location.href = '/contact'}
                 className="bg-luxury-gold hover:bg-luxury-darkGold text-white px-12 py-4 text-sm tracking-[0.2em] uppercase font-semibold transition-all duration-300 shadow-2xl hover:shadow-3xl border-2 border-luxury-gold/20 hover:border-luxury-gold/40"
               >
-                Start Your Project
+               Connect with us to begin
               </motion.button>
             </motion.div>
           </div>

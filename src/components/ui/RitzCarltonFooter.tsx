@@ -6,7 +6,7 @@ import { Phone, Mail, MapPin, Instagram } from 'lucide-react';
 
 const RitzCarltonFooter: React.FC = () => {
   return (
-    <footer className="bg-luxury-charcoal text-white relative overflow-hidden">
+    <footer className="bg-[#3d3d3d] text-white relative overflow-hidden">
       {/* Subtle background pattern */}
       <div 
         className="absolute inset-0 opacity-[0.01] pointer-events-none"
