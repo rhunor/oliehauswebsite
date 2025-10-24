@@ -2,6 +2,7 @@
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
+import AnimatedUnderline from '@/components/ui/AnimatedUnderline';
 
 // GitHub CDN base URL for images
 const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
@@ -357,9 +358,15 @@ export default function AboutPage() {
             variants={fadeInUpVariants}
             className="max-w-4xl mx-auto"
           >
-            <p className="font-serif text-sm md:text-base uppercase tracking-[0.3em] text-luxury-gold mb-6">
+            <AnimatedUnderline 
+              className="font-serif text-sm md:text-base uppercase tracking-[0.3em] text-luxury-gold mb-6"
+              underlineColor="#D4AF37"
+              underlineHeight={3}
+              animationDuration={1.2}
+              delay={0.3}
+            >
               Our Promise
-            </p>
+            </AnimatedUnderline>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 md:mb-12 leading-tight">
               At OliveHaus Interiors, we design for high-quality living.
             </h2>

@@ -800,7 +800,8 @@ export default function ProjectsPage() {
           transition={{ duration: 0.8 }}
           className="py-24 bg-luxury-charcoal relative z-10 overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-5">
+          {/* Enhanced background pattern with better contrast */}
+          <div className="absolute inset-0 opacity-10">
             <div
               className="absolute inset-0"
               style={{
@@ -814,31 +815,35 @@ export default function ProjectsPage() {
               }}
             />
           </div>
-          <div className="container-luxury text-center relative z-10">
+          
+          {/* Additional overlay for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/40" />
+          
+          <div className="container-luxury text-center relative z-20 px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-luxury-gold text-xs tracking-[0.3em] uppercase font-medium mb-6 block">
+              <span className="text-luxury-gold text-sm tracking-[0.3em] uppercase font-semibold mb-6 block drop-shadow-lg">
                 Let&apos;s Create Together
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-white">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-100 drop-shadow-lg">
                 Ready to Transform
-                <span className="text-luxury-gold block mt-2">Your Space?</span>
-            </h2>
-              <p className="text-lg text-white/70 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                <span className="text-luxury-gold block mt-2 drop-shadow-lg">Your Space?</span>
+              </h2>
+              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed font-light drop-shadow-md">
                 Every exceptional space starts with a conversation. Let&apos;s discuss your vision.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '/contact'}
-                className="bg-luxury-gold hover:bg-luxury-darkGold text-white px-12 py-4 text-sm tracking-[0.2em] uppercase font-medium transition-all duration-300"
-            >
-              Start Your Project
-            </motion.button>
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '/contact'}
+                className="bg-luxury-gold hover:bg-luxury-darkGold text-white px-12 py-4 text-sm tracking-[0.2em] uppercase font-semibold transition-all duration-300 shadow-2xl hover:shadow-3xl border-2 border-luxury-gold/20 hover:border-luxury-gold/40"
+              >
+                Start Your Project
+              </motion.button>
             </motion.div>
           </div>
         </motion.section>

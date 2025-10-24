@@ -186,10 +186,10 @@ const heroImages: HeroImage[] = [
   }
 ];
 
-// Updated video content with vimeo URL
+// Updated video content with new vimeo URL
 const videoContent: VideoContent = {
   thumbnailSrc: '/images/video/portfolio-thumbnail.jpg',
-  videoSrc: 'https://vimeo.com/1116723569',
+  videoSrc: 'https://vimeo.com/1130164764',
   title: 'OliveHaus Portfolio Showcase',
   description: 'Discover our luxury interior design process'
 };
@@ -472,7 +472,7 @@ export default function HomePage(): React.JSX.Element {
               transition={{ duration: 0.8 }}
             >
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-luxury-charcoal tracking-wide">
-                <em>Designers who begin with the end in mind</em>
+                <em>&quot;Designers who begin with the end in mind&quot;</em>
               </h2>
               {/* <button
                 onClick={handleHireUsClick}
