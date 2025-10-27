@@ -342,7 +342,7 @@ export default function ProjectsPage() {
       category: 'commercial',
       area: '185 m²',
       thumbnail: {
-        src: getGitHubCdnCacheBustedUrl('/projects/projectsereniquemagodolagos_/1.webp', 'moderate'),
+        src: getGitHubCdnCacheBustedUrl('/projects/projectsereniquemagodolagos_/5.webp', 'moderate'),
         alt: 'Project Edené spa interior',
       },
       images: createImageArray('/projects/projectsereniquemagodolagos_', 9, 'Project Serenique interior'),
@@ -408,7 +408,7 @@ export default function ProjectsPage() {
       category: 'residential',
       area: '425 m²',
       thumbnail: {
-        src: getGitHubCdnCacheBustedUrl('/projects/projectcasavitalis/12.webp', 'moderate'),
+        src: getGitHubCdnCacheBustedUrl('/projects/projectcasavitalis/2.webp', 'moderate'),
         alt: 'Project Casa Vitalis luxury residence',
       },
       images: createImageArray('/projects/projectcasavitalis', 25, 'Project Casa Vitalis interior'),
@@ -543,7 +543,7 @@ export default function ProjectsPage() {
         src: getGitHubCdnCacheBustedUrl('/projects/projectholiday/22.webp', 'moderate'),
         alt: 'Project Holiday renovation',
       },
-      images: createImageArray('/projects/projectholiday', 25, 'Project Holiday interior'),
+      images: createImageArray('/projects/projectholiday', 22, 'Project Holiday interior'),
     },
     {
       id: 'tranquil',

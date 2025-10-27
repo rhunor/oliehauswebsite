@@ -61,7 +61,7 @@ const portfolioProjects: PortfolioProject[] = [
     category: 'Hospitality',
     location: 'Magodo, Lagos',
     image: {
-      src: getGitHubCdnCacheBustedUrl('/projects/projectsereniquemagodolagos_/9.webp', 'moderate'),
+      src: getGitHubCdnCacheBustedUrl('/projects/projectsereniquemagodolagos_/7.webp', 'moderate'),
       alt: 'Boutique hotel lobby featuring Nigerian heritage elements blended with modern luxury design',
       width: 800,
       height: 600,
