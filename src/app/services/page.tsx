@@ -12,8 +12,7 @@ import {
   Building2,
   Key,
   Settings,
-  ChevronRight,
-  Check
+  ChevronRight
 } from 'lucide-react';
 
 // GitHub CDN base URL for images
@@ -272,30 +271,42 @@ function TimelineItem({ item }: TimelineItemProps) {
   return (
     <li
       ref={itemRef}
-      className="relative my-14 first:mt-0 last:mb-0 w-full pl-10"
+      className="relative my-10 md:my-14 first:mt-0 last:mb-0 w-full pl-10 md:pl-12"
     >
-      {/* Animated circle icon */}
-      <motion.span
-        className="absolute left-0 top-2 -translate-x-1/2 w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-luxury-gold bg-[#1A1513] shadow-[0_0_0_4px_rgba(212,165,116,0.2)]"
-        style={{ scale: itemProgress }}
-      />
+      {/* Circle - positioned so line runs through center */}
+      <div className="absolute left-0 top-0 flex items-center justify-center h-full">
+        {/* Outer white-bordered circle with transparent center to let line show through */}
+        <motion.span
+          className="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-white bg-transparent z-10 flex items-center justify-center"
+          style={{ scale: itemProgress }}
+        >
+          {/* Inner filled circle */}
+          <motion.span
+            className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-luxury-gold"
+            style={{ scale: itemProgress }}
+          />
+        </motion.span>
+      </div>
 
-      {/* Number & card */}
-      <div className="grid grid-cols-[auto,1fr] gap-4 md:gap-6 items-start">
-        <div className="font-serif text-4xl md:text-5xl text-white/90 leading-none pt-1">
+      {/* Content - responsive layout */}
+      <div className="space-y-4 md:space-y-6">
+        {/* Step number */}
+        <div className="font-serif text-3xl md:text-4xl font-bold text-luxury-charcoal leading-none">
           {item.step}
         </div>
+        
+        {/* Content card */}
         <motion.div
-          initial={{ y: 40, opacity: 0 }}
+          initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.6 }}
+          viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, type: "spring" }}
-          className="rounded-lg p-5 md:p-7 shadow-2xl bg-gradient-to-br from-white/8 to-white/5 ring-1 ring-white/10"
+          className="rounded-lg p-4 md:p-6 lg:p-7 shadow-md bg-white border border-luxury-slate/10"
         >
-          <h3 className="text-2xl md:text-3xl font-semibold tracking-wide text-white mb-2">
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-wide text-luxury-charcoal mb-2">
             {item.title}
           </h3>
-          <p className="text-white/80 leading-relaxed md:text-base text-sm">
+          <p className="text-luxury-slate leading-relaxed text-sm md:text-base">
             {item.description}
           </p>
         </motion.div>
@@ -375,7 +386,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Section with Images - Editorial Style */}
-      <section className="py-20 relative bg-ivory">
+      <section className="py-20 relative" style={{ backgroundColor: '#e8e7e6' }}>
         {/* Top Editorial Border */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-luxury-gold/30 to-transparent mb-20" />
         
@@ -426,11 +437,11 @@ export default function ServicesPage() {
                   {/* Editorial Border Frame */}
                   <div className="absolute -inset-x-4 -inset-y-8 border-l border-r border-luxury-slate/10 hidden lg:block" />
                   
-                  <div className={`grid lg:grid-cols-2 gap-8 md:gap-16 items-center ${
+                  <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center ${
                     index % 2 === 1 ? 'lg:grid-flow-dense' : ''
                   }`}>
                     {/* Text Content */}
-                    <div className={`${index % 2 === 1 ? 'lg:col-start-2' : ''} px-4 md:px-0`}>
+                    <div className={`${index % 2 === 1 ? 'lg:col-start-2' : ''} px-4 md:px-0 order-2 lg:order-none`}>
                       <div className="max-w-xl">
                         <div className="text-luxury-gold mb-6">
                           {service.icon}
@@ -438,40 +449,54 @@ export default function ServicesPage() {
                         <h3 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-luxury-charcoal leading-tight">
                           {service.title}
                         </h3>
-                        <p className="text-luxury-slate text-base md:text-lg leading-relaxed mb-8">
+                        <p className="text-luxury-slate text-base md:text-lg leading-relaxed mb-6">
                           {service.description}
                         </p>
-                        <ul className="space-y-3">
+                        <div className="text-luxury-slate text-sm md:text-base leading-relaxed space-y-2">
                           {service.features.map((feature, featureIndex) => (
-                            <li key={featureIndex} className="flex items-start text-luxury-slate">
-                              <Check className="w-5 h-5 text-luxury-gold mr-3 flex-shrink-0 mt-0.5" />
-                              <span className="text-sm md:text-base">{feature}</span>
-                            </li>
+                            <div key={featureIndex}>
+                              {feature}
+                            </div>
                           ))}
-                        </ul>
+                        </div>
                       </div>
                     </div>
                     
-                    {/* Image with Hard Shadow - Editorial Style */}
-                    <div className={`${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''} px-4 md:px-0 flex ${index % 2 === 1 ? 'justify-end' : 'justify-start'}`}>
-                      <div className="relative w-full max-w-md">
-                        {/* Hard Shadow Rectangle - Offset Behind - More Pronounced */}
-                        <div 
-                          className={`absolute ${shadowColor} opacity-60 rounded-sm`}
-                          style={{
-                            width: '85%',
-                            height: '85%',
-                            top: index % 2 === 0 ? '30px' : '-30px',
-                            left: index % 2 === 0 ? '30px' : '-30px',
-                            right: index % 2 === 0 ? 'auto' : '30px',
-                            zIndex: 0
-                          }}
-                        />
+                    {/* Image with Color Box - Editorial Style */}
+                    <div className={`${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''} px-4 md:px-0 relative order-1 lg:order-none w-full`}>
+                      <div className="relative w-full max-w-md mx-auto md:mx-0">
+                        {/* Color Box - Visible on all screen sizes, positioned appropriately */}
+                        {index % 2 === 0 ? (
+                          // Left side services - color box appears on right side of photo
+                          <div 
+                            className={`absolute ${shadowColor} opacity-80 rounded-sm`}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              top: index % 2 === 0 ? '20px' : '20px',
+                              left: index % 2 === 0 ? '20px sm:30px md:40px' : '20px',
+                              zIndex: 0
+                            }}
+                          />
+                        ) : (
+                          // Right side services - color box appears on left side of photo  
+                          <div 
+                            className={`absolute ${shadowColor} opacity-80 rounded-sm`}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              top: '20px',
+                              right: '20px sm:right-7 md:right-10',
+                              left: 'auto',
+                              zIndex: 0
+                            }}
+                          />
+                        )}
                         
-                        {/* Main Image - Smaller for pronounced shadow */}
+                        {/* Main Image with responsive sizing */}
                         <motion.div 
-                          className="relative h-[350px] md:h-[420px] w-full max-w-sm overflow-hidden bg-white shadow-lg"
-                          style={{ zIndex: 1 }}
+                          className="relative h-[280px] sm:h-[320px] md:h-[420px] w-full max-w-full overflow-hidden shadow-lg border-2 border-white/10"
+                          style={{ zIndex: 1, minHeight: '280px' }}
                           whileHover={{ 
                             scale: 1.02,
                             transition: { duration: 0.4, ease: "easeOut" }
@@ -515,7 +540,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Process Section - Vertical timeline with scroll-driven line & dots */}
-      <section className="pt-20 pb-12 relative bg-[#1A1513] text-white">
+      <section className="pt-20 pb-12 relative text-luxury-charcoal" style={{ backgroundColor: '#f6f5e9' }}>
         <div className="container-luxury">
           <motion.div
             initial="hidden"
@@ -527,7 +552,7 @@ export default function ServicesPage() {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Our <span className="text-luxury-gold">Process</span>
             </h2>
-            <p className="text-xl text-white/80 max-w-3xl mx-auto">
+            <p className="text-xl text-luxury-slate max-w-3xl mx-auto">
               From first hello to final reveal, here&apos;s how we work with you to create your dream space.
             </p>
           </motion.div>
@@ -553,16 +578,17 @@ function Timeline() {
   });
 
   return (
-    <div className="relative w-[75%] mx-auto lg:w-[75%] md:w-[90%]" ref={lineRef}>
-      {/* Track */}
-      <div className="absolute left-6 md:left-8 top-0 w-[2px] md:w-[3px] h-full bg-white/15" />
-      {/* Animated vertical line that grows with scroll */}
+    <div className="relative w-full max-w-4xl mx-auto" ref={lineRef}>
+      {/* Track - Background line */}
+      <div className="absolute left-4 md:left-6 top-0 w-[2px] md:w-[3px] h-full bg-luxury-slate/20" />
+      
+      {/* Animated vertical line that grows with scroll - centered on circles */}
       <motion.div
-        className="absolute left-6 md:left-8 top-0 w-[2px] md:w-[3px] h-full bg-luxury-gold origin-top"
+        className="absolute left-4 md:left-6 top-0 w-[2px] md:w-[3px] h-full bg-luxury-gold origin-top"
         style={{ scaleY: scrollYProgress }}
       />
 
-      <ul className="w-full flex flex-col items-start justify-between ml-10 md:ml-12">
+      <ul className="w-full flex flex-col items-start justify-start">
         {processSteps.map((item, index) => (
           <TimelineItem key={item.step} item={item} index={index} />
         ))}

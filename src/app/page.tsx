@@ -447,39 +447,37 @@ export default function HomePage(): React.JSX.Element {
           </div>
         </section>
 
-        {/* Closing Tagline - Mist Grey Background */}
-        <section className="relative py-12 bg-warm-sand text-luxury-charcoal text-center overflow-hidden">
-          <LuxuryWavePattern opacity={0.5} />
-          {/* Subtle pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.02] pointer-events-none"
-            style={{
-              backgroundImage: `
-                radial-gradient(circle at 20% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 20% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, #D4AF37 0.5px, transparent 0.5px)
-              `,
-              backgroundSize: '60px 60px',
-            }}
-          />
-          <div className="container-luxury relative z-10">
+        {/* Closing Tagline - Dark Background with Photo */}
+        <section className="relative py-20 md:py-28 text-white text-center overflow-hidden">
+          {/* Background image */}
+          <div className="absolute inset-0">
+            <Image
+              src={`${GITHUB_CDN_BASE}/images/hero/2.webp`}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+          
+          {/* Gradient overlay starting from top to create smooth transition */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-luxury-charcoal/95 to-luxury-charcoal" />
+          
+          {/* Additional dark overlay for consistent dark look */}
+          <div className="absolute inset-0 bg-luxury-charcoal/80" />
+
+          <div className="container-luxury relative z-10 px-4">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8 }}
+              className="max-w-4xl mx-auto"
             >
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-luxury-charcoal tracking-wide">
-                <em>&quot;Designers who begin with the end in mind&quot;</em>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-8 md:mb-12 leading-tight drop-shadow-lg">
+                Designers Who Begin 
+                <span className="text-luxury-gold block">With The End In Mind</span>
               </h2>
-              {/* <button
-                onClick={handleHireUsClick}
-                className="bg-clay-peach hover:bg-terracotta-blush text-white px-12 py-4 rounded-lg font-semibold text-lg font-sans transition-all duration-300 shadow-luxury-soft hover:shadow-luxury-strong transform hover:scale-105"
-              >
-                Bring Your Vision to Life
-              </button> */}
             </motion.div>
           </div>
         </section>
