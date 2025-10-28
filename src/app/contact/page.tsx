@@ -322,136 +322,116 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#E3E3E1' }}>
       
-      {/* Hero Section with Images */}
-      <section className="pt-32 pb-20 bg-luxury-charcoal text-white relative overflow-hidden">
-        <div className="container-luxury relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
+      {/* Hero Section - Photo background, smaller height */}
+      <section className="relative h-[80vh] md:h-[85vh] text-white overflow-hidden">
+        {/* Background photo */}
+        <div className="absolute inset-0">
+          <Image
+            src={getContactImage(2).src}
+            alt={getContactImage(2).alt}
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+        </div>
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-black/50" />
+
+        <div className="container-luxury h-full relative z-10 flex items-center justify-center text-center">
+          <div className="max-w-3xl px-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
+              className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
             >
-              Contact
-              <span className="text-luxury-gold block mt-2">Us</span>
+              Contact <span className="text-luxury-gold">Us</span>
             </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 30 }}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-xl md:text-2xl text-white/90 leading-relaxed"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-lg md:text-xl text-white/90"
             >
               Designing with you for you
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+              className="mt-2 md:mt-3 text-sm md:text-base text-white/80"
+            >
+              Reach us via call, WhatsApp or email and we’ll respond promptly.
             </motion.p>
           </div>
         </div>
 
-        {/* Decorative Images */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.2, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          className="absolute top-20 left-10 w-48 h-48 rounded-3xl overflow-hidden hidden lg:block"
-        >
-          <Image
-            src={getContactImage(0).src}
-            alt={getContactImage(0).alt}
-            fill
-            className="object-cover"
-            sizes="192px"
-          />
-        </motion.div>
-        
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.2, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.8 }}
-          className="absolute bottom-10 right-10 w-64 h-40 rounded-2xl overflow-hidden hidden lg:block"
-        >
-          <Image
-            src={getContactImage(1).src}
-            alt={getContactImage(1).alt}
-            fill
-            className="object-cover"
-            sizes="256px"
-          />
-        </motion.div>
-      </section>
+        {/* Contact Cards Overlay on Hero */}
+        <div className="absolute inset-x-0 bottom-8 md:bottom-16 z-10 px-4">
+          <div className="container-luxury">
+            <div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto">
+              {/* Call Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+                onClick={handleCallClick}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleCallClick(); }}
+                className="bg-grey/95 backdrop-blur-md rounded-xl shadow-lg ring-1 ring-black/10 p-5 sm:p-6 text-center flex flex-col cursor-pointer transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl text-luxury-charcoal"
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <Phone className="w-6 h-6 sm:w-7 sm:h-7" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold mb-1">Call Us</h3>
+                <p className="text-luxury-gold text-sm sm:text-base font-medium">+234 701 616 3218</p>
+              </motion.div>
 
-      {/* Contact Methods with Images */}
-      <section className="py-20 relative">
-        <div className="container-luxury">
-          <div className="grid md:grid-cols-3 gap-8 mb-16 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUpVariants}
-              className="text-center group cursor-pointer"
-              onClick={handleCallClick}
-            >
-              <div className="w-16 h-16 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Phone className="w-8 h-8" />
-              </div>
-              <h3 className="text-luxury-heading text-xl font-bold mb-2">
-                Call Us
-              </h3>
-              <p className="text-luxury-gold font-medium mb-1">
-                +234 701 616 3218
-              </p>
-              <p className="text-luxury-slate text-sm">
-                Speak directly with our team
-              </p>
-            </motion.div>
+              {/* WhatsApp Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                onClick={handleWhatsAppClick}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleWhatsAppClick(); }}
+                className="bg-grey/95 backdrop-blur-md rounded-xl shadow-lg ring-1 ring-black/10 p-5 sm:p-6 text-center flex flex-col cursor-pointer transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl text-luxury-charcoal"
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold mb-1">WhatsApp</h3>
+                <p className="text-luxury-slate text-sm sm:text-base">Chat with us instantly</p>
+              </motion.div>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUpVariants}
-              transition={{ delay: 0.1 }}
-              className="text-center group cursor-pointer"
-              onClick={handleWhatsAppClick}
-            >
-              <div className="w-16 h-16 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <MessageCircle className="w-8 h-8" />
-              </div>
-              <h3 className="text-luxury-heading text-xl font-bold mb-2">
-                WhatsApp
-              </h3>
-              <p className="text-luxury-gold font-medium mb-1">
-                Chat with us instantly
-              </p>
-              <p className="text-luxury-slate text-sm">
-                Quick responses guaranteed
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUpVariants}
-              transition={{ delay: 0.2 }}
-              className="text-center group cursor-pointer"
-              onClick={handleEmailClick}
-            >
-              <div className="w-16 h-16 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Mail className="w-8 h-8" />
-              </div>
-              <h3 className="text-luxury-heading text-xl font-bold mb-2">
-                Email
-              </h3>
-              <p className="text-luxury-gold font-medium mb-1">
-                enquiry@olivehausinteriors.com
-              </p>
-              <p className="text-luxury-slate text-sm">
-                Detailed project discussions
-              </p>
-            </motion.div>
+              {/* Email Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                onClick={handleEmailClick}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleEmailClick(); }}
+                className="bg-grey/95 backdrop-blur-md rounded-xl shadow-lg ring-1 ring-black/10 p-5 sm:p-6 text-center flex flex-col cursor-pointer transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl text-luxury-charcoal"
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <Mail className="w-6 h-6 sm:w-7 sm:h-7" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold mb-1">Email</h3>
+                <p className="text-luxury-slate text-xs sm:text-sm break-all">enquiry@olivehausinteriors.com</p>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Cards moved to hero overlay above */}
 
       {/* Multi-Step Contact Form */}
       <section id="contact-form" className="py-20 bg-white/50 backdrop-blur-sm relative">

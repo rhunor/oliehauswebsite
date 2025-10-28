@@ -683,9 +683,9 @@ export default function ProjectsPage() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="mb-4"
               >
-                <span className="text-luxury-gold text-xs md:text-sm tracking-[0.3em] uppercase font-medium">
+                {/* <span className="text-luxury-gold text-xs md:text-sm tracking-[0.3em] uppercase font-medium">
                   Portfolio
-                </span>
+                </span> */}
               </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
