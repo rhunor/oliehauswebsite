@@ -93,9 +93,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         
-        {/* Google Fonts - Luxury Typography */}
+        {/* Google Fonts - Luxury Typography (Playfair Display, Montserrat, Raleway) */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&family=Oranienbaum&family=Playfair+Display:wght@400;700;900&family=Quintessential&family=Almendra+Display&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Montserrat:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
 
@@ -125,7 +125,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       
-      <body className="font-sans antialiased bg-ivory text-luxury-charcoal">
+      <body className="antialiased bg-ivory text-luxury-charcoal">
         {/* GTM - Production only */}
         {process.env.NODE_ENV === 'production' && (
           <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />

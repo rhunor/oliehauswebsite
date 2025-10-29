@@ -398,10 +398,10 @@ export default function HomePage(): React.JSX.Element {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
+                <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
                   For Nigeria&apos;s <span className="text-luxury-gold">Finest Homes...</span>
                 </h2>
-                <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-sans">
+                <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-body">
                   <p>
                    OliveHaus Interiors is a premier interior design company serving luxury residential, corporate, and commercial clients in Nigeria and internationally. We specialize in creating bespoke, timeless, and functional spaces for discerning clients.
                   </p>
@@ -463,7 +463,7 @@ export default function HomePage(): React.JSX.Element {
               transition={{ duration: 0.8 }}
               className="text-center mb-5"
             >
-              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
+              <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
                 We Stand <span className="text-luxury-gold">Out</span>
               </h2>
             </motion.div>
@@ -507,7 +507,7 @@ export default function HomePage(): React.JSX.Element {
                   <h3 className="font-serif text-xl font-bold mb-4 text-luxury-charcoal tracking-wide">
                     {value.title}
                   </h3>
-                  <p className="text-luxury-charcoal/80 leading-relaxed font-sans mb-0">
+                  <p className="text-luxury-charcoal/80 leading-relaxed font-body mb-0">
                     {value.description}
                   </p>
                 </motion.div>
@@ -539,10 +539,10 @@ export default function HomePage(): React.JSX.Element {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-5 tracking-wide" style={{ color: 'black' }}>
+              <h2 className="font-title text-4xl md:text-5xl font-bold mb-5 tracking-wide" style={{ color: 'black' }}>
                 Our Track <span className="text-luxury-gold">Record</span>
               </h2>
-              <p className="text-xl max-w-3xl mx-auto font-sans leading-relaxed" style={{ color: 'black' }}>
+              <p className="text-xl max-w-3xl mx-auto font-body leading-relaxed" style={{ color: 'black' }}>
                 Numbers that speak of our commitment to luxury, quality, and client satisfaction across every project we undertake.
               </p>
             </motion.div>
@@ -598,7 +598,7 @@ export default function HomePage(): React.JSX.Element {
                     <h3 className="text-xl font-bold mb-3 font-serif tracking-wide" style={{ color: 'black' }}>
                       {stat.label}
                     </h3>
-                    <p className="text-sm leading-relaxed font-sans px-4" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                    <p className="text-sm leading-relaxed font-body px-4" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                       {stat.description}
                     </p>
                   </div>
@@ -635,7 +635,7 @@ export default function HomePage(): React.JSX.Element {
               transition={{ duration: 0.8 }}
               className="max-w-4xl mx-auto"
             >
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-8 md:mb-12 leading-tight drop-shadow-lg">
+              <h2 className="font-title text-4xl md:text-5xl lg:text-6xl font-bold mb-8 md:mb-12 leading-tight drop-shadow-lg">
                 Designers Who Begin 
                 <span className="text-luxury-gold block">With The End In Mind</span>
               </h2>
@@ -689,10 +689,10 @@ export default function HomePage(): React.JSX.Element {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
+                <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
                   This is How We Think About <span className="text-luxury-gold">Your Space...</span>
                 </h2>
-                <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-sans">
+                <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-body">
                   <p>
                     Get a behind-the-scenes look at our design philosophy—from space planning and layout, to colour palettes, furniture, and material selections. Every element is chosen with intention, crafting a home that reflects your personality and elevates your lifestyle.
                   </p>
@@ -704,7 +704,7 @@ export default function HomePage(): React.JSX.Element {
                 <div className="mt-8">
                   <a
                     href="/inside-the-design"
-                    className="inline-flex items-center space-x-2 bg-clay-peach hover:bg-terracotta-blush text-white px-8 py-4 rounded-lg font-medium font-sans transition-all duration-300 shadow-luxury-soft hover:shadow-luxury-strong transform hover:scale-105"
+                    className="inline-flex items-center space-x-2 bg-clay-peach hover:bg-terracotta-blush text-white px-8 py-4 rounded-lg font-medium font-body transition-all duration-300 shadow-luxury-soft hover:shadow-luxury-strong transform hover:scale-105"
                   >
                     <span>Visit Inside the Design</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -731,7 +731,7 @@ export default function HomePage(): React.JSX.Element {
                   />
                 </div>
                 <div className="mt-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-luxury-soft border-l-4 border-clay-peach">
-                  <p className="text-sm text-luxury-charcoal font-medium font-sans">
+                  <p className="text-sm text-luxury-charcoal font-medium font-body">
                     <span className="text-luxury-gold">Annotation:</span> Every element is chosen with intention to create spaces that reflect your unique personality and elevate your lifestyle.
                   </p>
                 </div>
