@@ -54,7 +54,7 @@ const testimonials: Testimonial[] = [
     content: 'Met Anita of Olivehaus interior round about 2021 through Instagram and she has gone ahead to create two magical properties for me. We are currently on two new projects outside her base and we cant wait to show the world the magic she will create. Olive haus interior is the best interior designing house ever.',
     rating: 5,
     isHighProfile: false,
-    projectImage: `${GITHUB_CDN_BASE}/projects/projectezra/6.webp`,
+    projectImage: `${GITHUB_CDN_BASE}/projects/projectezra/2.webp`,
   },
   {
     id: '4',
@@ -64,7 +64,7 @@ const testimonials: Testimonial[] = [
     content: 'What I got was a surreal transformation that took my breath away. The sort of space only imagined and fit for royalty was what Olivehaus delivered as our reality. But we didn\'t expect any less. They are simply the best Indeed! The client\'s Premium comfort comes first with them.',
     rating: 5,
     isHighProfile: true,
-    projectImage: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/8.webp`,
+    projectImage: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/5.webp`,
   },
   {
     id: '5',
@@ -74,7 +74,7 @@ const testimonials: Testimonial[] = [
     content: 'To any one considering Olive Haus Interiors don\'t worry you\'re in good hands! The work they did was beautiful. Maximization of space in a thoughtful way, stunning design, respectful communication, I can go on and on.Anita has built a team that KNOWS their work and it shows. Everyone that comes over has raved about how nice our place is! Would recommend Olive Haus interiors a million times over!',
     rating: 5,
     isHighProfile: false,
-    projectImage: `${GITHUB_CDN_BASE}/images/hero/1.webp`,
+    projectImage: `${GITHUB_CDN_BASE}/projects/projectofficeland/1.webp`,
   },
 ];
 
@@ -181,10 +181,10 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
                 </div>
 
                 {/* Floating Info Box (desktop), stacked on mobile */}
-                <div className="max-w-md lg:max-w-sm bg-[rgb(var(--color-pale-oat))] text-luxury-charcoal/90 border border-black/5 rounded-xl shadow-luxury-soft p-6 md:p-7 lg:absolute lg:-bottom-8 lg:-right-8 mt-6 lg:mt-0">
+                {/* <div className="max-w-md lg:max-w-sm bg-[rgb(var(--color-pale-oat))] text-luxury-charcoal/90 border border-black/5 rounded-xl shadow-luxury-soft p-6 md:p-7 lg:absolute lg:-bottom-8 lg:-right-8 mt-6 lg:mt-0">
                   <h3 className="font-serif text-xl font-bold mb-2">{currentTestimonialData.projectType}</h3>
                   <p className="text-sm md:text-base leading-7">{currentTestimonialData.location}</p>
-                </div>
+                </div> */}
               </div>
             </motion.div>
           </AnimatePresence>

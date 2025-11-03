@@ -609,9 +609,9 @@ export default function HomePage(): React.JSX.Element {
         </section>
 
         {/* Closing Tagline - Dark Background with Photo */}
-        <section className="relative py-20 md:py-28 text-white text-center overflow-hidden">
+        <section className="relative py-20 md:py-28 bg-luxury-charcoal text-white text-center  overflow-hidden">
           {/* Background image */}
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 opacity-5">
             <Image
               src={`${GITHUB_CDN_BASE}/images/hero/2.webp`}
               alt=""
@@ -620,7 +620,7 @@ export default function HomePage(): React.JSX.Element {
               sizes="100vw"
             />
           </div>
-          
+          <div className="absolute inset-0 bg-black/30" />
           {/* Gradient overlay starting from top to create smooth transition */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-luxury-charcoal/95 to-luxury-charcoal" />
           
