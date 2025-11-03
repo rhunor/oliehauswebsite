@@ -322,8 +322,8 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#E3E3E1' }}>
       
-      {/* Hero Section - Photo background, smaller height */}
-      <section className="relative h-[80vh] md:h-[85vh] text-white overflow-hidden">
+      {/* Hero Section - Fixed responsive layout */}
+      <section className="relative min-h-[100vh] sm:min-h-[100vh] md:min-h-[95vh] lg:min-h-[90vh] text-white overflow-hidden">
         {/* Background photo */}
         <div className="absolute inset-0">
           <Image
@@ -332,44 +332,50 @@ export default function ContactPage() {
             fill
             className="object-cover"
             sizes="100vw"
+            priority
           />
         </div>
         {/* Overlay for readability */}
         <div className="absolute inset-0 bg-black/50" />
 
-        <div className="container-luxury h-full relative z-10 flex items-center justify-center text-center">
-          <div className="max-w-3xl px-4">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
-            >
-              Contact <span className="text-luxury-gold">Us</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-lg md:text-xl text-white/90"
-            >
-              Designing with you for you
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.35 }}
-              className="mt-2 md:mt-3 text-sm md:text-base text-white/80"
-            >
-              Reach us via call, WhatsApp or email and we’ll respond promptly.
-            </motion.p>
+        {/* Hero Content Container - with proper spacing for cards */}
+        <div className="container-luxury h-full relative z-10 flex flex-col">
+          {/* Text Section - positioned at top with padding */}
+          <div className="flex-none pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-8 px-4 text-center">
+            <div className="max-w-3xl mx-auto">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
+              >
+                Contact <span className="text-luxury-gold">Us</span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-lg md:text-xl text-white/90"
+              >
+                Designing with you for you
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.35 }}
+                className="mt-2 md:mt-3 text-sm md:text-base text-white/80"
+              >
+                Reach us via call, WhatsApp or email and we&apos;ll respond promptly.
+              </motion.p>
+            </div>
           </div>
-        </div>
 
-        {/* Contact Cards Overlay on Hero */}
-        <div className="absolute inset-x-0 bottom-8 md:bottom-16 z-10 px-4">
-          <div className="container-luxury">
-            <div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto">
+          {/* Spacer to push cards to bottom */}
+          <div className="flex-grow" />
+
+          {/* Contact Cards - positioned at bottom with proper spacing */}
+          <div className="flex-none pb-8 sm:pb-10 md:pb-12 lg:pb-16 px-4">
+            <div className="grid gap-4 sm:gap-5 md:gap-6 lg:gap-8 grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto">
               {/* Call Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -430,8 +436,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      {/* Cards moved to hero overlay above */}
 
       {/* Multi-Step Contact Form */}
       <section id="contact-form" className="py-20 bg-white/50 backdrop-blur-sm relative">

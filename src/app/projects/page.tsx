@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Head from 'next/head';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { cn, getGitHubCdnCacheBustedUrl, generateImageBlurDataUrl, imageQuality } from '@/lib/utils';
+import { ImageLoadingSpinner } from '@/components/ImageLoadingSpinner';
 
 // Project types
 interface ProjectImage {
@@ -43,7 +44,9 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
   onToggle 
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [visibleImages, setVisibleImages] = useState<number[]>([]);
+  const [galleryImageStates, setGalleryImageStates] = useState<Record<number, { loaded: boolean; error: boolean }>>({});
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Cache-busted thumbnail URL
@@ -51,6 +54,34 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
     getGitHubCdnCacheBustedUrl(project.thumbnail.src.replace('https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main', ''), 'moderate'),
     [project.thumbnail.src]
   );
+
+  // Handle thumbnail load
+  const handleThumbnailLoad = useCallback(() => {
+    setImageLoaded(true);
+    setImageError(false);
+  }, []);
+
+  // Handle thumbnail error
+  const handleThumbnailError = useCallback(() => {
+    setImageError(true);
+    setImageLoaded(false);
+  }, []);
+
+  // Handle gallery image load
+  const handleGalleryImageLoad = useCallback((imgIndex: number) => {
+    setGalleryImageStates(prev => ({
+      ...prev,
+      [imgIndex]: { loaded: true, error: false }
+    }));
+  }, []);
+
+  // Handle gallery image error
+  const handleGalleryImageError = useCallback((imgIndex: number) => {
+    setGalleryImageStates(prev => ({
+      ...prev,
+      [imgIndex]: { loaded: false, error: true }
+    }));
+  }, []);
 
   // Observe images for scroll animations
   useEffect(() => {
@@ -151,7 +182,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
             fill
             className={cn(
               "object-cover transition-all duration-1000",
-              imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-105"
+              imageLoaded && !imageError ? "opacity-100 scale-100" : "opacity-0 scale-105"
             )}
             sizes="(max-width: 768px) 100vw, 700px"
             priority={index < 3}
@@ -159,17 +190,14 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
             placeholder="blur"
             blurDataURL={generateImageBlurDataUrl(10, 12)}
             quality={imageQuality.high}
-            onLoad={() => setImageLoaded(true)}
+            onLoad={handleThumbnailLoad}
+            onError={handleThumbnailError}
           />
-          {!imageLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center bg-mist-grey">
-              <div className="w-8 h-8 border-2 border-luxury-gold border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
+          {(!imageLoaded || imageError) && <ImageLoadingSpinner />}
           
           {/* Category Badge */}
           {project.featured && (
-            <div className="absolute top-6 right-6 bg-luxury-gold text-white px-4 py-1.5 text-xs font-medium tracking-widest">
+            <div className="absolute top-6 right-6 bg-luxury-gold text-white px-4 py-1.5 text-xs font-medium tracking-widest z-10">
               FEATURED
             </div>
           )}
@@ -196,12 +224,12 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
             <span className="font-medium tracking-wider text-sm">
               {isExpanded ? 'CLOSE GALLERY' : 'VIEW FULL GALLERY'}
             </span>
-          <motion.div
+            <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
               transition={{ duration: 0.3 }}
             >
               <ChevronDown className="w-5 h-5" />
-          </motion.div>
+            </motion.div>
           </motion.button>
         </div>
 
@@ -239,52 +267,62 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
 
                 {/* Vertical Magazine-Style Gallery */}
                 <div className="px-4 md:px-8 py-8 space-y-6">
-                  {project.images.map((image, imgIndex) => (
-                    <motion.div
-                      key={imgIndex}
-                      ref={(el) => { imageRefs.current[imgIndex] = el; }}
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={visibleImages.includes(imgIndex) ? { 
-                        opacity: 1, 
-                        y: 0 
-                      } : {}}
-                      transition={{ 
-                        duration: 0.8, 
-                        delay: 0.1,
-                        ease: [0.43, 0.13, 0.23, 0.96]
-                      }}
-                      className="relative"
-                    >
-                      {/* Image Number Label */}
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-xs font-medium text-luxury-slate/40 tracking-widest">
-                          {String(imgIndex + 1).padStart(2, '0')}
-            </span>
-                        <div className="flex-1 h-px bg-luxury-slate/10"></div>
-                      </div>
+                  {project.images.map((image, imgIndex) => {
+                    const imageState = galleryImageStates[imgIndex] || { loaded: false, error: false };
+                    
+                    return (
+                      <motion.div
+                        key={imgIndex}
+                        ref={(el) => { imageRefs.current[imgIndex] = el; }}
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={visibleImages.includes(imgIndex) ? { 
+                          opacity: 1, 
+                          y: 0 
+                        } : {}}
+                        transition={{ 
+                          duration: 0.8, 
+                          delay: 0.1,
+                          ease: [0.43, 0.13, 0.23, 0.96]
+                        }}
+                        className="relative"
+                      >
+                        {/* Image Number Label */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="text-xs font-medium text-luxury-slate/40 tracking-widest">
+                            {String(imgIndex + 1).padStart(2, '0')}
+                          </span>
+                          <div className="flex-1 h-px bg-luxury-slate/10"></div>
+                        </div>
 
-                      {/* Magazine Image */}
-                      <div className="relative aspect-[4/5] overflow-hidden bg-mist-grey">
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          fill
-                          className="object-cover transition-transform duration-700 hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, 700px"
-                          loading="lazy"
-                          placeholder="blur"
-                          blurDataURL={generateImageBlurDataUrl(10, 12)}
-                          quality={imageQuality.standard}
-                        />
-                      </div>
+                        {/* Magazine Image */}
+                        <div className="relative aspect-[4/5] overflow-hidden bg-mist-grey">
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            fill
+                            className={cn(
+                              "object-cover transition-all duration-700",
+                              imageState.loaded && !imageState.error ? "opacity-100 hover:scale-105" : "opacity-0"
+                            )}
+                            sizes="(max-width: 768px) 100vw, 700px"
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL={generateImageBlurDataUrl(10, 12)}
+                            quality={imageQuality.standard}
+                            onLoad={() => handleGalleryImageLoad(imgIndex)}
+                            onError={() => handleGalleryImageError(imgIndex)}
+                          />
+                          {(!imageState.loaded || imageState.error) && <ImageLoadingSpinner />}
+                        </div>
 
-                      {/* Image Caption */}
-                      <div className="mt-3 text-xs text-luxury-slate/60 italic">
-                        {image.alt}
-                      </div>
-                    </motion.div>
-                  ))}
-          </div>
+                        {/* Image Caption */}
+                        <div className="mt-3 text-xs text-luxury-slate/60 italic">
+                          {image.alt}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
 
                 {/* Gallery Footer */}
                 <div className="px-8 py-8 border-t border-luxury-slate/10 text-center">
@@ -296,8 +334,8 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
                     <ChevronUp className="w-4 h-4" />
                     <span className="text-sm tracking-wider">CLOSE GALLERY</span>
                   </motion.button>
-          </div>
-        </div>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -323,6 +361,7 @@ export default function ProjectsPage() {
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<'all' | 'residential' | 'corporate' | 'commercial'>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
   // Helper function to create cache-busted image arrays
   const createImageArray = useCallback((basePath: string, count: number, altPrefix: string) => 
@@ -569,7 +608,7 @@ export default function ProjectsPage() {
         src: getGitHubCdnCacheBustedUrl('/projects/projectlondon/20.webp', 'moderate'),
         alt: 'Project London luxury residence',
       },
-      images: createImageArray('/projects/projectlondon', 23, 'Project London interior'),
+      images: createImageArray('/projects/projectlondon', 23, 'ProjectLondon interior'),
     },
     {
       id: 'officeland',
@@ -661,10 +700,21 @@ export default function ProjectsPage() {
             alt="Luxury interior design project"
             fill
             priority
-            className="object-cover"
+            className={cn(
+              "object-cover transition-opacity duration-1000",
+              heroImageLoaded ? "opacity-100" : "opacity-0"
+            )}
             sizes="100vw"
             quality={imageQuality.high}
+            onLoad={() => setHeroImageLoaded(true)}
           />
+          
+          {/* Loading state for hero image */}
+          {!heroImageLoaded && (
+            <div className="absolute inset-0">
+              <ImageLoadingSpinner />
+            </div>
+          )}
           
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-black/40" />
@@ -677,16 +727,6 @@ export default function ProjectsPage() {
             className="absolute inset-0 flex items-center justify-center p-4"
           >
             <div className="max-w-4xl w-full bg-[#F3EEE8]/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-8 md:p-12 text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="mb-4"
-              >
-                {/* <span className="text-luxury-gold text-xs md:text-sm tracking-[0.3em] uppercase font-medium">
-                  Portfolio
-                </span> */}
-              </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -748,7 +788,7 @@ export default function ProjectsPage() {
             {isLoading ? (
               <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-center">
-                  <div className="w-16 h-16 border-2 border-luxury-gold border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                  <ImageLoadingSpinner className="relative w-16 h-16 mx-auto mb-4" />
                   <p className="text-luxury-slate text-sm tracking-wider">Loading collection...</p>
                 </div>
               </div>
@@ -765,11 +805,11 @@ export default function ProjectsPage() {
                   {filteredProjects.map((project, index) => (
                     <div key={project.id} id={`project-${project.id}`}>
                       <MagazineProjectCard
-                      project={project}
-                      index={index}
+                        project={project}
+                        index={index}
                         isExpanded={expandedProjectId === project.id}
                         onToggle={handleToggleProject}
-                    />
+                      />
                     </div>
                   ))}
                 </motion.div>
@@ -831,7 +871,7 @@ export default function ProjectsPage() {
                 Let&apos;s Create Together
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-100 drop-shadow-lg">
-              Love Our Spaces? . 
+                Love Our Spaces?
                 <span className="text-luxury-gold block mt-2 drop-shadow-lg">Your project deserves the same touch</span>
               </h2>
               <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed font-light drop-shadow-md">
@@ -843,7 +883,7 @@ export default function ProjectsPage() {
                 onClick={() => window.location.href = '/contact'}
                 className="bg-luxury-gold hover:bg-luxury-darkGold text-white px-12 py-4 text-sm tracking-[0.2em] uppercase font-semibold transition-all duration-300 shadow-2xl hover:shadow-3xl border-2 border-luxury-gold/20 hover:border-luxury-gold/40"
               >
-               Connect with us to begin
+                Connect with us to begin
               </motion.button>
             </motion.div>
           </div>

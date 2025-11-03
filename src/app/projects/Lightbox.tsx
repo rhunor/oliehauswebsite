@@ -1,3 +1,4 @@
+//src/app/projects/Lightbox.tsx
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
@@ -5,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { cn, generateImageBlurDataUrl, responsiveSizes, imageQuality } from '@/lib/utils';
+import { ImageLoadingSpinner } from '@/components/ImageLoadingSpinner';
 
 interface ProjectImage {
   src: string;
@@ -37,6 +39,7 @@ const Lightbox: React.FC<LightboxProps> = ({
   const [isSlideshow, setIsSlideshow] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
   // Memoize current image for performance
   const currentImage = useMemo(() => {
@@ -70,6 +73,19 @@ const Lightbox: React.FC<LightboxProps> = ({
   // Handle image load completion
   const handleImageLoad = useCallback((index: number) => {
     setLoadedImages(prev => new Set(prev).add(index));
+    setImageErrors(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(index);
+      return newSet;
+    });
+    if (index === currentIndex) {
+      setImageLoading(false);
+    }
+  }, [currentIndex]);
+
+  // Handle image load error
+  const handleImageError = useCallback((index: number) => {
+    setImageErrors(prev => new Set(prev).add(index));
     if (index === currentIndex) {
       setImageLoading(false);
     }
@@ -77,12 +93,12 @@ const Lightbox: React.FC<LightboxProps> = ({
 
   // Reset loading state when current index changes
   useEffect(() => {
-    if (!loadedImages.has(currentIndex)) {
+    if (!loadedImages.has(currentIndex) || imageErrors.has(currentIndex)) {
       setImageLoading(true);
     } else {
       setImageLoading(false);
     }
-  }, [currentIndex, loadedImages]);
+  }, [currentIndex, loadedImages, imageErrors]);
 
   // Slideshow functionality
   useEffect(() => {
@@ -123,6 +139,7 @@ const Lightbox: React.FC<LightboxProps> = ({
       setIsSlideshow(false);
       setImageLoading(true);
       setLoadedImages(new Set());
+      setImageErrors(new Set());
     }
   }, [isOpen]);
 
@@ -148,6 +165,7 @@ const Lightbox: React.FC<LightboxProps> = ({
               height={1080}
               priority={Math.abs(index - currentIndex) <= 1}
               onLoad={() => handleImageLoad(index)}
+              onError={() => handleImageError(index)}
               style={{ display: 'none' }}
             />
           ))}
@@ -184,7 +202,7 @@ const Lightbox: React.FC<LightboxProps> = ({
                   height={1080}
                   className={cn(
                     "max-w-full max-h-full object-contain rounded-lg transition-opacity duration-300",
-                    imageLoading ? "opacity-0" : "opacity-100"
+                    imageLoading || imageErrors.has(currentIndex) ? "opacity-0" : "opacity-100"
                   )}
                   priority={true}
                   loading="eager"
@@ -193,12 +211,13 @@ const Lightbox: React.FC<LightboxProps> = ({
                   quality={imageQuality.hero}
                   sizes={responsiveSizes.fullWidth}
                   onLoad={() => handleImageLoad(currentIndex)}
+                  onError={() => handleImageError(currentIndex)}
                 />
                 
                 {/* Loading indicator */}
-                {imageLoading && (
+                {(imageLoading || imageErrors.has(currentIndex)) && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-luxury-gold border-t-transparent rounded-full animate-spin" />
+                    <ImageLoadingSpinner className="bg-black/50" />
                   </div>
                 )}
               </motion.div>
