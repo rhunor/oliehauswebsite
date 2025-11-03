@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Play, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useHydrationSafe } from '@/hooks/useHydrationSafe';
 
@@ -113,15 +113,15 @@ export default function HeroSection({
   }, []);
 
   // Safe navigation functions
-  const goToPrevious = useCallback((): void => {
-    if (!isHydrated || isVideoPlaying) return;
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length, isVideoPlaying, isHydrated]);
+  // const goToPrevious = useCallback((): void => {
+  //   if (!isHydrated || isVideoPlaying) return;
+  //   setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  // }, [images.length, isVideoPlaying, isHydrated]);
 
-  const goToNext = useCallback((): void => {
-    if (!isHydrated || isVideoPlaying) return;
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
-  }, [images.length, isVideoPlaying, isHydrated]);
+  // const goToNext = useCallback((): void => {
+  //   if (!isHydrated || isVideoPlaying) return;
+  //   setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  // }, [images.length, isVideoPlaying, isHydrated]);
 
   const handleHireUsClick = useCallback((): void => {
     onHireUsClick();
@@ -272,7 +272,7 @@ export default function HeroSection({
         )}
 
         {/* Enhanced Navigation controls - only when hydrated - NO DOTS */}
-        {isHydrated && !isVideoPlaying && (
+        {/* {isHydrated && !isVideoPlaying && (
           <>
             <motion.button
               initial={{ opacity: 0, x: -20 }}
@@ -298,7 +298,7 @@ export default function HeroSection({
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
           </>
-        )}
+        )} */}
 
         {/* Hero content - render immediately, enhance when hydrated */}
         {!isVideoPlaying && (
