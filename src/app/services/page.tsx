@@ -1,17 +1,10 @@
 'use client';
 
-import {  useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { 
-  Home, 
-  Briefcase, 
-  PaintBucket, 
-  Wrench,
-  Bath,
-  Building2,
-  Key,
-  Settings,
+ 
   ChevronRight
 } from 'lucide-react';
 
@@ -20,15 +13,6 @@ const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main
 
 // Service interface
 interface Service {
-  title: string;
-  description: string;
-  features: string[];
-  icon: React.ReactNode;
-}
-
-// Process step interface
-interface ProcessStep {
-  step: string;
   title: string;
   description: string;
 }
@@ -75,105 +59,44 @@ const serviceImages = [
   }
 ] as const;
 
-// Updated services data with new content
+// Updated services data matching provided write-up
 const services: Service[] = [
   {
     title: 'Turnkey Renovation Solutions',
-    description: 'We handle every stage of your renovation with the highest level of precision and discretion. From structural planning to the final reveal, we orchestrate the process so you enjoy a seamless transformation without the stress.',
-    features: [
-      'Complete project management',
-      'Structural planning & execution',
-      'Vendor coordination',
-      'Quality control at every stage',
-      'Stress-free transformation'
-    ],
-    icon: <Wrench className="w-8 h-8" />
+    description: 'We handle every stage of your renovation with the highest level of precision and discretion. From structural planning to the final reveal, we orchestrate the process so you enjoy a seamless transformation without the stress.'
   },
   {
     title: 'Bespoke Furnishing & Styling',
-    description: 'We curate furnishings, art, and accessories that speak to your taste and lifestyle. Every piece is chosen to elevate your space and create an atmosphere of understated elegance and lasting comfort.',
-    features: [
-      'Custom furniture selection',
-      'Art & accessory curation',
-      'Personalized styling',
-      'Luxury material selection',
-      'Cohesive design execution'
-    ],
-    icon: <PaintBucket className="w-8 h-8" />
+    description: 'We curate furnishings, art, and accessories that speak to your taste and lifestyle. Every piece is chosen to elevate your space and create an atmosphere of understated elegance and lasting comfort.'
   },
   {
     title: 'Accessibility-Focused Bathrooms',
-    description: 'We design bathrooms that balance refined luxury with ease of use. By blending safety, comfort, and sophistication, we ensure these spaces are both practical and beautifully discreet.',
-    features: [
-      'Safety-first design approach',
-      'Luxury finishes & fixtures',
-      'Ergonomic layouts',
-      'Discreet accessibility features',
-      'Sophisticated aesthetics'
-    ],
-    icon: <Bath className="w-8 h-8" />
+    description: 'We design bathrooms that balance refined luxury with ease of use. By blending safety, comfort, and sophistication, we ensure these spaces are both practical and beautifully discreet.'
   },
   {
     title: 'Kitchen & Bathroom Remodeling',
-    description: 'We reimagine kitchens and bathrooms into spaces that feel indulgent yet functional. With fine finishes, thoughtful layouts, and a focus on modern living, we deliver rooms that inspire daily enjoyment.',
-    features: [
-      'Modern layout optimization',
-      'Premium appliance integration',
-      'Custom cabinetry design',
-      'Luxury finishes & materials',
-      'Functional elegance'
-    ],
-    icon: <Home className="w-8 h-8" />
+    description: 'We reimagine kitchens and bathrooms into spaces that feel indulgent yet functional. With fine finishes, thoughtful layouts, and a focus on modern living, we deliver rooms that inspire daily enjoyment.'
   },
   {
-    title: 'Completion of Unfinished Interiors',
-    description: 'We take unfinished interiors and complete them to the highest standard. From bare walls to fully realized living spaces, we bring cohesion, polish, and luxury to every detail.',
-    features: [
-      'Semi-finished space completion',
-      'Carcass building finishing',
-      'Complete interior development',
-      'Cohesive design integration',
-      'Premium quality standards'
-    ],
-    icon: <Building2 className="w-8 h-8" />
+    title: 'Completion of Unfinished & Semi-Finished Interiors',
+    description: 'We take unfinished interiors and complete them to the highest standard. From bare walls to fully realized living spaces, we bring cohesion, polish, and luxury to every detail.'
   },
   {
     title: 'Shortlet Design & Set-Up',
-    description: 'We design shortlet properties that command attention in a competitive market. Stylish, durable, and investment-focused, our interiors attract discerning guests and maximize your returns.',
-    features: [
-      'Investment-focused design',
-      'Durable material selection',
-      'Guest experience optimization',
-      'Market-competitive styling',
-      'ROI maximization'
-    ],
-    icon: <Key className="w-8 h-8" />
+    description: 'We design shortlet properties that command attention in a competitive market. Stylish, durable, and investment-focused, our interiors attract discerning guests and maximize your returns.'
   },
   {
     title: 'Shortlet Management Services',
-    description: 'We manage your property with the same meticulous care that defines our design work. From guest relations to property upkeep, we safeguard your investment while ensuring an exceptional experience for every stay.',
-    features: [
-      'Professional guest relations',
-      'Property maintenance',
-      'Booking management',
-      'Quality assurance',
-      'Investment protection'
-    ],
-    icon: <Settings className="w-8 h-8" />
-  },
-  {
-    title: 'Design Consultation',
-    description: 'Expert advice and guidance for your interior design projects and space planning needs.',
-    features: [
-      'Design strategy sessions',
-      'Space assessment',
-      'Style development',
-      'Material recommendations',
-      'Budget planning'
-    ],
-    icon: <Briefcase className="w-8 h-8" />
+    description: 'We manage your property with the same meticulous care that defines our design work. From guest relations to property upkeep, we safeguard your investment while ensuring an exceptional experience for every stay.'
   }
 ];
+
+// Process step interface
+interface ProcessStep {
+  step: string;
+  title: string;
+  description: string;
+}
 
 // Process steps
 const processSteps: ProcessStep[] = [
@@ -225,35 +148,79 @@ const fadeInUpVariants: Variants = {
   }
 };
 
-const slideInLeftVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    x: -100 
-  },
-  visible: { 
-    opacity: 1, 
-    x: 0,
-    transition: { 
-      duration: 0.8, 
-      ease: "easeOut" 
-    }
-  }
-};
+// const slideInLeftVariants: Variants = {
+//   hidden: { 
+//     opacity: 0, 
+//     x: -100 
+//   },
+//   visible: { 
+//     opacity: 1, 
+//     x: 0,
+//     transition: { 
+//       duration: 0.8, 
+//       ease: "easeOut" 
+//     }
+//   }
+// };
 
-const slideInRightVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    x: 100 
-  },
-  visible: { 
-    opacity: 1, 
-    x: 0,
-    transition: { 
-      duration: 0.8, 
-      ease: "easeOut" 
-    }
-  }
-};
+// const slideInRightVariants: Variants = {
+//   hidden: { 
+//     opacity: 0, 
+//     x: 100 
+//   },
+//   visible: { 
+//     opacity: 1, 
+//     x: 0,
+//     transition: { 
+//       duration: 0.8, 
+//       ease: "easeOut" 
+//     }
+//   }
+// };
+
+// NumberFrame component for clipping image inside number
+interface NumberFrameProps {
+  number: string;
+  imageSrc: string;
+  alt: string;
+}
+
+function NumberFrame({ number, imageSrc, alt }: NumberFrameProps) {
+  return (
+    <motion.div
+      className="relative w-full max-w-xs mx-auto lg:mx-0"
+      initial={{ scale: 0.95, opacity: 0 }}
+      whileInView={{ scale: 1, opacity: 1 }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      style={{ height: 'clamp(200px, 30vw, 300px)' }}
+    >
+      <span
+        className="block w-full h-full"
+        style={{
+          fontFamily: 'serif, Georgia, "Times New Roman", serif',
+          fontSize: 'clamp(8rem, 20vw, 16rem)',
+          fontWeight: 'bold',
+          lineHeight: 1,
+          textAlign: 'center',
+          backgroundImage: `url(${imageSrc})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          color: 'transparent',
+          WebkitTextStroke: '3px #D4AF37', // luxury-gold stroke for frame/border
+          display: 'block',
+        }}
+        aria-label={alt} // Accessibility for decorative frame
+        role="img"
+      >
+        {number}
+      </span>
+    </motion.div>
+  );
+}
 
 // Timeline item component for the Process section
 interface TimelineItemProps {
@@ -324,15 +291,15 @@ export default function ServicesPage() {
 
   // Parallax effects
   const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
-  // const [selectedService, setSelectedService] = useState<number | null>(null);
   
-  // CTA handler kept in services hero; currently unused here after CTA removal
-
   // Safe image access helper
   const getImage = (index: number): ServiceImage => {
     const clampedIndex = Math.max(0, Math.min(index, serviceImages.length - 1));
     return serviceImages[clampedIndex]!;
   };
+
+  // Pre-fetch hero image to avoid re-calls in JSX
+  const heroImage = getImage(0);
 
   return (
     <div className="min-h-screen bg-ivory" ref={containerRef}>
@@ -344,12 +311,13 @@ export default function ServicesPage() {
           style={{ y: heroParallax }}
         >
           <Image
-            src={getImage(0).src}
-            alt={getImage(0).alt}
+            src={heroImage.src}
+            alt={heroImage.alt}
             fill
             className="object-cover"
             priority
             sizes="100vw"
+            unoptimized // Temporary fallback for external CDN; configure domains in next.config.js for production
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
         </motion.div>
@@ -385,11 +353,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Services Section with Images - Editorial Style */}
+      {/* Services Section - Number-Framed Images with Text */}
       <section className="py-20 relative" style={{ backgroundColor: '#e8e7e6' }}>
-        {/* Top Editorial Border */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-luxury-gold/30 to-transparent mb-20" />
-        
         <div className="container-luxury max-w-7xl">
           <motion.div
             initial="hidden"
@@ -405,138 +370,46 @@ export default function ServicesPage() {
             <div className="w-24 h-px bg-luxury-gold mx-auto mt-6" />
           </motion.div>
 
-          {/* Continuous Vertical Line Through Entire Section */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-32 bottom-32 w-[1.5px] bg-luxury-slate/25 hidden lg:block" />
-
-          {/* Services Grid - Editorial Layout with Hard Shadows */}
-          <div className="space-y-32 md:space-y-40 relative">
+          {/* Stacked Services with Responsive Layout */}
+          <div className="space-y-24">
             {services.map((service, index) => {
-              // Define shadow colors for variety - using your color palette
-              const shadowColors = [
-                'bg-[#C8D1C0]',      // soft-sage
-                'bg-[#E7B9A9]',      // clay-peach
-                'bg-[#D4AF37]',      // luxury-gold
-                'bg-[#C99789]',      // desert-rose
-                'bg-[#E8E2DA]',      // warm-sand
-                'bg-[#B6C2AD]',      // misty-olive
-                'bg-[#D8A48F]',      // terracotta-blush
-                'bg-[#F2EDE7]',      // pale-oat
-              ];
-              
-              const shadowColor = shadowColors[index % shadowColors.length];
-              
+              const number = `${(index + 1).toString().padStart(2, '0')}`;
+              const imageIndex = (index % 4) + 1; // Cycle through images 1-4
+              const serviceImage = getImage(imageIndex);
+              const isEvenIndex = index % 2 === 0;
+
               return (
                 <motion.div
                   key={service.title}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.2 }}
-                  variants={index % 2 === 0 ? slideInLeftVariants : slideInRightVariants}
-                  className="relative"
+                  variants={fadeInUpVariants}
+                  className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start"
                 >
-                  {/* Editorial Border Frame */}
-                  <div className="absolute -inset-x-4 -inset-y-8 border-l border-r border-luxury-slate/10 hidden lg:block" />
-                  
-                  <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center ${
-                    index % 2 === 1 ? 'lg:grid-flow-dense' : ''
-                  }`}>
-                    {/* Text Content */}
-                    <div className={`${index % 2 === 1 ? 'lg:col-start-2' : ''} px-4 md:px-0 order-2 lg:order-none`}>
-                      <div className="max-w-xl">
-                        <div className="text-luxury-gold mb-6">
-                          {service.icon}
-                        </div>
-                        <h3 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-luxury-charcoal leading-tight">
-                          {service.title}
-                        </h3>
-                        <p className="text-luxury-slate text-base md:text-lg leading-relaxed mb-6">
-                          {service.description}
-                        </p>
-                        <div className="text-luxury-slate text-sm md:text-base leading-relaxed space-y-2">
-                          {service.features.map((feature, featureIndex) => (
-                            <div key={featureIndex}>
-                              {feature}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Image with Color Box - Editorial Style */}
-                    <div className={`${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''} px-4 md:px-0 relative order-1 lg:order-none w-full`}>
-                      <div className="relative w-full max-w-md mx-auto md:mx-0">
-                        {/* Color Box - Visible on all screen sizes, positioned appropriately */}
-                        {index % 2 === 0 ? (
-                          // Left side services - color box appears on right side of photo
-                          <div 
-                            className={`absolute ${shadowColor} opacity-80 rounded-sm`}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              top: index % 2 === 0 ? '20px' : '20px',
-                              left: index % 2 === 0 ? '20px sm:30px md:40px' : '20px',
-                              zIndex: 0
-                            }}
-                          />
-                        ) : (
-                          // Right side services - color box appears on left side of photo  
-                          <div 
-                            className={`absolute ${shadowColor} opacity-80 rounded-sm`}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              top: '20px',
-                              right: '20px sm:right-7 md:right-10',
-                              left: 'auto',
-                              zIndex: 0
-                            }}
-                          />
-                        )}
-                        
-                        {/* Main Image with responsive sizing */}
-                        <motion.div 
-                          className="relative h-[280px] sm:h-[320px] md:h-[420px] w-full max-w-full overflow-hidden shadow-lg border-2 border-white/10"
-                          style={{ zIndex: 1, minHeight: '280px' }}
-                          whileHover={{ 
-                            scale: 1.02,
-                            transition: { duration: 0.4, ease: "easeOut" }
-                          }}
-                        >
-                          {index < 4 && (
-                            <Image
-                              src={getImage(index + 1).src}
-                              alt={service.title}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, 400px"
-                            />
-                          )}
-                          {index >= 4 && (
-                            <Image
-                              src={getImage(((index - 4) % 4) + 1).src}
-                              alt={service.title}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, 400px"
-                            />
-                          )}
-                        </motion.div>
-                      </div>
-                    </div>
+                  {/* Number Frame with Image - Always first in DOM for mobile (order-1) */}
+                  <div className={`order-1 ${isEvenIndex ? 'lg:order-1' : 'lg:order-2'} w-full lg:w-1/2`}>
+                    <NumberFrame
+                      number={number}
+                      imageSrc={serviceImage.src}
+                      alt={serviceImage.alt}
+                    />
                   </div>
-                  
-                  {/* Decorative horizontal line between services */}
-                  {index < services.length - 1 && (
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-luxury-slate/10 to-transparent mt-16 md:mt-20" />
-                  )}
+
+                  {/* Text Content - Always second in DOM for mobile (order-2) */}
+                  <div className={`order-2 ${isEvenIndex ? 'lg:order-2' : 'lg:order-1'} w-full lg:w-1/2 space-y-6 text-left`}>
+                    <h3 className="font-serif text-3xl md:text-4xl font-bold text-luxury-charcoal leading-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-luxury-slate text-base md:text-lg leading-relaxed">
+                      {service.description}
+                    </p>
+                  </div>
                 </motion.div>
               );
             })}
           </div>
         </div>
-
-        {/* Bottom Editorial Border */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-luxury-gold/30 to-transparent mt-20" />
       </section>
 
       {/* Process Section - Vertical timeline with scroll-driven line & dots */}
