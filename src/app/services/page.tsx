@@ -4,8 +4,13 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { 
- 
-  ChevronRight
+  ChevronRight,
+  Phone,
+  Home,
+  Pencil,
+  Hammer,
+  BarChart3,
+  Sparkles
 } from 'lucide-react';
 
 // GitHub CDN base URL for images
@@ -96,39 +101,46 @@ interface ProcessStep {
   step: string;
   title: string;
   description: string;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
-// Process steps
+// Process steps with icons
 const processSteps: ProcessStep[] = [
   {
     step: '01',
     title: 'Discovery Call',
-    description: 'We understand your vision, requirements, and lifestyle needs through a detailed consultation.'
+    description: 'We understand your vision, requirements, and lifestyle needs through a detailed consultation.',
+    icon: Phone
   },
   {
     step: '02',
     title: 'Site Assessment',
-    description: 'Our team visits your property to evaluate its layout, structure, and potential, ensuring every design decision is grounded in accuracy and tailored to your space.'
+    description: 'Our team visits your property to evaluate its layout, structure, and potential, ensuring every design decision is grounded in accuracy and tailored to your space.',
+    icon: Home
   },
   {
     step: '03',
     title: 'Design Development',
-    description: 'We refine every detail from spatial layouts to materials, finishes, bespoke elements and 3D Renders.'
+    description: 'We refine every detail from spatial layouts to materials, finishes, bespoke elements and 3D Renders.',
+    icon: Pencil
   },
   {
     step: '04',
     title: 'Project Execution',
-    description: 'We manage the project seamlessly, coordinating craftsmen, suppliers, and schedules.'
+    description: 'We manage the project seamlessly, coordinating craftsmen, suppliers, and schedules.',
+    icon: Hammer
   },
   {
     step: '05',
     title: 'Progress Updates',
-    description: 'For international clients, we provide detailed remote progress updates and monitoring.'
+    description: 'For international clients, we provide detailed remote progress updates and monitoring.',
+    icon: BarChart3
   },
   {
     step: '06',
     title: 'Final Reveal',
-    description: 'Your dream space, exquisitely executed and ready to welcome you home.'
+    description: 'Your dream space, exquisitely executed and ready to welcome you home.',
+    icon: Sparkles
   }
 ];
 
@@ -147,36 +159,6 @@ const fadeInUpVariants: Variants = {
     }
   }
 };
-
-// const slideInLeftVariants: Variants = {
-//   hidden: { 
-//     opacity: 0, 
-//     x: -100 
-//   },
-//   visible: { 
-//     opacity: 1, 
-//     x: 0,
-//     transition: { 
-//       duration: 0.8, 
-//       ease: "easeOut" 
-//     }
-//   }
-// };
-
-// const slideInRightVariants: Variants = {
-//   hidden: { 
-//     opacity: 0, 
-//     x: 100 
-//   },
-//   visible: { 
-//     opacity: 1, 
-//     x: 0,
-//     transition: { 
-//       duration: 0.8, 
-//       ease: "easeOut" 
-//     }
-//   }
-// };
 
 // NumberFrame component for clipping image inside number
 interface NumberFrameProps {
@@ -210,10 +192,10 @@ function NumberFrame({ number, imageSrc, alt }: NumberFrameProps) {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           color: 'transparent',
-          WebkitTextStroke: '3px #D4AF37', // luxury-gold stroke for frame/border
+          WebkitTextStroke: '3px #D4AF37',
           display: 'block',
         }}
-        aria-label={alt} // Accessibility for decorative frame
+        aria-label={alt}
         role="img"
       >
         {number}
@@ -222,63 +204,43 @@ function NumberFrame({ number, imageSrc, alt }: NumberFrameProps) {
   );
 }
 
-// Timeline item component for the Process section
-interface TimelineItemProps {
+// Process Card component for grid layout
+interface ProcessCardProps {
   item: ProcessStep;
   index: number;
 }
 
-function TimelineItem({ item }: TimelineItemProps) {
-  const itemRef = useRef<HTMLLIElement>(null);
-  const { scrollYProgress: itemProgress } = useScroll({
-    target: itemRef,
-    offset: ["start end", "center center"]
-  });
-
+function ProcessCard({ item, index }: ProcessCardProps) {
+  const Icon = item.icon;
+  
   return (
-    <li
-      ref={itemRef}
-      className="relative my-10 md:my-14 first:mt-0 last:mb-0 w-full pl-10 md:pl-12"
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="flex flex-col items-center text-center p-6 md:p-8"
     >
-      {/* Circle - positioned so line runs through center */}
-      <div className="absolute left-0 top-0 flex items-center justify-center h-full">
-        {/* Outer white-bordered circle with transparent center to let line show through */}
-        <motion.span
-          className="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-white bg-transparent z-10 flex items-center justify-center"
-          style={{ scale: itemProgress }}
-        >
-          {/* Inner filled circle */}
-          <motion.span
-            className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-luxury-gold"
-            style={{ scale: itemProgress }}
-          />
-        </motion.span>
+      {/* Icon Container */}
+      <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-luxury-gold/10 flex items-center justify-center mb-6 transition-transform hover:scale-110">
+        <Icon className="w-10 h-10 md:w-12 md:h-12 text-luxury-gold" />
       </div>
 
-      {/* Content - responsive layout */}
-      <div className="space-y-4 md:space-y-6">
-        {/* Step number */}
-        <div className="font-serif text-3xl md:text-4xl font-bold text-luxury-charcoal leading-none">
-          {item.step}
-        </div>
-        
-        {/* Content card */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, type: "spring" }}
-          className="rounded-lg p-4 md:p-6 lg:p-7 shadow-md bg-white border border-luxury-slate/10"
-        >
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-wide text-luxury-charcoal mb-2">
-            {item.title}
-          </h3>
-          <p className="text-luxury-slate leading-relaxed text-sm md:text-base">
-            {item.description}
-          </p>
-        </motion.div>
+      {/* Step Number */}
+      <div className="font-serif text-2xl md:text-3xl font-bold text-luxury-gold mb-3">
+        {item.step}
       </div>
-    </li>
+
+      {/* Title */}
+      <h3 className="text-xl md:text-2xl font-semibold text-luxury-charcoal mb-4 tracking-wide">
+        {item.title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-luxury-slate leading-relaxed text-sm md:text-base">
+        {item.description}
+      </p>
+    </motion.div>
   );
 }
 
@@ -295,7 +257,7 @@ export default function ServicesPage() {
   // Safe image access helper
   const getImage = (index: number): ServiceImage => {
     const clampedIndex = Math.max(0, Math.min(index, serviceImages.length - 1));
-    return serviceImages[clampedIndex]!;
+    return serviceImages[clampedIndex] as ServiceImage;
   };
 
   // Pre-fetch hero image to avoid re-calls in JSX
@@ -317,7 +279,7 @@ export default function ServicesPage() {
             className="object-cover"
             priority
             sizes="100vw"
-            unoptimized // Temporary fallback for external CDN; configure domains in next.config.js for production
+            unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
         </motion.div>
@@ -374,7 +336,7 @@ export default function ServicesPage() {
           <div className="space-y-24">
             {services.map((service, index) => {
               const number = `${(index + 1).toString().padStart(2, '0')}`;
-              const imageIndex = (index % 4) + 1; // Cycle through images 1-4
+              const imageIndex = (index % 4) + 1;
               const serviceImage = getImage(imageIndex);
               const isEvenIndex = index % 2 === 0;
 
@@ -412,9 +374,9 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Process Section - Vertical timeline with scroll-driven line & dots */}
-      <section className="pt-20 pb-12 relative text-luxury-charcoal" style={{ backgroundColor: '#f6f5e9' }}>
-        <div className="container-luxury">
+      {/* Process Section - Grid Layout with Icons */}
+      <section className="py-20 relative text-luxury-charcoal" style={{ backgroundColor: '#f6f5e9' }}>
+        <div className="container-luxury max-w-7xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -428,44 +390,18 @@ export default function ServicesPage() {
             <p className="text-xl text-luxury-slate max-w-3xl mx-auto">
               From first hello to final reveal, here&apos;s how we work with you to create your dream space.
             </p>
+            {/* Decorative underline */}
+            <div className="w-24 h-px bg-luxury-gold mx-auto mt-6" />
           </motion.div>
 
-          {/* Timeline container */}
-          <Timeline />
+          {/* Grid Container - Responsive: 1 column on mobile, 2 on tablet, 3 on desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
+            {processSteps.map((step, index) => (
+              <ProcessCard key={step.step} item={step} index={index} />
+            ))}
+          </div>
         </div>
-
-        {/* Background Decorative Image removed to avoid extra perceived gap before footer */}
       </section>
-
-      {/* CTA Section removed to allow the Process section to connect directly to the global footer */}
-    </div>
-  );
-}
-
-// Timeline component (separate to keep ServicesPage clean)
-function Timeline() {
-  const lineRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: lineRef,
-    offset: ["start end", "center start"]
-  });
-
-  return (
-    <div className="relative w-full max-w-4xl mx-auto" ref={lineRef}>
-      {/* Track - Background line */}
-      <div className="absolute left-4 md:left-6 top-0 w-[2px] md:w-[3px] h-full bg-luxury-slate/20" />
-      
-      {/* Animated vertical line that grows with scroll - centered on circles */}
-      <motion.div
-        className="absolute left-4 md:left-6 top-0 w-[2px] md:w-[3px] h-full bg-luxury-gold origin-top"
-        style={{ scaleY: scrollYProgress }}
-      />
-
-      <ul className="w-full flex flex-col items-start justify-start">
-        {processSteps.map((item, index) => (
-          <TimelineItem key={item.step} item={item} index={index} />
-        ))}
-      </ul>
     </div>
   );
 }

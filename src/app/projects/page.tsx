@@ -721,17 +721,17 @@ export default function ProjectsPage() {
 
           {/* Centered Content Card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.6, -0.05, 0.01, 0.99] }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
             className="absolute inset-0 flex items-center justify-center p-4"
           >
-            <div className="max-w-4xl w-full bg-[#F3EEE8]/95 backdrop-blur-sm border border-black/10 rounded-lg shadow-2xl p-8 md:p-12 text-center">
+            <div className="container-luxury text-center text-white">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-5 tracking-wide text-luxury-charcoal"
+                className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold mb-5 tracking-wide"
               >
                 Our Signature
                 <span className="text-luxury-gold block mt-2">Projects</span>
@@ -740,7 +740,7 @@ export default function ProjectsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
-                className="text-base md:text-lg text-luxury-slate leading-relaxed max-w-2xl mx-auto"
+                className="text-base md:text-lg text-white/90 leading-relaxed max-w-2xl mx-auto"
               >
                 A curated collection of transformative spaces, where luxury meets livability. Each project reflects our commitment to exceptional craftsmanship and timeless design.
               </motion.p>

@@ -979,6 +979,7 @@ export default function ContactPage() {
             viewport={{ once: true }}
             variants={fadeInUpVariants}
           >
+            
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
               Ready to Begin Your Journey?
             </h2>
@@ -1004,8 +1005,9 @@ export default function ContactPage() {
               </motion.button>
             </div>
           </motion.div>
+          
         </div>
-
+ <div className="absolute inset-0 bg-black/30" />
         {/* Final Decorative Images */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -1020,6 +1022,7 @@ export default function ContactPage() {
             className="object-cover"
             sizes="384px"
           />
+         
         </motion.div>
       </section>
     </div>
