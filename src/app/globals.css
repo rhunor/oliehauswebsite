@@ -220,16 +220,10 @@ body {
 
 @layer utilities {
   /* Custom utilities */
-/* Ensure serif overrides global font */
-
-
-
-
+  /* Ensure serif overrides global font */
 .font-quintessential {
-  font-family: 'Quintessential', cursive !important;
-}
-
-/* (removed temporary Laguna alias) */
+  font-family: var(--font-quintessential), cursive !important;
+}/* (removed temporary Laguna alias) */
 
   .font-olivehaus {
     font-family: var(--font-serif) !important;
@@ -514,6 +508,8 @@ body {
   .bg-warm-sand { background-color: rgb(var(--color-warm-sand)); }
   
   /* OliveHaus Text Colors */
+  .text-luxury-charcoal { color: var(--color-luxury-charcoal); }
+  .text-luxury-gold { color: var(--color-luxury-gold); }
   .text-soft-sage { color: rgb(var(--color-soft-sage)); }
   .text-clay-peach { color: rgb(var(--color-clay-peach)); }
   .text-desert-rose { color: rgb(var(--color-desert-rose)); }

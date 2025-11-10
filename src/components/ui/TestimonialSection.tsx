@@ -236,15 +236,15 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
             className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 pt-12 border-t border-luxury-platinum/50"
           >
             <div className="text-center">
-              <div className="text-4xl font-bold text-luxury-gold mb-2">98%</div>
+              <div className="text-4xl font-bold text-luxury-charcoal mb-2">98%</div>
               <div className="text-luxury-slate">Client Satisfaction</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-luxury-gold mb-2">5.0</div>
+              <div className="text-4xl font-bold text-luxury-charcoal mb-2">5.0</div>
               <div className="text-luxury-slate">Average Rating</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-luxury-gold mb-2">94%</div>
+              <div className="text-4xl font-bold text-luxury-charcoal mb-2">94%</div>
               <div className="text-luxury-slate">On-time Delivery</div>
             </div>
           </motion.div>

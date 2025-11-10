@@ -1,4 +1,3 @@
-//src/app/page.tsx
 'use client';
 
 import HeroSection from '@/components/ui/HeroSection';
@@ -8,7 +7,7 @@ import TestimonialSection from '@/components/ui/TestimonialSection';
 import { motion, useMotionValue, animate, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Workflow, Home, Globe, Users } from 'lucide-react';
 
 interface HeroImage {
   src: string;
@@ -385,7 +384,7 @@ export default function HomePage(): React.JSX.Element {
                 transition={{ duration: 0.8 }}
               >
                 <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
-                  For Nigeria&apos;s <span className="text-luxury-gold">Finest Homes...</span>
+                  For Nigeria&apos;s <span className="text-luxury-charcoal">Finest Homes...</span>
                 </h2>
                 <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-body">
                   <p>
@@ -434,23 +433,9 @@ export default function HomePage(): React.JSX.Element {
           </div>
         </section>
 
-        {/* We Stand Out Section - New Design with Background Image and Overlay */}
-        <section className="relative py-16 overflow-hidden">
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <Image
-              src={`${GITHUB_CDN_BASE}/images/hero/5.webp`}
-              alt="Luxury interior background"
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority={false}
-            />
-            {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-luxury-charcoal/85" />
-          </div>
-
-          <div className="container-luxury relative z-10">
+        {/* We Stand Out Section - Updated with Subtle Elegant Cards */}
+        <section className="py-16 bg-warm-sand overflow-hidden">
+          <div className="container-luxury">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -458,50 +443,67 @@ export default function HomePage(): React.JSX.Element {
               transition={{ duration: 0.8 }}
               className="text-center mb-12"
             >
-              <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-white tracking-wide">
-                We Stand <span className="text-luxury-gold">Out</span>
+              <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
+                We Stand <span className="text-luxury-charcoal">Out</span>
               </h2>
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
+                  icon: Workflow,
                   title: 'Seamless Project Experience',
-                  description:
-                    'Flawless client experience, before, during and after project execution',
+                  description: 'Flawless client experience, before, during and after project execution.',
+                  href: '/about'
                 },
                 {
+                  icon: Home,
                   title: 'Design for High-Quality Living',
-                  description:
-                    'Luxurious, personalized interiors that tastefully blend functionality with timeless aesthetics.',
+                  description: 'Luxurious, personalized interiors that blend functionality with timeless aesthetics.',
+                  href: '/about'
                 },
                 {
+                  icon: Globe,
                   title: 'Stress-free Project Oversight',
-                  description:
-                    'Stay in control from anywhere in the world with our Daily Manager Platform Updates—track progress, reports, and updates at your convenience',
+                  description: 'Track progress worldwide with our Daily Manager Platform Updates.',
+                  href: '/about'
                 },
                 {
+                  icon: Users,
                   title: 'Constant Team Support',
-                  description:
-                    'A responsive, detail-driven team ensures your vision is executed to perfection.',
+                  description: 'A responsive team ensures your vision is executed to perfection.',
+                  href: '/about'
                 }
-              ].map((value, index) => (
-                <motion.div
-                  key={value.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.15 }}
-                  className="bg-white/95 backdrop-blur-md p-8 rounded-xl shadow-2xl hover:shadow-luxury-strong transition-all duration-300 hover:scale-105 border border-white/20"
-                >
-                  <h3 className="font-serif text-xl font-bold mb-4 text-luxury-charcoal tracking-wide">
-                    {value.title}
-                  </h3>
-                  <p className="text-luxury-charcoal/80 leading-relaxed font-body">
-                    {value.description}
-                  </p>
-                </motion.div>
-              ))}
+              ].map((value, index) => {
+                const IconComponent = value.icon;
+                return (
+                  <motion.div
+                    key={value.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: index * 0.15 }}
+                    className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-warm-sand/50 hover:border-luxury-gold/30 transition-all duration-300 hover:scale-102"
+                  >
+                    <div className="w-12 h-12 bg-luxury-gold/10 rounded-lg flex items-center justify-center mb-4">
+                      <IconComponent className="w-6 h-6 text-luxury-gold" aria-hidden="true" />
+                    </div>
+                    <h3 className="font-serif text-xl font-bold mb-3 text-luxury-charcoal tracking-wide">
+                      {value.title}
+                    </h3>
+                    <p className="text-luxury-charcoal/80 leading-relaxed font-body text-sm mb-4">
+                      {value.description}
+                    </p>
+                    <a
+                      href={value.href}
+                      className="inline-flex items-center space-x-1 text-luxury-gold font-medium text-sm hover:text-luxury-charcoal transition-colors group"
+                    >
+                      <span>Learn More</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
+                    </a>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -665,7 +667,7 @@ export default function HomePage(): React.JSX.Element {
             >
               <h2 className="font-title text-4xl md:text-5xl lg:text-6xl font-bold mb-8 md:mb-12 leading-tight drop-shadow-lg">
                 Designers Who Begin 
-                <span className="text-luxury-gold block">With The End In Mind</span>
+                <span className="text-white block">With The End In Mind</span>
               </h2>
             </motion.div>
           </div>

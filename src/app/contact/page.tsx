@@ -349,7 +349,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.8 }}
                 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
               >
-                Contact <span className="text-luxury-gold">Us</span>
+                Contact <span className="text-luxury-charcoal">Us</span>
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -392,7 +392,7 @@ export default function ContactPage() {
                   <Phone className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
                 <h3 className="text-base sm:text-lg font-bold mb-1">Call Us</h3>
-                <p className="text-luxury-gold text-sm sm:text-base font-medium">+234 701 616 3218</p>
+                <p className="text-luxury-charcoal text-sm sm:text-base font-medium">+234 701 616 3218</p>
               </motion.div>
 
               {/* WhatsApp Card */}
@@ -449,7 +449,7 @@ export default function ContactPage() {
               className="text-center mb-12"
             >
               <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
-                Start Your <span className="text-luxury-gold">Project</span>
+                Start Your <span className="text-luxury-charcoal">Project</span>
               </h2>
               <p className="text-xl text-luxury-slate">
                 Tell us about your vision and we&apos;ll bring it to life.
@@ -554,7 +554,7 @@ export default function ContactPage() {
                                 value={type}
                                 checked={formData.projectType === type}
                                 onChange={handleInputChange}
-                                className="mr-3 text-luxury-gold focus:ring-luxury-gold"
+                                className="mr-3 text-luxury-charcoal focus:ring-luxury-gold"
                               />
                               <span className="text-lg font-medium text-luxury-charcoal">
                                 {type}
@@ -595,7 +595,7 @@ export default function ContactPage() {
                                 value={range}
                                 checked={formData.budgetRange === range}
                                 onChange={handleInputChange}
-                                className="mr-3 text-luxury-gold focus:ring-luxury-gold"
+                                className="mr-3 text-luxury-charcoal focus:ring-luxury-gold"
                               />
                               <span className="text-lg font-medium text-luxury-charcoal">
                                 {range}
@@ -830,7 +830,7 @@ export default function ContactPage() {
         </div>
 
         {/* Decorative Images Around Form */}
-        <motion.div
+        {/* <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -860,7 +860,7 @@ export default function ContactPage() {
             className="object-cover"
             sizes="224px"
           />
-        </motion.div>
+        </motion.div> */}
       </section>
 
       {/* Business Hours & Location */}
@@ -874,7 +874,7 @@ export default function ContactPage() {
               variants={slideInLeftVariants}
             >
               <h3 className="text-luxury-heading text-2xl font-bold mb-6 flex items-center">
-                <Clock className="w-6 h-6 text-luxury-gold mr-3" />
+                <Clock className="w-6 h-6 text-luxury-charcoal mr-3" />
                 Business Hours
               </h3>
               <div className="space-y-3 text-luxury-slate">
@@ -892,7 +892,7 @@ export default function ContactPage() {
               variants={slideInRightVariants}
             >
               <h3 className="text-luxury-heading text-2xl font-bold mb-6 flex items-center">
-                <MapPin className="w-6 h-6 text-luxury-gold mr-3" />
+                <MapPin className="w-6 h-6 text-luxury-charcoal mr-3" />
                 Location
               </h3>
               <div className="text-luxury-slate space-y-2">
@@ -919,7 +919,7 @@ export default function ContactPage() {
             className="text-center mb-16"
           >
             <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
-              Your OliveHaus <span className="text-luxury-gold">Experience</span>
+              Your OliveHaus <span className="text-luxury-charcoal">Experience</span>
             </h2>
             <p className="text-xl text-luxury-slate max-w-3xl mx-auto">
               From First Hello to Final Reveal,  Here&apos;s How We Work With You
@@ -958,7 +958,7 @@ export default function ContactPage() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={scaleUpVariants}
-          className="absolute top-10 right-10 w-48 h-48 rounded-[2.5rem] overflow-hidden hidden lg:block opacity-15"
+          className="absolute top-10 right-20 w-48 h-48 rounded-[2.5rem] overflow-hidden hidden lg:block opacity-15"
         >
           <Image
             src={getContactImage(0).src}

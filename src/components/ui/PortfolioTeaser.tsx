@@ -255,7 +255,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                     className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
                   >
                     <div className="bg-white p-4 rounded-full shadow-luxury-soft">
-                      <Eye className="w-6 h-6 text-luxury-gold" />
+                      <Eye className="w-6 h-6 text-luxury-charcoal" />
                     </div>
                   </motion.div>
                 </div>
@@ -263,7 +263,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                 {/* Project Details */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-luxury-gold text-sm font-medium uppercase tracking-wider">
+                    <span className="text-luxury-charcoal text-sm font-medium uppercase tracking-wider">
                       {project.category}
                     </span>
                     <span className="text-luxury-slate text-sm">
@@ -279,7 +279,7 @@ export default function PortfolioTeaser({ className }: PortfolioTeaserProps) {
                     {project.description}
                   </p>
 
-                  <div className="flex items-center text-luxury-gold font-medium group-hover:gap-3 gap-2 transition-all duration-300">
+                  <div className="flex items-center text-luxury-charcoal font-medium group-hover:gap-3 gap-2 transition-all duration-300">
                     <a
                     href="/projects"
                     >

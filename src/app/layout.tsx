@@ -5,6 +5,7 @@ import {
   Playfair_Display,
   Raleway,
   Montserrat,
+  Quintessential,
 } from 'next/font/google';
 import { GoogleTagManager } from '@next/third-parties/google';
 import './globals.css';
@@ -107,6 +108,13 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
+const quintessential = Quintessential({
+  weight: ['400'],
+  subsets: ['latin'],
+  variable: '--font-quintessential',
+  display: 'swap',
+});
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }
@@ -115,7 +123,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${raleway.variable} ${montserrat.variable}`}
+      className={`${playfair.variable} ${raleway.variable} ${montserrat.variable} ${quintessential.variable}`}
       suppressHydrationWarning
     >
       <head>

@@ -99,7 +99,7 @@ function CounterItem({ icon: Icon, value, label, suffix = '', description, delay
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="text-5xl md:text-6xl font-bold text-luxury-charcoal mb-2 font-serif"
+            className="text-5xl md:text-6xl font-bold text-luxury-gold mb-2 font-serif"
           >
             {formatNumber(count)}{suffix}
           </motion.div>
