@@ -98,7 +98,7 @@ export default function AboutPage() {
           className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4"
         >
           <h1 className="font-serif text-2xl md:text-4xl lg:text-6xl font-bold tracking-wide mb-8">
-            Who are we
+            Who we are 
           </h1>
           <motion.button
             onClick={handleScrollToAbout}
@@ -137,7 +137,7 @@ export default function AboutPage() {
           className="container-luxury"
         >
           <h1 className="font-serif text-4xl md:text-6xl font-bold tracking-wide text-luxury-heading">
-            ABOUT <span className="text-luxury-gold">US</span>
+            ABOUT <span className="text-luxury-charcoal">US</span>
           </h1>
         </motion.div>
       </section>
@@ -289,7 +289,7 @@ export default function AboutPage() {
             className="max-w-4xl mx-auto"
           >
             <AnimatedUnderline 
-              className="font-serif text-sm md:text-base uppercase tracking-[0.3em] text-luxury-gold mb-6"
+              className="font-serif text-sm md:text-base uppercase tracking-[0.3em] text-white mb-6"
               underlineColor="#D4AF37"
               underlineHeight={3}
               animationDuration={1.2}
@@ -304,7 +304,7 @@ export default function AboutPage() {
               onClick={handleExperienceClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block bg-luxury-gold text-luxury-charcoal font-semibold text-base md:text-lg px-10 md:px-14 py-4 md:py-5 rounded-sm hover:bg-luxury-gold/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="inline-block bg-luxury-gold text-white font-semibold text-base md:text-lg px-10 md:px-14 py-4 md:py-5 rounded-sm hover:bg-luxury-gold/90 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Experience Our Promise
             </motion.button>

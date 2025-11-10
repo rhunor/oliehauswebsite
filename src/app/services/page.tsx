@@ -223,11 +223,11 @@ function ProcessCard({ item, index }: ProcessCardProps) {
     >
       {/* Icon Container */}
       <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-luxury-gold/10 flex items-center justify-center mb-6 transition-transform hover:scale-110">
-        <Icon className="w-10 h-10 md:w-12 md:h-12 text-luxury-gold" />
+        <Icon className="w-10 h-10 md:w-12 md:h-12 text-luxury-charcoal" />
       </div>
 
       {/* Step Number */}
-      <div className="font-serif text-2xl md:text-3xl font-bold text-luxury-gold mb-3">
+      <div className="font-serif text-2xl md:text-3xl font-bold text-luxury-charcoal mb-3">
         {item.step}
       </div>
 
@@ -252,7 +252,8 @@ export default function ServicesPage() {
   });
 
   // Parallax effects
-  const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
+  const parallaxDistance = 100;
+  const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -parallaxDistance]);
   
   // Safe image access helper
   const getImage = (index: number): ServiceImage => {
@@ -267,10 +268,13 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-ivory" ref={containerRef}>
       
       {/* Hero Section with Full-Width Landscape Image */}
-      <section className="relative h-screen">
+      <section className="relative h-screen m-0 overflow-hidden">
         <motion.div 
           className="absolute inset-0"
-          style={{ y: heroParallax }}
+          style={{ 
+            y: heroParallax,
+            height: `calc(100% + ${parallaxDistance}px)`
+          }}
         >
           <Image
             src={heroImage.src}
@@ -293,7 +297,7 @@ export default function ServicesPage() {
               className="font-serif text-6xl md:text-7xl lg:text-8xl font-bold mb-6"
             >
               Our
-              <span className="text-luxury-gold block mt-2">Services</span>
+              <span className="text-white block mt-2">Services</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 30 }}
@@ -316,17 +320,17 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Section - Number-Framed Images with Text */}
-      <section className="py-20 relative" style={{ backgroundColor: '#e8e7e6' }}>
+      <section className="pt-0 pb-20 relative m-0" style={{ backgroundColor: '#e8e7e6' }}>
         <div className="container-luxury max-w-7xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUpVariants}
-            className="text-center mb-20"
+            className="text-center mb-20 mt-0"
           >
-            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6">
-              OUR <span className="text-luxury-gold">SERVICES</span>
+            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6 mt-0">
+              OUR <span className="text-luxury-charcoal">SERVICES</span>
             </h2>
             {/* Decorative underline */}
             <div className="w-24 h-px bg-luxury-gold mx-auto mt-6" />
@@ -385,7 +389,7 @@ export default function ServicesPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Our <span className="text-luxury-gold">Process</span>
+              Our <span className="text-luxury-charcoal">Process</span>
             </h2>
             <p className="text-xl text-luxury-slate max-w-3xl mx-auto">
               From first hello to final reveal, here&apos;s how we work with you to create your dream space.

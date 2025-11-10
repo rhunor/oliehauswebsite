@@ -486,7 +486,7 @@ export default function HomePage(): React.JSX.Element {
                     className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-warm-sand/50 hover:border-luxury-gold/30 transition-all duration-300 hover:scale-102"
                   >
                     <div className="w-12 h-12 bg-luxury-gold/10 rounded-lg flex items-center justify-center mb-4">
-                      <IconComponent className="w-6 h-6 text-luxury-gold" aria-hidden="true" />
+                      <IconComponent className="w-6 h-6 text-luxury-charcoal" aria-hidden="true" />
                     </div>
                     <h3 className="font-serif text-xl font-bold mb-3 text-luxury-charcoal tracking-wide">
                       {value.title}
@@ -496,7 +496,7 @@ export default function HomePage(): React.JSX.Element {
                     </p>
                     <a
                       href={value.href}
-                      className="inline-flex items-center space-x-1 text-luxury-gold font-medium text-sm hover:text-luxury-charcoal transition-colors group"
+                      className="inline-flex items-center space-x-1 text-luxury-charcoal font-medium text-sm hover:text-luxury-charcoal transition-colors group"
                     >
                       <span>Learn More</span>
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />

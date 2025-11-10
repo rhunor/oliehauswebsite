@@ -329,7 +329,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
                   <motion.button
                     onClick={() => onToggle(project.id)}
                     whileHover={{ scale: 1.02 }}
-                    className="inline-flex items-center gap-2 text-luxury-gold hover:text-luxury-darkGold transition-colors font-medium"
+                    className="inline-flex items-center gap-2 text-luxury-charcoal hover:text-luxury-darkGold transition-colors font-medium"
                   >
                     <ChevronUp className="w-4 h-4" />
                     <span className="text-sm tracking-wider">CLOSE GALLERY</span>
@@ -734,7 +734,7 @@ export default function ProjectsPage() {
                 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold mb-5 tracking-wide"
               >
                 Our Signature
-                <span className="text-luxury-gold block mt-2">Projects</span>
+                <span className="text-white block mt-2">Projects</span>
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -867,12 +867,12 @@ export default function ProjectsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-luxury-gold text-sm tracking-[0.3em] uppercase font-semibold mb-6 block drop-shadow-lg">
+              <span className="text-white text-sm tracking-[0.3em] uppercase font-semibold mb-6 block drop-shadow-lg">
                 Let&apos;s Create Together
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-100 drop-shadow-lg">
                 Love Our Spaces?
-                <span className="text-luxury-gold block mt-2 drop-shadow-lg">Your project deserves the same touch</span>
+                <span className="text-white block mt-2 drop-shadow-lg">Your project deserves the same touch</span>
               </h2>
               <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed font-light drop-shadow-md">
                 Every exceptional space starts with a conversation. Let&apos;s discuss your vision.
