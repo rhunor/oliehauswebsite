@@ -1,6 +1,11 @@
 // src/app/layout.tsx - FIXED GTM PROP TO gtmId (TS-SAFE)
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import {
+  Playfair_Display,
+  Raleway,
+  Montserrat,
+} from 'next/font/google';
 import { GoogleTagManager } from '@next/third-parties/google';
 import './globals.css';
 import AdaptiveNavigation from '@/components/ui/AdaptiveNavigation';
@@ -80,24 +85,46 @@ export const metadata: Metadata = {
   category: 'Interior Design',
 };
 
+// Load Google fonts via Next.js so they are served consistently across platforms.
+const playfair = Playfair_Display({
+  weight: ['400', '600', '700', '800', '900'],
+  subsets: ['latin'],
+  variable: '--font-heading',
+  display: 'swap',
+});
+
+const raleway = Raleway({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+});
+
+const montserrat = Montserrat({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-accent',
+  display: 'swap',
+});
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${raleway.variable} ${montserrat.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Preconnect to external resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         
-        {/* Google Fonts - Luxury Typography (Playfair Display, Montserrat, Raleway) */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Montserrat:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        {/* Fonts are loaded via next/font/google and exposed as CSS variables on <html> */}
 
         {/* Optional Adobe Fonts (Ivy Mode) - set NEXT_PUBLIC_ADOBE_FONTS_KIT_ID env var */}
         {process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID && (

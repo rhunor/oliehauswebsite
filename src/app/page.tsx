@@ -4,7 +4,7 @@
 import HeroSection from '@/components/ui/HeroSection';
 import PortfolioTeaser from '@/components/ui/PortfolioTeaser';
 import TestimonialSection from '@/components/ui/TestimonialSection';
-import LuxuryWavePattern from '@/components/ui/LuxuryWavePattern';
+
 import { motion, useMotionValue, animate, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
@@ -34,7 +34,6 @@ interface AnimatedCounterProps {
 function AnimatedCounter({ value, suffix = '', prefix = '' }: AnimatedCounterProps): React.JSX.Element {
   const [displayValue, setDisplayValue] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  // useInView uses rootMargin (IntersectionObserver option)
   const inView = useInView(ref, { once: true });
   const motionValue = useMotionValue(0);
 
@@ -42,14 +41,13 @@ function AnimatedCounter({ value, suffix = '', prefix = '' }: AnimatedCounterPro
     if (inView) {
       const controls = animate(motionValue, value, {
         duration: 2,
-        ease: [0.25, 0.1, 0.25, 1], // Custom easing for smooth acceleration
+        ease: [0.25, 0.1, 0.25, 1],
         onUpdate: (latest) => {
           setDisplayValue(Math.round(latest));
         }
       });
       return controls.stop;
     }
-    // Explicitly return undefined for the else path to satisfy TypeScript
     return undefined;
   }, [inView, value, motionValue]);
 
@@ -60,10 +58,8 @@ function AnimatedCounter({ value, suffix = '', prefix = '' }: AnimatedCounterPro
   );
 }
 
-// Updated to use jsDelivr CDN for better performance and reliability
 const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
 
-// Updated hero images with jsDelivr CDN URLs
 const heroImages: HeroImage[] = [
   {
     src: `${GITHUB_CDN_BASE}/images/hero/1.webp`,
@@ -187,7 +183,6 @@ const heroImages: HeroImage[] = [
   }
 ];
 
-// Provide multiple video options; HeroSection keeps the first item for compatibility
 const videoOptions: VideoContent[] = [
   {
     thumbnailSrc: '/images/video/portfolio-thumbnail.jpg',
@@ -208,21 +203,19 @@ export default function HomePage(): React.JSX.Element {
     window.location.href = '/contact';
   };
 
-  // Video modal state
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  // null = user hasn't chosen a video yet (shows selection UI).
-  // number = play that video's iframe
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
+  
   const closeVideo = () => {
     setIsVideoOpen(false);
-    setSelectedVideoIndex(null); // unmount iframe / stop playback
+    setSelectedVideoIndex(null);
   };
-  // open modal and show selection UI
+  
   const openVideo = () => {
     setSelectedVideoIndex(null);
     setIsVideoOpen(true);
   };
-  // called when user picks a video to start playing
+  
   const startVideo = (index: number) => {
     setSelectedVideoIndex(index);
   };
@@ -230,11 +223,11 @@ export default function HomePage(): React.JSX.Element {
   return (
     <>
       <div >
-        {/* Hero Section - Keep clean */}
+        {/* Hero Section */}
         <div className="relative">
           <HeroSection
             images={heroImages}
-            video={videoOptions[0]!} // keep existing behavior in HeroSection
+            video={videoOptions[0]!}
             tagline={{
               main: 'Design for High Quality Living',
               sub: ''
@@ -242,7 +235,7 @@ export default function HomePage(): React.JSX.Element {
             onHireUsClick={handleHireUsClick}
           />
 
-          {/* Overlayed Watch Video button (opens modal with both video choices) */}
+          {/* Overlayed Watch Video button */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="flex justify-center items-start h-full pt-28 pointer-events-auto">
               <button
@@ -256,7 +249,7 @@ export default function HomePage(): React.JSX.Element {
           </div>
         </div>
 
-        {/* Video selection / player modal */}
+        {/* Video modal */}
         {isVideoOpen && (
           <div
             role="dialog"
@@ -285,7 +278,6 @@ export default function HomePage(): React.JSX.Element {
                 </div>
               </div>
 
-              {/* If user hasn't chosen a video show choices, else show player */}
               {selectedVideoIndex === null ? (
                 <div className="p-6 grid sm:grid-cols-2 gap-6">
                   {videoOptions.map((v, i) => (
@@ -314,11 +306,6 @@ export default function HomePage(): React.JSX.Element {
                 </div>
               ) : (
                 <>
-                  {/* Narrow the selected index so TypeScript knows it's a number */}
-                  {/*
-                    Use a local constant derived from selectedVideoIndex (not null here),
-                    and use updater functions for state changes that depend on previous state.
-                  */}
                   {(() => {
                     const idx = selectedVideoIndex as number;
                     const selected = videoOptions[idx];
@@ -374,9 +361,8 @@ export default function HomePage(): React.JSX.Element {
            </div>
          )}
 
-        {/* About Us Section - Warm Sand Background with subtle pattern */}
+        {/* About Us Section */}
         <section className="relative py-12 bg-warm-sand overflow-hidden">
-          {/* Subtle pattern */}
           <div 
             className="absolute inset-0 opacity-[0.02] pointer-events-none"
             style={{
@@ -415,9 +401,6 @@ export default function HomePage(): React.JSX.Element {
                         transition={{ duration: 0.8, delay: 0.3 }}
                         className="text-center mt-16"
                       >
-                        {/* <p className="text-xl text-luxury-slate max-w-3xl mx-auto leading-relaxed mb-8 font-body">
-                          Bring Your Vision to Life. Let&apos;s design a space that&apos;s uniquely yours.
-                        </p> */}
                         <a
                           href="/about"
                           className="btn-luxury group inline-flex items-center space-x-2"
@@ -451,9 +434,21 @@ export default function HomePage(): React.JSX.Element {
           </div>
         </section>
 
-        {/* We Stand Out Section - White background with unique wave pattern */}
-        <section className="relative pt-12 pb-0 bg-white overflow-hidden">
-          <LuxuryWavePattern opacity={0.5} />
+        {/* We Stand Out Section - New Design with Background Image and Overlay */}
+        <section className="relative py-16 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src={`${GITHUB_CDN_BASE}/images/hero/5.webp`}
+              alt="Luxury interior background"
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority={false}
+            />
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-luxury-charcoal/85" />
+          </div>
 
           <div className="container-luxury relative z-10">
             <motion.div
@@ -461,38 +456,34 @@ export default function HomePage(): React.JSX.Element {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-5"
+              className="text-center mb-12"
             >
-              <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
+              <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-white tracking-wide">
                 We Stand <span className="text-luxury-gold">Out</span>
               </h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
                   title: 'Seamless Project Experience',
                   description:
                     'Flawless client experience, before, during and after project execution',
-                  icon: ''
                 },
                 {
                   title: 'Design for High-Quality Living',
                   description:
                     'Luxurious, personalized interiors that tastefully blend functionality with timeless aesthetics.',
-                  icon: ''
                 },
                 {
                   title: 'Stress-free Project Oversight',
                   description:
                     'Stay in control from anywhere in the world with our Daily Manager Platform Updates—track progress, reports, and updates at your convenience',
-                  icon: ''
                 },
                 {
                   title: 'Constant Team Support',
                   description:
                     'A responsive, detail-driven team ensures your vision is executed to perfection.',
-                  icon: ''
                 }
               ].map((value, index) => (
                 <motion.div
@@ -500,14 +491,13 @@ export default function HomePage(): React.JSX.Element {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.2 }}
-                  className="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-luxury-soft hover:shadow-luxury-strong transition-all duration-300"
+                  transition={{ duration: 0.8, delay: index * 0.15 }}
+                  className="bg-white/95 backdrop-blur-md p-8 rounded-xl shadow-2xl hover:shadow-luxury-strong transition-all duration-300 hover:scale-105 border border-white/20"
                 >
-                  <div className="text-4xl mb-4">{value.icon}</div>
                   <h3 className="font-serif text-xl font-bold mb-4 text-luxury-charcoal tracking-wide">
                     {value.title}
                   </h3>
-                  <p className="text-luxury-charcoal/80 leading-relaxed font-body mb-0">
+                  <p className="text-luxury-charcoal/80 leading-relaxed font-body">
                     {value.description}
                   </p>
                 </motion.div>
@@ -516,20 +506,10 @@ export default function HomePage(): React.JSX.Element {
           </div>
         </section>
 
-        {/* Track Record Section - Clean animated counters with visible text */}
-        <section className="py-20 bg-luxury-charcoal relative overflow-hidden">
-          <LuxuryWavePattern opacity={0.5} />
-          {/* Subtle animated pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `
-                radial-gradient(circle at 20% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 80%, #D4AF37 1px, transparent 1px)
-              `,
-              backgroundSize: '50px 50px',
-            }}
-          />
+        {/* Track Record Section - New Two-Column Design */}
+        <section className="py-20 bg-[#1a1a1a] relative overflow-hidden">
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-luxury-charcoal via-[#1a1a1a] to-black opacity-90" />
           
           <div className="container-luxury relative z-10">
             <motion.div
@@ -539,78 +519,129 @@ export default function HomePage(): React.JSX.Element {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="font-title text-4xl md:text-5xl font-bold mb-5 tracking-wide" style={{ color: 'black' }}>
+              <h2 className="font-title text-4xl md:text-5xl font-bold mb-5 text-white tracking-wide">
                 Our Track <span className="text-luxury-gold">Record</span>
               </h2>
-              <p className="text-xl max-w-3xl mx-auto font-body leading-relaxed" style={{ color: 'black' }}>
+              <p className="text-xl text-white/80 max-w-3xl mx-auto font-body leading-relaxed">
                 Numbers that speak of our commitment to luxury, quality, and client satisfaction across every project we undertake.
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-4 gap-8">
-              {[
-                {
-                  number: 150,
-                  suffix: '+',
-                  label: 'Luxury Spaces',
-                  description: 'Exquisitely designed and completed projects across Nigeria'
-                },
-                {
-                  number: 200,
-                  suffix: '+',
-                  label: 'Satisfied Clients',
-                  description: 'Esteemed individuals who trust us with their luxury spaces'
-                },
-                {
-                  number: 12,
-                  suffix: '+',
-                  label: 'Years of Experience',
-                  description: 'Years of expertise in luxury interior design and project'
-                },
-                {
-                  number: 25,
-                  suffix: '',
-                  label: 'Active Projects',
-                  description: 'Current luxury projects in various stages of design and execution'
-                }
-              ].map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: index * 0.15,
-                    ease: [0.25, 0.1, 0.25, 1]
-                  }}
-                  className="text-center"
-                >
-                  <div className="relative">
-                    <motion.div 
-                      className="text-5xl md:text-6xl font-bold mb-4 font-serif tabular-nums"
-                      style={{ color: '#D4AF37' }}
-                      whileInView={{ scale: [0.8, 1.05, 1] }}
-                      transition={{ duration: 0.6, delay: index * 0.15 + 0.2 }}
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left: Statistics with animated counters */}
+              <div className="grid grid-cols-2 gap-6">
+                {[
+                  {
+                    number: 150,
+                    suffix: '+',
+                    label: 'Luxury Spaces',
+                    description: 'Exquisitely designed and completed projects across Nigeria'
+                  },
+                  {
+                    number: 200,
+                    suffix: '+',
+                    label: 'Satisfied Clients',
+                    description: 'Esteemed individuals who trust us with their luxury spaces'
+                  },
+                  {
+                    number: 12,
+                    suffix: '+',
+                    label: 'Years of Experience',
+                    description: 'Years of expertise in luxury interior design and project'
+                  },
+                  {
+                    number: 25,
+                    suffix: '',
+                    label: 'Active Projects',
+                    description: 'Current luxury projects in various stages of design and execution'
+                  }
+                ].map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ 
+                      duration: 0.8, 
+                      delay: index * 0.15,
+                      ease: [0.25, 0.1, 0.25, 1]
+                    }}
+                    className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-luxury-gold/50 transition-all duration-300"
+                  >
+                    <div className="relative">
+                      <motion.div 
+                        className="text-4xl md:text-5xl font-bold mb-3 font-serif tabular-nums text-luxury-gold"
+                        whileInView={{ scale: [0.8, 1.05, 1] }}
+                        transition={{ duration: 0.6, delay: index * 0.15 + 0.2 }}
+                      >
+                        <AnimatedCounter value={stat.number} suffix={stat.suffix} />
+                      </motion.div>
+                      <h3 className="text-lg font-bold mb-2 font-serif tracking-wide text-white">
+                        {stat.label}
+                      </h3>
+                      <p className="text-xs leading-relaxed font-body text-white/60">
+                        {stat.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Right: Our Excellence */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="bg-white/5 backdrop-blur-sm p-8 rounded-xl border border-white/10"
+              >
+                <h3 className="font-title text-3xl font-bold mb-8 text-white tracking-wide">
+                  Our <span className="text-luxury-gold">Excellence</span>
+                </h3>
+                
+                <div className="space-y-6">
+                  {[
+                    { label: 'Bespoke Design', value: 98 },
+                    { label: 'Client Satisfaction', value: 95 },
+                    { label: 'Timely Delivery', value: 92 },
+                    { label: 'Quality Craftsmanship', value: 97 }
+                  ].map((skill, index) => (
+                    <motion.div
+                      key={skill.label}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
                     >
-                      <AnimatedCounter value={stat.number} suffix={stat.suffix} />
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-white font-medium font-body">{skill.label}</span>
+                        <span className="text-luxury-gold font-bold">{skill.value}%</span>
+                      </div>
+                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.value}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1.5, delay: index * 0.1 + 0.3, ease: "easeOut" }}
+                          className="h-full bg-gradient-to-r from-luxury-gold to-yellow-600 rounded-full"
+                        />
+                      </div>
                     </motion.div>
-                    <h3 className="text-xl font-bold mb-3 font-serif tracking-wide" style={{ color: 'black' }}>
-                      {stat.label}
-                    </h3>
-                    <p className="text-sm leading-relaxed font-body px-4" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                      {stat.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                  ))}
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-white/10">
+                  <p className="text-white/70 text-sm font-body leading-relaxed">
+                    Our commitment to excellence is reflected in every project we undertake. From initial consultation to final execution, we maintain the highest standards of quality, creativity, and professionalism.
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
-        {/* Closing Tagline - Dark Background with Photo */}
+        {/* Closing Tagline */}
         <section className="relative py-20 md:py-28 bg-luxury-charcoal text-white text-center  overflow-hidden">
-          {/* Background image */}
           <div className="absolute inset-0 opacity-5">
             <Image
               src={`${GITHUB_CDN_BASE}/images/hero/2.webp`}
@@ -621,10 +652,7 @@ export default function HomePage(): React.JSX.Element {
             />
           </div>
           <div className="absolute inset-0 bg-black/30" />
-          {/* Gradient overlay starting from top to create smooth transition */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-luxury-charcoal/95 to-luxury-charcoal" />
-          
-          {/* Additional dark overlay for consistent dark look */}
           <div className="absolute inset-0 bg-luxury-charcoal/80" />
 
           <div className="container-luxury relative z-10 px-4">
@@ -643,9 +671,8 @@ export default function HomePage(): React.JSX.Element {
           </div>
         </section>
 
-        {/* Portfolio Teaser - Clay Peach Background */}
+        {/* Portfolio Teaser */}
         <section className="relative bg-clay-peach overflow-hidden">
-          {/* Subtle pattern */}
           <div 
             className="absolute inset-0 opacity-[0.02] pointer-events-none"
             style={{
@@ -664,85 +691,8 @@ export default function HomePage(): React.JSX.Element {
           </div>
         </section>
 
-        {/* Inside the Design Section - Pale Oat Background */}
-        {/* <section className="relative py-12 bg-pale-oat overflow-hidden">
-          
-          <div 
-            className="absolute inset-0 opacity-[0.02] pointer-events-none"
-            style={{
-              backgroundImage: `
-                radial-gradient(circle at 20% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 20%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 20% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 80% 80%, #D4AF37 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, #D4AF37 0.5px, transparent 0.5px)
-              `,
-              backgroundSize: '60px 60px',
-            }}
-          />
-          
-          <div className="container-luxury relative z-10">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
-                  This is How We Think About <span className="text-luxury-gold">Your Space...</span>
-                </h2>
-                <div className="space-y-6 text-lg text-luxury-charcoal/80 leading-relaxed font-body">
-                  <p>
-                    Get a behind-the-scenes look at our design philosophy—from space planning and layout, to colour palettes, furniture, and material selections. Every element is chosen with intention, crafting a home that reflects your personality and elevates your lifestyle.
-                  </p>
-                  <p className="text-soft-sage font-medium italic">
-                    See how we design with you in mind...
-                  </p>
-                </div>
-                
-                <div className="mt-8">
-                  <a
-                    href="/inside-the-design"
-                    className="inline-flex items-center space-x-2 bg-clay-peach hover:bg-terracotta-blush text-white px-8 py-4 rounded-lg font-medium font-body transition-all duration-300 shadow-luxury-soft hover:shadow-luxury-strong transform hover:scale-105"
-                  >
-                    <span>Visit Inside the Design</span>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </a>
-                </div>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="relative"
-              >
-                <div className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden shadow-luxury-soft">
-                  <Image
-                    src={`${GITHUB_CDN_BASE}/about/28.jpeg`}
-                    alt="OliveHaus design process visualization"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                </div>
-                <div className="mt-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-luxury-soft border-l-4 border-clay-peach">
-                  <p className="text-sm text-luxury-charcoal font-medium font-body">
-                    <span className="text-luxury-gold">Annotation:</span> Every element is chosen with intention to create spaces that reflect your unique personality and elevate your lifestyle.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section> */}
-
-        {/* Testimonial Section - Light Primrose Background */}
+        {/* Testimonial Section */}
         <section className="relative bg-light-primrose overflow-hidden">
-          {/* Subtle pattern */}
           <div 
             className="absolute inset-0 opacity-[0.015] pointer-events-none"
             style={{
