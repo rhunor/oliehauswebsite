@@ -120,11 +120,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <head>
         {/* Preconnect to external resources */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         
         {/* Fonts are loaded via next/font/google and exposed as CSS variables on <html> */}
+            {/* Fonts are loaded via next/font/google and exposed as CSS variables on <html> */}
 
         {/* Optional Adobe Fonts (Ivy Mode) - set NEXT_PUBLIC_ADOBE_FONTS_KIT_ID env var */}
         {process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID && (
