@@ -329,7 +329,7 @@ export default function ServicesPage() {
             variants={fadeInUpVariants}
             className="text-center mb-20 mt-0"
           >
-            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-6 mt-0">
+            <h2 className="text-luxury-heading text-4xl md:text-5xl font-bold mb-10 mt-0 py-25">
               OUR <span className="text-luxury-charcoal">SERVICES</span>
             </h2>
             {/* Decorative underline */}

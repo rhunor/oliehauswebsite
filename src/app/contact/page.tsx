@@ -62,7 +62,7 @@ const contactImages = [
   { src: `${GITHUB_CDN_BASE}/images/hero/9.webp`, alt: "Modern office space", width: 500, height: 600 },
   { src: `${GITHUB_CDN_BASE}/images/hero/10.webp`, alt: "Elegant bedroom", width: 700, height: 500 },
   { src: `${GITHUB_CDN_BASE}/images/hero/11.webp`, alt: "Designer kitchen", width: 550, height: 550 },
-  { src: `${GITHUB_CDN_BASE}/images/hero/12.webp`, alt: "Bathroom renovation", width: 450, height: 600 }
+  { src: `${GITHUB_CDN_BASE}/images/hero/20.webp`, alt: "Bathroom renovation", width: 450, height: 600 }
 ] as const;
 
 // Safe accessor for contact images
@@ -970,8 +970,21 @@ export default function ContactPage() {
         </motion.div>
       </section>
 
-      {/* Final CTA Section */}
-      <section className="py-20 bg-luxury-charcoal text-white text-center relative overflow-hidden">
+      {/* Final CTA Section with background image and overlay */}
+      <section className="py-20 text-white text-center relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src={getContactImage(4).src}
+            alt="Modern office space background"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+        </div>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/50" />
         <div className="container-luxury relative z-10">
           <motion.div
             initial="hidden"
@@ -979,7 +992,6 @@ export default function ContactPage() {
             viewport={{ once: true }}
             variants={fadeInUpVariants}
           >
-            
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
               Ready to Begin Your Journey?
             </h2>
@@ -1005,25 +1017,7 @@ export default function ContactPage() {
               </motion.button>
             </div>
           </motion.div>
-          
         </div>
- <div className="absolute inset-0 bg-black/30" />
-        {/* Final Decorative Images */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.1, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          className="absolute bottom-0 left-0 w-96 h-64 rounded-t-[4rem] overflow-hidden"
-        >
-          <Image
-            src={getContactImage(2).src}
-            alt=""
-            fill
-            className="object-cover"
-            sizes="384px"
-          />
-         
-        </motion.div>
       </section>
     </div>
   );

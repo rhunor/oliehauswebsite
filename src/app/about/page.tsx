@@ -98,7 +98,7 @@ export default function AboutPage() {
           className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4"
         >
           <h1 className="font-serif text-2xl md:text-4xl lg:text-6xl font-bold tracking-wide mb-8">
-            Who we are 
+            Who We Are 
           </h1>
           <motion.button
             onClick={handleScrollToAbout}
