@@ -9,6 +9,8 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { cn, getGitHubCdnCacheBustedUrl, generateImageBlurDataUrl, imageQuality } from '@/lib/utils';
 import { ImageLoadingSpinner } from '@/components/ImageLoadingSpinner';
 
+const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+
 // Project types
 interface ProjectImage {
   src: string;
@@ -841,24 +843,19 @@ export default function ProjectsPage() {
           transition={{ duration: 0.8 }}
           className="py-24 bg-luxury-charcoal relative z-10 overflow-hidden"
         >
-          {/* Enhanced background pattern with better contrast */}
-          <div className="absolute inset-0 opacity-10">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `repeating-linear-gradient(
-                  45deg,
-                  transparent,
-                  transparent 10px,
-                  #D4AF37 10px,
-                  #D4AF37 11px
-                )`,
-              }}
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src={`${GITHUB_CDN_BASE}/images/hero/9.webp`}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="100vw"
             />
           </div>
           
-          {/* Additional overlay for better text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/40" />
+          {/* Dark overlay for text contrast */}
+          <div className="absolute inset-0 bg-black/50" />
           
           <div className="container-luxury text-center relative z-20 px-4">
             <motion.div

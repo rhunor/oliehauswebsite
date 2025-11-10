@@ -218,7 +218,7 @@ export default function AboutPage() {
       </section>
 
       {/* Lateral Photo Collage Section */}
-      <section className="py-8 md:py-16 bg-white">
+      <section className="py-12 md:py-20 bg-white">
         <div className="container-luxury">
           <motion.div
             initial="hidden"
@@ -228,12 +228,12 @@ export default function AboutPage() {
             className="relative"
           >
             {/* Collage Container - Responsive horizontal layout */}
-            <div className="flex overflow-x-auto md:overflow-visible h-48 md:h-64 lg:h-80 snap-x snap-mandatory md:snap-none scrollbar-hide px-2 md:px-0">
+            <div className="flex overflow-x-auto md:overflow-visible h-56 md:h-72 lg:h-96 snap-x snap-mandatory md:snap-none scrollbar-hide px-2 md:px-0">
               {collageImages.map((img, index) => (
                 <motion.div
                   key={index}
                   variants={collageItemVariants}
-                  className="flex-shrink-0 md:flex-1 relative snap-center w-64 md:w-auto h-full border border-white/20"
+                  className="flex-shrink-0 md:flex-1 relative snap-center w-72 md:w-auto h-full"
                 >
                   <Image
                     src={img.src}

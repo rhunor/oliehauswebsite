@@ -349,7 +349,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.8 }}
                 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
               >
-                Contact <span className="text-luxury-charcoal">Us</span>
+                Contact <span className="text-white">Us</span>
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -391,8 +391,8 @@ export default function ContactPage() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                   <Phone className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold mb-1">Call Us</h3>
-                <p className="text-luxury-charcoal text-sm sm:text-base font-medium">+234 701 616 3218</p>
+                <h3 className="text-white sm:text-lg font-bold mb-1 ">Call Us</h3>
+                <p className="text-white text-sm sm:text-base font-medium">+234 701 616 3218</p>
               </motion.div>
 
               {/* WhatsApp Card */}
@@ -410,8 +410,8 @@ export default function ContactPage() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                   <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold mb-1">WhatsApp</h3>
-                <p className="text-luxury-slate text-sm sm:text-base">Chat with us instantly</p>
+                <h3 className="text-white sm:text-lg font-bold mb-1">WhatsApp</h3>
+                <p className="text-white text-sm sm:text-base">Chat with us instantly</p>
               </motion.div>
 
               {/* Email Card */}
@@ -429,8 +429,8 @@ export default function ContactPage() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                   <Mail className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold mb-1">Email</h3>
-                <p className="text-luxury-slate text-xs sm:text-sm break-all">enquiry@olivehausinteriors.com</p>
+                <h3 className="text-white sm:text-lg font-bold mb-1">Email</h3>
+                <p className="text-white text-xs sm:text-sm break-all">enquiry@olivehausinteriors.com</p>
               </motion.div>
             </div>
           </div>
@@ -864,7 +864,7 @@ export default function ContactPage() {
       </section>
 
       {/* Business Hours & Location */}
-      <section className="py-20 relative">
+      <section className="py-20 relative bg-[#1a2942] text-white">
         <div className="container-luxury">
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div
@@ -873,11 +873,11 @@ export default function ContactPage() {
               viewport={{ once: true }}
               variants={slideInLeftVariants}
             >
-              <h3 className="text-luxury-heading text-2xl font-bold mb-6 flex items-center">
-                <Clock className="w-6 h-6 text-luxury-charcoal mr-3" />
+              <h3 className="text-white text-2xl font-bold mb-6 flex items-center">
+                <Clock className="w-6 h-6 text-luxury-gold mr-3" />
                 Business Hours
               </h3>
-              <div className="space-y-3 text-luxury-slate">
+              <div className="space-y-3 text-white/80">
                 <div className="flex justify-start gap-16">
                   <span>Monday - Friday:</span>
                   <span className="font-medium">9:00 AM - 6:00 PM</span>
@@ -891,11 +891,11 @@ export default function ContactPage() {
               viewport={{ once: true }}
               variants={slideInRightVariants}
             >
-              <h3 className="text-luxury-heading text-2xl font-bold mb-6 flex items-center">
-                <MapPin className="w-6 h-6 text-luxury-charcoal mr-3" />
+              <h3 className="text-white text-2xl font-bold mb-6 flex items-center">
+                <MapPin className="w-6 h-6 text-luxury-gold mr-3" />
                 Location
               </h3>
-              <div className="text-luxury-slate space-y-2">
+              <div className="text-white/80 space-y-2">
                 <p className="font-medium">OliveHaus Interiors</p>
                 <p>4 Olatunbosun street, shonibare Estate, Maryland,</p>
                 <p>Lagos, Nigeria</p>
