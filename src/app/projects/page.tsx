@@ -1,7 +1,7 @@
 //src/app/projects/page.tsx
 'use client';
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Head from 'next/head';
@@ -78,13 +78,26 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
   const [imageError, setImageError] = useState(false);
   const [visibleImages, setVisibleImages] = useState<number[]>([]);
   const [galleryImageStates, setGalleryImageStates] = useState<Record<number, { loaded: boolean; error: boolean }>>({});
+  const [dynamicHeight, setDynamicHeight] = useState(0);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Cache-busted thumbnail URL
   const cacheBustedThumbnail = useMemo(() => 
     getGitHubCdnCacheBustedUrl(project.thumbnail.src.replace('https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main', ''), 'moderate'),
     [project.thumbnail.src]
   );
+
+  // Measure dynamic height for gallery
+  useLayoutEffect(() => {
+    if (contentRef.current) {
+      if (isExpanded) {
+        setDynamicHeight(contentRef.current.scrollHeight);
+      } else {
+        setDynamicHeight(0);
+      }
+    }
+  }, [isExpanded]);
 
   // Handle thumbnail load
   const handleThumbnailLoad = useCallback(() => {
@@ -272,7 +285,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
               layout
               initial={{ height: 0, opacity: 0 }}
               animate={{ 
-                height: 'auto', 
+                height: dynamicHeight, 
                 opacity: 1,
                 transition: {
                   height: { duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] },
@@ -290,7 +303,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
               className="overflow-hidden border-t border-luxury-slate/10"
             >
               {/* Film Roll Effect - Vertical Image Gallery */}
-              <div className="bg-gradient-to-b from-luxury-slate/5 to-[#F3EEE8]">
+              <div ref={contentRef} className="bg-gradient-to-b from-luxury-slate/5 to-[#F3EEE8]">
                 {/* Gallery Header */}
                 <div className="px-8 py-6 border-b border-luxury-slate/10">
                   <p className="text-xs tracking-widest text-luxury-slate/60 uppercase">
@@ -360,7 +373,10 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
                 {/* Gallery Footer */}
                 <div className="px-8 py-8 border-t border-luxury-slate/10 text-center">
                   <motion.button
-                    onClick={() => onToggle(project.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggle(project.id);
+                    }}
                     whileHover={{ scale: 1.02 }}
                     className="inline-flex items-center gap-2 text-luxury-charcoal hover:text-luxury-gold transition-colors font-medium"
                   >
@@ -814,7 +830,10 @@ export default function ProjectsPage() {
         </section>
 
         {/* Projects Section - Magazine Layout */}
-        <section className="py-16 md:py-24 relative z-10">
+        <motion.section 
+          layoutScroll
+          className="py-16 md:py-24 relative z-10"
+        >
           <div className="container-luxury max-w-7xl relative">
             {/* Filter Loading Overlay */}
             {isFiltering && (
@@ -881,7 +900,7 @@ export default function ProjectsPage() {
               </motion.div>
             )}
           </div>
-        </section>
+        </motion.section>
 
         {/* CTA Section */}
         <motion.section
