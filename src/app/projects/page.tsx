@@ -31,6 +31,13 @@ interface Project {
   area?: string;
 }
 
+// Helper function moved outside component to prevent recreation
+const createImageArray = (basePath: string, count: number, altPrefix: string): ProjectImage[] => 
+  Array.from({ length: count }, (_, i) => ({
+    src: getGitHubCdnCacheBustedUrl(`${basePath}/${i + 1}.webp`, 'moderate'),
+    alt: `${altPrefix} ${i + 1}`,
+  }));
+
 // Magazine-style Project Card Component
 interface MagazineProjectCardProps {
   project: Project;
@@ -114,6 +121,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
 
   return (
     <motion.div
+      layout
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
@@ -221,7 +229,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
             onClick={() => onToggle(project.id)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full border-2 border-luxury-charcoal bg-transparent hover:bg-luxury-charcoal hover:text-white text-luxury-charcoal py-4 flex items-center justify-center gap-3 transition-all duration-300 group"
+            className="w-full border-2 border-luxury-charcoal bg-transparent hover:bg-luxury-gold hover:text-luxury-charcoal text-luxury-charcoal py-4 flex items-center justify-center gap-3 transition-all duration-300 group"
           >
             <span className="font-medium tracking-wider text-sm">
               {isExpanded ? 'CLOSE GALLERY' : 'VIEW FULL GALLERY'}
@@ -239,6 +247,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
         <AnimatePresence>
           {isExpanded && (
             <motion.div
+              layout
               initial={{ height: 0, opacity: 0 }}
               animate={{ 
                 height: 'auto', 
@@ -331,7 +340,7 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
                   <motion.button
                     onClick={() => onToggle(project.id)}
                     whileHover={{ scale: 1.02 }}
-                    className="inline-flex items-center gap-2 text-luxury-charcoal hover:text-luxury-darkGold transition-colors font-medium"
+                    className="inline-flex items-center gap-2 text-luxury-charcoal hover:text-luxury-gold transition-colors font-medium"
                   >
                     <ChevronUp className="w-4 h-4" />
                     <span className="text-sm tracking-wider">CLOSE GALLERY</span>
@@ -363,18 +372,11 @@ export default function ProjectsPage() {
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<'all' | 'residential' | 'corporate' | 'commercial'>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [isFiltering, setIsFiltering] = useState(false);
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
-  // Helper function to create cache-busted image arrays
-  const createImageArray = useCallback((basePath: string, count: number, altPrefix: string) => 
-    Array.from({ length: count }, (_, i) => ({
-      src: getGitHubCdnCacheBustedUrl(`${basePath}/${i + 1}.webp`, 'moderate'),
-      alt: `${altPrefix} ${i + 1}`,
-    })), []
-  );
-
-  // Memoized projects data with cache-busted URLs
-  const projects = useMemo<Project[]>(() => [
+  // Static projects data - no dependencies needed
+  const projects: Project[] = [
     {
       id: 'Edené',
       title: 'Project Edené wellness',
@@ -626,34 +628,38 @@ export default function ProjectsPage() {
       },
       images: createImageArray('/projects/projectofficeland', 9, 'Project Officeland interior'),
     },
-  ], [createImageArray]);
+  ];
 
-  const filteredProjects = useMemo(
-    () => (activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter)),
-    [activeFilter, projects]
-  );
+  // Derive filtered projects directly during render - no useMemo needed
+  const filteredProjects = activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter);
 
   const handleToggleProject = useCallback((projectId: string) => {
     setExpandedProjectId((current) => {
-      const newId = current === projectId ? null : projectId;
+      const isCurrentlyExpanded = current === projectId;
+      const newId = isCurrentlyExpanded ? null : projectId;
       
-      // Scroll to the project card when expanding
-      if (newId) {
+      // On close, scroll smoothly back to card top after exit animation
+      if (isCurrentlyExpanded) {
         setTimeout(() => {
           const element = document.getElementById(`project-${projectId}`);
           if (element) {
-            const offset = 100;
-            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-            window.scrollTo({
-              top: elementPosition - offset,
-              behavior: 'smooth'
+            element.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start' 
             });
           }
-        }, 100);
+        }, 650); // Matches 0.6s exit + buffer for layout settle
       }
       
       return newId;
     });
+  }, []);
+
+  // Handle filter loading state
+  const handleFilterChange = useCallback((filter: 'all' | 'residential' | 'corporate' | 'commercial') => {
+    setIsFiltering(true);
+    setActiveFilter(filter);
+    setTimeout(() => setIsFiltering(false), 400);
   }, []);
 
   useEffect(() => {
@@ -768,7 +774,7 @@ export default function ProjectsPage() {
                 ].map((filter) => (
                   <button
                     key={filter.value}
-                    onClick={() => setActiveFilter(filter.value)}
+                    onClick={() => handleFilterChange(filter.value)}
                     className={cn(
                       'w-full py-2.5 text-center text-xs tracking-[0.2em] uppercase font-medium transition-all duration-300',
                       activeFilter === filter.value
@@ -786,7 +792,22 @@ export default function ProjectsPage() {
 
         {/* Projects Section - Magazine Layout */}
         <section className="py-16 md:py-24 relative z-10">
-          <div className="container-luxury max-w-7xl">
+          <div className="container-luxury max-w-7xl relative">
+            {/* Filter Loading Overlay */}
+            {isFiltering && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 z-50 flex items-center justify-center bg-[#F3EEE8]/80 backdrop-blur-sm"
+              >
+                <div className="text-center">
+                  <ImageLoadingSpinner className="w-12 h-12 mx-auto mb-4" />
+                  <p className="text-luxury-slate text-sm tracking-wider">Filtering projects...</p>
+                </div>
+              </motion.div>
+            )}
+
             {isLoading ? (
               <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-center">
@@ -795,24 +816,28 @@ export default function ProjectsPage() {
                 </div>
               </div>
             ) : (
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="popLayout">
                 <motion.div
-                  key={activeFilter}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
+                  layout
                   className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12"
                 >
                   {filteredProjects.map((project, index) => (
-                    <div key={project.id} id={`project-${project.id}`}>
+                    <motion.div
+                      key={project.id}
+                      id={`project-${project.id}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4, ease: [0.43, 0.13, 0.23, 0.96] }}
+                      layout
+                    >
                       <MagazineProjectCard
                         project={project}
                         index={index}
                         isExpanded={expandedProjectId === project.id}
                         onToggle={handleToggleProject}
                       />
-                    </div>
+                    </motion.div>
                   ))}
                 </motion.div>
               </AnimatePresence>
@@ -825,7 +850,7 @@ export default function ProjectsPage() {
               >
                 <p className="text-xl text-luxury-slate mb-4">No projects found in this category</p>
                 <button
-                  onClick={() => setActiveFilter('all')}
+                  onClick={() => handleFilterChange('all')}
                   className="text-luxury-gold hover:text-luxury-darkGold transition-colors text-sm tracking-wider"
                 >
                   View all projects
