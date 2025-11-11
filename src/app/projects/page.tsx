@@ -38,6 +38,28 @@ const createImageArray = (basePath: string, count: number, altPrefix: string): P
     alt: `${altPrefix} ${i + 1}`,
   }));
 
+// Custom smooth scroll function with easing
+const smoothScrollTo = (targetPosition: number, duration: number = 1800): void => {
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  const startTime = performance.now();
+
+  const easeInOutQuad = (t: number): number => 
+    t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+  const animationStep = (currentTime: number): void => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easedProgress = easeInOutQuad(progress);
+    window.scrollTo(0, startPosition + distance * easedProgress);
+    if (progress < 1) {
+      requestAnimationFrame(animationStep);
+    }
+  };
+
+  requestAnimationFrame(animationStep);
+};
+
 // Magazine-style Project Card Component
 interface MagazineProjectCardProps {
   project: Project;
@@ -261,8 +283,8 @@ const MagazineProjectCard: React.FC<MagazineProjectCardProps> = ({
                 height: 0, 
                 opacity: 0,
                 transition: {
-                  height: { duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] },
-                  opacity: { duration: 0.3 }
+                  height: { duration: 1.0, ease: 'easeInOut' },
+                  opacity: { duration: 0.8, ease: 'easeInOut' }
                 }
               }}
               className="overflow-hidden border-t border-luxury-slate/10"
@@ -638,17 +660,18 @@ export default function ProjectsPage() {
       const isCurrentlyExpanded = current === projectId;
       const newId = isCurrentlyExpanded ? null : projectId;
       
-      // On close, scroll smoothly back to card top after exit animation
+      // On close, immediately start slow scroll back to card top (overlaps with collapse)
       if (isCurrentlyExpanded) {
+        // Use setTimeout(0) for near-instant trigger after state update
         setTimeout(() => {
           const element = document.getElementById(`project-${projectId}`);
           if (element) {
-            element.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start' 
-            });
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offset = 100; // Breathing room from top
+            const targetPosition = elementPosition - offset;
+            smoothScrollTo(targetPosition);
           }
-        }, 650); // Matches 0.6s exit + buffer for layout settle
+        }, 0);
       }
       
       return newId;
