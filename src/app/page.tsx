@@ -432,23 +432,48 @@ export default function HomePage(): React.JSX.Element {
             </div>
           </div>
         </section>
-
-        {/* We Stand Out Section - Updated with Subtle Elegant Cards */}
-        <section className="py-16 bg-warm-sand overflow-hidden">
-          <div className="container-luxury">
+{/* We Stand Out Section - Premium Glassmorphism Cards */}
+        <section className="py-20 bg-warm-sand overflow-hidden relative">
+          {/* Enhanced decorative background for glassmorphism */}
+          <div 
+            className="absolute inset-0 opacity-[0.03] pointer-events-none"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 20% 20%, #D4AF37 2px, transparent 2px),
+                radial-gradient(circle at 80% 20%, #D4AF37 2px, transparent 2px),
+                radial-gradient(circle at 20% 80%, #D4AF37 2px, transparent 2px),
+                radial-gradient(circle at 80% 80%, #D4AF37 2px, transparent 2px),
+                radial-gradient(circle at 50% 50%, #D4AF37 1px, transparent 1px)
+              `,
+              backgroundSize: '100px 100px, 100px 100px, 100px 100px, 100px 100px, 50px 50px',
+            }}
+          />
+          
+          {/* Subtle gradient overlay for depth */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse at center, transparent 0%, rgba(212, 175, 55, 0.02) 100%)',
+            }}
+          />
+          
+          <div className="container-luxury relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className="font-title text-4xl md:text-5xl font-bold mb-6 text-luxury-charcoal tracking-wide">
+              <h2 className="font-title text-4xl md:text-5xl font-bold mb-4 text-luxury-charcoal tracking-wide">
                 We Stand <span className="text-luxury-charcoal">Out</span>
               </h2>
+              <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto font-body">
+                Discover what makes our approach to luxury interior design truly exceptional
+              </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
                   icon: Workflow,
@@ -479,33 +504,133 @@ export default function HomePage(): React.JSX.Element {
                 return (
                   <motion.div
                     key={value.title}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: index * 0.15 }}
-                    className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-warm-sand/50 hover:border-luxury-gold/30 transition-all duration-300 hover:scale-102"
+                    transition={{ 
+                      duration: 0.7, 
+                      delay: index * 0.1,
+                      ease: [0.25, 0.1, 0.25, 1]
+                    }}
+                    whileHover={{ 
+                      y: -10,
+                      transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }
+                    }}
+                    className="group relative p-8 rounded-2xl cursor-pointer overflow-hidden"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(244, 237, 224, 0.6) 0%, rgba(244, 237, 224, 0.3) 100%)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255, 255, 255, 0.4)',
+                      boxShadow: '0 8px 32px 0 rgba(212, 175, 55, 0.08)',
+                    }}
                   >
-                    <div className="w-12 h-12 bg-luxury-gold/10 rounded-lg flex items-center justify-center mb-4">
-                      <IconComponent className="w-6 h-6 text-luxury-charcoal" aria-hidden="true" />
+                    {/* Glass shine effect on hover */}
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%, rgba(212, 175, 55, 0.2) 100%)',
+                        transform: 'translateX(-100%)',
+                        animation: 'shine 2s ease-in-out infinite',
+                      }}
+                    />
+                    
+                    {/* Enhanced blur on hover */}
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+                      style={{
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
+                      }}
+                    />
+                    
+                    {/* Top accent border with gradient */}
+                    <div 
+                      className="absolute top-0 left-0 right-0 h-[2px] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-600"
+                      style={{
+                        background: 'linear-gradient(90deg, rgba(212, 175, 55, 0.8) 0%, rgba(212, 175, 55, 0.3) 100%)',
+                      }}
+                    />
+                    
+                    {/* Inner glow border */}
+                    <div 
+                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      style={{
+                        boxShadow: 'inset 0 0 20px rgba(212, 175, 55, 0.1)',
+                      }}
+                    />
+                    
+                    <div className="relative z-10">
+                      {/* Icon with glass background */}
+                      <div 
+                        className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 relative overflow-hidden"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(212, 175, 55, 0.08) 100%)',
+                          backdropFilter: 'blur(10px)',
+                          WebkitBackdropFilter: 'blur(10px)',
+                          border: '1px solid rgba(212, 175, 55, 0.3)',
+                          boxShadow: '0 4px 16px rgba(212, 175, 55, 0.1)',
+                        }}
+                      >
+                        <IconComponent className="w-8 h-8 text-luxury-charcoal relative z-10" aria-hidden="true" />
+                        
+                        {/* Icon background glow */}
+                        <div 
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{
+                            background: 'radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%)',
+                          }}
+                        />
+                      </div>
+                      
+                      <h3 className="font-title text-xl font-bold mb-3 text-luxury-charcoal tracking-wide leading-tight">
+                        {value.title}
+                      </h3>
+                      
+                      <p className="text-luxury-charcoal/80 leading-relaxed font-body text-sm mb-6">
+                        {value.description}
+                      </p>
+                      
+                      <a
+                        href={value.href}
+                        className="inline-flex items-center space-x-2 text-luxury-charcoal font-semibold text-sm group/link"
+                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}
+                      >
+                        <span className="relative">
+                          Learn More
+                          <span 
+                            className="absolute bottom-0 left-0 w-0 h-0.5 group-hover/link:w-full transition-all duration-400"
+                            style={{ background: 'linear-gradient(90deg, #D4AF37 0%, rgba(212, 175, 55, 0.5) 100%)' }}
+                          />
+                        </span>
+                        <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform duration-300" aria-hidden="true" />
+                      </a>
                     </div>
-                    <h3 className="font-serif text-xl font-bold mb-3 text-luxury-charcoal tracking-wide">
-                      {value.title}
-                    </h3>
-                    <p className="text-luxury-charcoal/80 leading-relaxed font-body text-sm mb-4">
-                      {value.description}
-                    </p>
-                    <a
-                      href={value.href}
-                      className="inline-flex items-center space-x-1 text-luxury-charcoal font-medium text-sm hover:text-luxury-charcoal transition-colors group"
-                    >
-                      <span>Learn More</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
-                    </a>
+
+                    {/* Enhanced shadow on hover */}
+                    <div 
+                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      style={{
+                        boxShadow: '0 20px 40px -10px rgba(212, 175, 55, 0.15), 0 10px 20px -5px rgba(212, 175, 55, 0.1)',
+                      }}
+                    />
                   </motion.div>
                 );
               })}
             </div>
           </div>
+
+          {/* Add keyframe animation for shine effect */}
+          <style jsx>{`
+            @keyframes shine {
+              0% {
+                transform: translateX(-100%) translateY(-100%) rotate(30deg);
+              }
+              50%, 100% {
+                transform: translateX(100%) translateY(100%) rotate(30deg);
+              }
+            }
+          `}</style>
         </section>
 
         {/* Track Record Section - New Two-Column Design */}
