@@ -535,6 +535,18 @@ export default function ProjectsPage() {
       images: createImageArray('/projects/projectmodernnestomolelagos', 3, 'Project Modern Nest interior'),
     },
     {
+      id: 'aiona',
+      title: 'Project Aiona',
+      location: 'Ikeja, Lagos',
+      description: `The client asked for a gender-neutral nail salon and aesthetic clinic with a “New York meets Chelsea” vibe. The result is a refined, modern space that blends raw texture with quiet sophistication — exposed brick, muted tones, and sculptural forms. Warm lighting and clean lines create balance, while a mix of soft seating and strong materials keeps the atmosphere calm, confident, and inclusive.`,
+      category: 'commercial',
+      thumbnail: {
+        src: getGitHubCdnCacheBustedUrl('/projects/projectaiona/10.webp', 'moderate'),
+        alt: 'Project Aiona salon and clinic interior',
+      },
+      images: createImageArray('/projects/projectaiona', 15, 'Project Aiona interior'),
+    },
+    {
       id: 'gerald',
       title: 'Project Gerald',
       location: 'Lekki, Lagos',

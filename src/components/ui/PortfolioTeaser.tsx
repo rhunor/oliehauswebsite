@@ -99,16 +99,16 @@ const portfolioProjects: PortfolioProject[] = [
   },
   {
     id: '6',
-    title: 'Project Modern Nest',
-    category: 'Residential',
+    title: 'Project Aiona',
+    category: 'Commercial',
     location: 'Ikeja, Lagos',
     image: {
-      src: getGitHubCdnCacheBustedUrl('/projects/projectmodernnestomolelagos/4.webp', 'moderate'),
-      alt: 'Project Modern Nest family home',
+      src: getGitHubCdnCacheBustedUrl('/projects/projectaiona/12.webp', 'moderate'),
+      alt: 'Project Aiona salon and clinic interior',
       width: 800,
       height: 600,
     },
-    description: 'This project brought together a soft nursery, cozy living room, warm dining space, and modern bedroom.',
+    description: `The client asked for a gender-neutral nail salon and aesthetic clinic with a “New York meets Chelsea” vibe. The result is a refined, modern space that blends raw texture with quiet sophistication `,
     featured: true,
   },
 ];
