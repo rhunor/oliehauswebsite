@@ -242,13 +242,13 @@ export default function HeroSection({
               <X className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-90 transition-transform duration-300" />
             </motion.button>
 
-            {/* Video navigation buttons - bottom */}
+            {/* Video navigation buttons - vertically centered */}
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
               onClick={handlePrevVideo}
-              className="absolute bottom-20 left-6 sm:bottom-24 sm:left-8 w-12 h-12 sm:w-14 sm:h-14 bg-black/70 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-luxury-gold transition-all duration-300 z-40 border border-white/20 hover:border-luxury-gold shadow-xl hover:scale-110 group"
+              className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 w-12 h-12 sm:w-14 sm:h-14 bg-black/70 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-luxury-gold transition-all duration-300 z-40 border border-white/20 hover:border-luxury-gold shadow-xl hover:scale-110 group"
               aria-label="Previous video"
             >
               <SkipBack className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-180 transition-transform duration-300" />
@@ -259,7 +259,7 @@ export default function HeroSection({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
               onClick={handleNextVideo}
-              className="absolute bottom-20 right-6 sm:bottom-24 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-black/70 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-luxury-gold transition-all duration-300 z-40 border border-white/20 hover:border-luxury-gold shadow-xl hover:scale-110 group"
+              className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 bg-black/70 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-luxury-gold transition-all duration-300 z-40 border border-white/20 hover:border-luxury-gold shadow-xl hover:scale-110 group"
               aria-label="Next video"
             >
               <SkipForward className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-180 transition-transform duration-300" />
