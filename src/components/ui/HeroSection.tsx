@@ -100,9 +100,32 @@ export default function HeroSection({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [images.length, isVideoPlaying, isHydrated]);
 
+  /**
+   * Generates Vimeo embed URL with optimal parameters including loop
+   * 
+   * IMPORTANT: For FREE Vimeo accounts, the "More from..." end screen cannot be removed.
+   * The ONLY compliant workaround is to use loop=1, which will replay the video automatically
+   * instead of showing the end screen. This is the best legal solution without upgrading.
+   * 
+   * To properly remove end screens, you need a paid Vimeo plan (Plus, Pro, Business, etc.)
+   * and must configure it in: Video Settings → Advanced → Interaction Tools → End Screen → "Empty"
+   * 
+   * URL Parameters:
+   * - loop=1: Automatically replay video (BEST workaround for free accounts)
+   * - autoplay=1: Auto-play when loaded
+   * - muted=1: Start muted (required for autoplay)
+   * - controls=1: Show player controls
+   * - playsinline=1: Play inline on mobile
+   * - title=0: Hide video title
+   * - byline=0: Hide author name
+   * - portrait=0: Hide author profile picture
+   * - autopause=0: Don't pause when another video plays
+   * - responsive=1: Enable responsive scaling
+   * - dnt=1: Do Not Track (privacy)
+   */
   const getVimeoEmbedUrl = useCallback((vimeoUrl: string): string => {
     const videoId = vimeoUrl.split('/').pop() || '';
-    return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&controls=1&playsinline=1&title=0&byline=0&portrait=0&autopause=0&responsive=1&dnt=1`;
+    return `https://player.vimeo.com/video/${videoId}?loop=1&autoplay=1&muted=1&controls=1&playsinline=1&title=0&byline=0&portrait=0&autopause=0&responsive=1&dnt=1`;
   }, []);
 
   const handleVideoPlay = useCallback((): void => {
