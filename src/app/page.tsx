@@ -202,23 +202,6 @@ export default function HomePage(): React.JSX.Element {
     window.location.href = '/contact';
   };
 
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
-  
-  const closeVideo = () => {
-    setIsVideoOpen(false);
-    setSelectedVideoIndex(null);
-  };
-  
-  const openVideo = () => {
-    setSelectedVideoIndex(null);
-    setIsVideoOpen(true);
-  };
-  
-  const startVideo = (index: number) => {
-    setSelectedVideoIndex(index);
-  };
-
   return (
     <>
       <div >
@@ -226,139 +209,14 @@ export default function HomePage(): React.JSX.Element {
         <div className="relative">
           <HeroSection
             images={heroImages}
-            video={videoOptions[0]!}
+            videos={videoOptions}
             tagline={{
               main: 'Design for High Quality Living',
               sub: ''
             }}
             onHireUsClick={handleHireUsClick}
           />
-
-          {/* Overlayed Watch Video button */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="flex justify-center items-start h-full pt-28 pointer-events-auto">
-              <button
-                onClick={() => openVideo()}
-                className="inline-flex items-center space-x-3 bg-black/70 text-white px-5 py-3 rounded-full shadow-lg backdrop-blur-sm hover:scale-105 transition-transform"
-                aria-haspopup="dialog"
-              >
-                <span>Watch Video</span>
-              </button>
-            </div>
-          </div>
         </div>
-
-        {/* Video modal */}
-        {isVideoOpen && (
-          <div
-            role="dialog"
-            aria-modal="true"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
-            onClick={closeVideo}
-          >
-            <div
-              className="w-full max-w-4xl bg-white rounded-xl overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between px-4 py-3 border-b">
-                <h3 className="font-semibold">
-                  {selectedVideoIndex === null
-                    ? 'Choose a Video'
-                    : videoOptions[selectedVideoIndex]?.title ?? 'Unknown Video'}
-                </h3>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={closeVideo}
-                    className="text-sm px-3 py-1 rounded-md bg-gray-100"
-                    aria-label="Close video"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-
-              {selectedVideoIndex === null ? (
-                <div className="p-6 grid sm:grid-cols-2 gap-6">
-                  {videoOptions.map((v, i) => (
-                    <div key={v.title} className="flex flex-col items-center bg-gray-50 rounded-md p-4">
-                      <div className="w-full overflow-hidden rounded-md mb-3 bg-black" style={{ aspectRatio: '16/9' }}>
-                        <Image src={v.thumbnailSrc} alt={v.title} width={1200} height={675} className="object-cover w-full h-full" />
-                      </div>
-                      <h4 className="font-semibold mb-1">{v.title}</h4>
-                      <p className="text-sm text-gray-600 mb-3">{v.description}</p>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => startVideo(i)}
-                          className="px-4 py-2 bg-luxury-gold text-black rounded-md"
-                        >
-                          Play
-                        </button>
-                        <button
-                          onClick={() => setSelectedVideoIndex(i)}
-                          className="px-4 py-2 bg-gray-200 rounded-md text-sm"
-                        >
-                          Preview (select)
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <>
-                  {(() => {
-                    const idx = selectedVideoIndex as number;
-                    const selected = videoOptions[idx];
-                    if (!selected) {
-                      return (
-                        <div className="p-8 text-center text-red-600">
-                          Selected video not found.
-                        </div>
-                      );
-                    }
-                    const videoId = selected.videoSrc.split('/').pop()?.split('?')[0] ?? '';
-                    return (
-                      <>
-                        <div className="aspect-video bg-black">
-                          <iframe
-                            src={`https://player.vimeo.com/video/${videoId}?autoplay=1`}
-                            title={selected.title}
-                            className="w-full h-full"
-                            frameBorder="0"
-                            allow="autoplay; fullscreen; picture-in-picture"
-                            allowFullScreen
-                          />
-                        </div>
-
-                        <div className="px-4 py-3 flex items-center justify-between border-t">
-                          <p className="text-sm text-gray-600">{selected.description}</p>
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() =>
-                                setSelectedVideoIndex(prev => {
-                                  const current = prev ?? 0;
-                                  return (current + 1) % videoOptions.length;
-                                })
-                              }
-                              className="px-3 py-1 rounded-md bg-luxury-gold text-black text-sm"
-                            >
-                              Switch Video
-                            </button>
-                            <button
-                              onClick={() => setSelectedVideoIndex(null)}
-                              className="px-3 py-1 rounded-md bg-gray-100 text-sm"
-                            >
-                              Choose Another
-                            </button>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })()}
-                </>
-              )}
-             </div>
-           </div>
-         )}
 
         {/* About Us Section */}
         <section className="relative py-12 bg-warm-sand overflow-hidden">

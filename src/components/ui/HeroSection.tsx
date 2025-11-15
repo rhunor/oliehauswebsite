@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, X } from 'lucide-react';
+import { Play, X, SkipBack, SkipForward } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useHydrationSafe } from '@/hooks/useHydrationSafe';
 
@@ -34,7 +34,7 @@ interface VideoContent {
 
 interface HeroSectionProps {
   images: HeroImage[];
-  video: VideoContent;
+  videos: VideoContent[];
   tagline: {
     main: string;
     sub: string;
@@ -45,7 +45,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({
   images,
-  video,
+  videos,
   tagline,
   onHireUsClick,
   className
@@ -53,9 +53,17 @@ export default function HeroSection({
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState<number>(0);
   
   // Fix hydration issues properly
   const { isHydrated } = useHydrationSafe();
+
+  // Reset loaded state when switching videos
+  useEffect(() => {
+    if (isVideoPlaying) {
+      setIsVideoLoaded(false);
+    }
+  }, [currentVideoIndex, isVideoPlaying]);
 
   // Auto-advance slideshow - only on client
   useEffect(() => {
@@ -99,6 +107,7 @@ export default function HeroSection({
 
   const handleVideoPlay = useCallback((): void => {
     setIsVideoPlaying(true);
+    setCurrentVideoIndex(0);
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'video_play', {
         event_category: 'engagement',
@@ -112,16 +121,13 @@ export default function HeroSection({
     setIsVideoLoaded(false);
   }, []);
 
-  // Safe navigation functions
-  // const goToPrevious = useCallback((): void => {
-  //   if (!isHydrated || isVideoPlaying) return;
-  //   setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-  // }, [images.length, isVideoPlaying, isHydrated]);
+  const handleNextVideo = useCallback((): void => {
+    setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+  }, [videos.length]);
 
-  // const goToNext = useCallback((): void => {
-  //   if (!isHydrated || isVideoPlaying) return;
-  //   setCurrentImageIndex((prev) => (prev + 1) % images.length);
-  // }, [images.length, isVideoPlaying, isHydrated]);
+  const handlePrevVideo = useCallback((): void => {
+    setCurrentVideoIndex((prev) => (prev - 1 + videos.length) % videos.length);
+  }, [videos.length]);
 
   const handleHireUsClick = useCallback((): void => {
     onHireUsClick();
@@ -137,6 +143,16 @@ export default function HeroSection({
   const currentImage = images[currentImageIndex] || images[0];
   if (!currentImage) {
     return <div className="min-h-screen bg-luxury-charcoal animate-pulse">Loading...</div>;
+  }
+
+  // Guard for empty videos
+  if (!videos.length) {
+    return <div className="min-h-screen bg-luxury-charcoal animate-pulse">Loading videos...</div>;
+  }
+
+  const currentVideo: VideoContent | undefined = videos[currentVideoIndex];
+  if (!currentVideo) {
+    return <div className="min-h-screen bg-luxury-charcoal animate-pulse">Loading videos...</div>;
   }
 
   return (
@@ -214,22 +230,45 @@ export default function HeroSection({
               </motion.div>
             )}
             
-            {/* Enhanced close button with better positioning */}
+            {/* Enhanced close button - top-left */}
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
               onClick={handleVideoClose}
-              className="absolute top-6 right-6 sm:top-8 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-black/90 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 z-50 border-2 border-white/20 hover:border-red-500 shadow-2xl hover:scale-110 group"
+              className="absolute top-4 left-4 sm:top-6 sm:left-6 w-12 h-12 sm:w-14 sm:h-14 bg-black/90 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 z-50 border-2 border-white/20 hover:border-red-500 shadow-2xl hover:scale-110 group"
               aria-label="Close video"
             >
               <X className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-90 transition-transform duration-300" />
+            </motion.button>
+
+            {/* Video navigation buttons - bottom */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              onClick={handlePrevVideo}
+              className="absolute bottom-20 left-6 sm:bottom-24 sm:left-8 w-12 h-12 sm:w-14 sm:h-14 bg-black/70 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-luxury-gold transition-all duration-300 z-40 border border-white/20 hover:border-luxury-gold shadow-xl hover:scale-110 group"
+              aria-label="Previous video"
+            >
+              <SkipBack className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-180 transition-transform duration-300" />
+            </motion.button>
+
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              onClick={handleNextVideo}
+              className="absolute bottom-20 right-6 sm:bottom-24 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-black/70 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-luxury-gold transition-all duration-300 z-40 border border-white/20 hover:border-luxury-gold shadow-xl hover:scale-110 group"
+              aria-label="Next video"
+            >
+              <SkipForward className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-180 transition-transform duration-300" />
             </motion.button>
             
             {/* Video container with responsive aspect ratio */}
             <div className="relative w-full h-full max-w-7xl mx-auto">
               <iframe
-                src={getVimeoEmbedUrl(video.videoSrc)}
+                src={getVimeoEmbedUrl(currentVideo.videoSrc)}
                 className="absolute inset-0 w-full h-full rounded-lg shadow-2xl"
                 style={{ 
                   width: '100%', 
@@ -246,59 +285,30 @@ export default function HeroSection({
                   setIsVideoLoaded(true);
                   // Add a small delay for smooth transition
                   setTimeout(() => {
-                    const iframe = document.querySelector('iframe[title="' + video.title + '"]') as HTMLIFrameElement;
+                    const iframe = document.querySelector(`iframe[title="${currentVideo?.title ?? 'video'}"]`) as HTMLIFrameElement;
                     if (iframe) {
                       iframe.style.opacity = '1';
                     }
                   }, 200);
                 }}
-                title={video.title}
+                title={currentVideo.title}
               />
             </div>
             
-            {/* Video info overlay */}
+            {/* Video info overlay - top-right */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 z-40 max-w-md"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-40 max-w-xs"
             >
-              <div className="bg-black/80 backdrop-blur-md rounded-lg p-4 sm:p-6 border border-white/10">
-                <h3 className="text-white text-lg sm:text-xl font-semibold mb-2">{video.title}</h3>
-                <p className="text-white/80 text-sm sm:text-base">{video.description}</p>
+              <div className="bg-black/80 backdrop-blur-md rounded-lg p-3 sm:p-4 border border-white/10">
+                <h3 className="text-white text-base sm:text-lg font-semibold mb-1">{currentVideo.title}</h3>
+                <p className="text-white/80 text-xs sm:text-sm">{currentVideo.description}</p>
               </div>
             </motion.div>
           </motion.div>
         )}
-
-        {/* Enhanced Navigation controls - only when hydrated - NO DOTS */}
-        {/* {isHydrated && !isVideoPlaying && (
-          <>
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 0.7, x: 0 }}
-              whileHover={{ opacity: 1, scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={goToPrevious}
-              className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 p-3 sm:p-4 bg-black/30 backdrop-blur-md text-white rounded-full transition-all duration-300 hover:bg-black/50 z-30 border border-white/10 shadow-lg"
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-            </motion.button>
-
-            <motion.button
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 0.7, x: 0 }}
-              whileHover={{ opacity: 1, scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={goToNext}
-              className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 p-3 sm:p-4 bg-black/30 backdrop-blur-md text-white rounded-full transition-all duration-300 hover:bg-black/50 z-30 border border-white/10 shadow-lg"
-              aria-label="Next image"
-            >
-              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-            </motion.button>
-          </>
-        )} */}
 
         {/* Hero content - render immediately, enhance when hydrated */}
         {!isVideoPlaying && (
