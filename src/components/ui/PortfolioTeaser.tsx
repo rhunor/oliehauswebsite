@@ -101,7 +101,7 @@ const portfolioProjects: PortfolioProject[] = [
     id: '6',
     title: 'Project Aiona',
     category: 'Commercial',
-    location: 'Ikeja, Lagos',
+    location: 'Lekki, Lagos',
     image: {
       src: getGitHubCdnCacheBustedUrl('/projects/projectaiona/12.webp', 'moderate'),
       alt: 'Project Aiona salon and clinic interior',
