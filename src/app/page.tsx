@@ -194,6 +194,12 @@ const videoOptions: VideoContent[] = [
     videoSrc: 'https://vimeo.com/1116723569',
     title: 'Project Edene Wellness',
     description: 'Edene Wellness project showcase'
+  },
+   {
+    thumbnailSrc: `${GITHUB_CDN_BASE}/projects/projectaiona/7.webp`,
+    videoSrc: 'https://vimeo.com/1146473508',
+    title: 'olivehausinteriors',
+    description: 'olivhaus project showcase'
   }
 ];
 
