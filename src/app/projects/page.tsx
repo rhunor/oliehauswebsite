@@ -1,4 +1,3 @@
-//src/app/projects/page.tsx
 'use client';
 
 import { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect } from 'react';
@@ -31,7 +30,7 @@ interface Project {
   area?: string;
 }
 
-// Helper function moved outside component to prevent recreation
+// Helper function for GitHub-hosted images
 const createImageArray = (basePath: string, count: number, altPrefix: string): ProjectImage[] => 
   Array.from({ length: count }, (_, i) => ({
     src: getGitHubCdnCacheBustedUrl(`${basePath}/${i + 1}.webp`, 'moderate'),
@@ -413,8 +412,28 @@ export default function ProjectsPage() {
   const [isFiltering, setIsFiltering] = useState(false);
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
-  // Static projects data - no dependencies needed
+  // Static projects data
   const projects: Project[] = [
+    // ============================================
+    // PROJECT NICON - GITHUB HOSTED (29 images)
+    // ============================================
+    {
+      id: 'nicon',
+      title: 'Project Nicon',
+      location: 'Victoria Island, Lagos',  // UPDATE THIS with actual location
+      description: 'This master’s bedroom lounge has been thoughtfully renovated to create a modern, sophisticated retreat. The space seamlessly combines a bedroom, study, closet, and bathroom, designed for both comfort and functionality. Ample compartments and storage solutions have been incorporated to accommodate an extensive wardrobe, keeping the area organized and clutter-free. Clean lines, contemporary finishes, and a cohesive design aesthetic make this space a perfect blend of elegance and practicality—ideal for relaxation, work, and dressing in style.',  // UPDATE THIS with actual description
+      category: 'residential',  // Change to 'commercial' or 'corporate' if needed
+      featured: true,
+      area: '350 m²',  // UPDATE THIS with actual area
+      thumbnail: {
+        src: getGitHubCdnCacheBustedUrl('/projects/projectnicon/24.webp', 'moderate'),
+        alt: 'Project Nicon luxury residence',
+      },
+      images: createImageArray('/projects/projectnicon', 29, 'Project Nicon interior'),
+    },
+    // ============================================
+    // EXISTING GITHUB-HOSTED PROJECTS
+    // ============================================
     {
       id: 'Edené',
       title: 'Project Edené wellness',
@@ -538,7 +557,7 @@ export default function ProjectsPage() {
       id: 'aiona',
       title: 'Project Aiona',
       location: 'Lekki, Lagos',
-      description: `The client asked for a gender-neutral nail salon and aesthetic clinic with a “New York meets Chelsea” vibe. The result is a refined, modern space that blends raw texture with quiet sophistication — exposed brick, muted tones, and sculptural forms. Warm lighting and clean lines create balance, while a mix of soft seating and strong materials keeps the atmosphere calm, confident, and inclusive.`,
+      description: `The client asked for a gender-neutral nail salon and aesthetic clinic with a "New York meets Chelsea" vibe. The result is a refined, modern space that blends raw texture with quiet sophistication — exposed brick, muted tones, and sculptural forms. Warm lighting and clean lines create balance, while a mix of soft seating and strong materials keeps the atmosphere calm, confident, and inclusive.`,
       category: 'commercial',
       thumbnail: {
         src: getGitHubCdnCacheBustedUrl('/projects/projectaiona/10.webp', 'moderate'),
@@ -680,7 +699,7 @@ export default function ProjectsPage() {
     },
   ];
 
-  // Derive filtered projects directly during render - no useMemo needed
+  // Derive filtered projects directly during render
   const filteredProjects = activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter);
 
   const handleToggleProject = useCallback((projectId: string) => {
@@ -688,14 +707,13 @@ export default function ProjectsPage() {
       const isCurrentlyExpanded = current === projectId;
       const newId = isCurrentlyExpanded ? null : projectId;
       
-      // On close, immediately start slow scroll back to card top (overlaps with collapse)
+      // On close, immediately start slow scroll back to card top
       if (isCurrentlyExpanded) {
-        // Use setTimeout(0) for near-instant trigger after state update
         setTimeout(() => {
           const element = document.getElementById(`project-${projectId}`);
           if (element) {
             const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-            const offset = 100; // Breathing room from top
+            const offset = 100;
             const targetPosition = elementPosition - offset;
             smoothScrollTo(targetPosition);
           }
