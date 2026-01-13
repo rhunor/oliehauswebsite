@@ -53,7 +53,7 @@ export function DeleteProjectButton({ id, title }: DeleteProjectButtonProps) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-xl bg-neutral-900 p-6 shadow-xl border border-neutral-800">
             <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 rounded-full bg-red-500/10 p-3">
+              <div className="shrink-0 rounded-full bg-red-500/10 p-3">
                 <AlertTriangle className="h-6 w-6 text-red-500" />
               </div>
               <div className="flex-1">
