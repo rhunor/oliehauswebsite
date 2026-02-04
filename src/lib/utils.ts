@@ -1,4 +1,4 @@
-//src/lib/utils.ts - Enhanced version with your existing code + cache busting functions
+// src/lib/utils.ts - Enhanced version with your existing code + cache busting functions
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -89,29 +89,20 @@ export function buildPhoneUrl(phone: string): string {
 }
 
 // ==========================================
-// CACHE BUSTING UTILITIES - NEW ADDITIONS
+// CACHE BUSTING UTILITIES
 // ==========================================
 
-/**
- * Cache busting configuration
- */
 interface CacheBustingConfig {
   strategy: 'timestamp' | 'build-version' | 'content-hash' | 'manual';
   buildVersion?: string;
   manualVersion?: string;
 }
 
-/**
- * Default cache busting configuration
- */
 const defaultCacheBustingConfig: CacheBustingConfig = {
   strategy: 'build-version',
   buildVersion: process.env.NEXT_PUBLIC_BUILD_VERSION || process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 8) || Date.now().toString(),
 };
 
-/**
- * Primary cache busting function - handles multiple strategies
- */
 export function getCacheBustedUrl(
   baseUrl: string, 
   config: Partial<CacheBustingConfig> = {}
@@ -131,8 +122,6 @@ export function getCacheBustedUrl(
       versionParam = finalConfig.manualVersion || '1';
       break;
     case 'content-hash':
-      // For content-hash, you'd need to implement file hashing logic
-      // Fallback to build version for now
       versionParam = finalConfig.buildVersion || Date.now().toString();
       break;
     default:
@@ -143,23 +132,14 @@ export function getCacheBustedUrl(
   return `${baseUrl}${separator}v=${versionParam}`;
 }
 
-/**
- * Simple timestamp-based cache busting (always fresh)
- */
 export function getTimestampedUrl(baseUrl: string): string {
   return getCacheBustedUrl(baseUrl, { strategy: 'timestamp' });
 }
 
-/**
- * Build version-based cache busting (consistent per deployment)
- */
 export function getBuildVersionUrl(baseUrl: string): string {
   return getCacheBustedUrl(baseUrl, { strategy: 'build-version' });
 }
 
-/**
- * Manual version cache busting (for controlled releases)
- */
 export function getManualVersionUrl(baseUrl: string, version: string): string {
   return getCacheBustedUrl(baseUrl, { 
     strategy: 'manual', 
@@ -167,9 +147,6 @@ export function getManualVersionUrl(baseUrl: string, version: string): string {
   });
 }
 
-/**
- * GitHub CDN specific cache busting for your JSDelivr setup
- */
 export function getGitHubCdnCacheBustedUrl(
   imagePath: string,
   strategy: 'aggressive' | 'moderate' | 'conservative' = 'moderate'
@@ -179,13 +156,10 @@ export function getGitHubCdnCacheBustedUrl(
   
   switch (strategy) {
     case 'aggressive':
-      // Always fetch fresh (use for critical updates)
       return getTimestampedUrl(fullUrl);
     case 'moderate':
-      // Use build version (balanced approach)
       return getBuildVersionUrl(fullUrl);
     case 'conservative':
-      // Use manual versioning (most stable)
       const version = process.env.NEXT_PUBLIC_IMAGE_VERSION || '1.0.0';
       return getManualVersionUrl(fullUrl, version);
     default:
@@ -193,17 +167,11 @@ export function getGitHubCdnCacheBustedUrl(
   }
 }
 
-/**
- * JSDelivr specific purge utility
- */
 export function getJsDelivrPurgeUrl(imagePath: string): string {
   const GITHUB_CDN_BASE = "https://purge.jsdelivr.net/gh/rhunor/olivehausimages@main";
   return `${GITHUB_CDN_BASE}${imagePath}`;
 }
 
-/**
- * Batch cache bust multiple URLs
- */
 export function batchCacheBustUrls(
   urls: string[],
   config: Partial<CacheBustingConfig> = {}
@@ -211,9 +179,6 @@ export function batchCacheBustUrls(
   return urls.map(url => getCacheBustedUrl(url, config));
 }
 
-/**
- * Project-specific image cache busting
- */
 export function getProjectImageUrl(
   projectId: string,
   imageName: string,
@@ -223,15 +188,24 @@ export function getProjectImageUrl(
   return getGitHubCdnCacheBustedUrl(imagePath, strategy);
 }
 
-/**
- * Hero image cache busting
- */
 export function getHeroImageUrl(
   imageName: string,
   strategy: 'aggressive' | 'moderate' | 'conservative' = 'moderate'
 ): string {
   const imagePath = `/images/hero/${imageName}`;
   return getGitHubCdnCacheBustedUrl(imagePath, strategy);
+}
+
+// NEW: Helper for static project image arrays
+export function createImageArray(
+  basePath: string,
+  count: number,
+  altPrefix: string
+): { src: string; alt: string }[] {
+  return Array.from({ length: count }, (_, i) => ({
+    src: getGitHubCdnCacheBustedUrl(`${basePath}/${i + 1}.webp`, 'moderate'),
+    alt: `${altPrefix} ${i + 1}`,
+  }));
 }
 
 // ==========================================
@@ -247,16 +221,15 @@ export function getOptimizedImageUrl(
 ): string {
   let optimizedUrl = originalUrl;
   
-  // For Cloudinary URLs
   if (originalUrl.includes('cloudinary') || originalUrl.includes('res.cloudinary.com')) {
     const baseUrl = originalUrl.split('/upload/')[0] + '/upload/';
     const imagePath = originalUrl.split('/upload/')[1];
     
     const transformations: string[] = [
       `q_${quality}`,
-      'f_auto', // Auto format (AVIF/WebP)
-      'dpr_auto', // Auto DPR
-      'c_fill', // Crop fill for consistent sizing
+      'f_auto',
+      'dpr_auto',
+      'c_fill',
     ];
     
     if (width) transformations.push(`w_${width}`);
@@ -265,7 +238,6 @@ export function getOptimizedImageUrl(
     optimizedUrl = `${baseUrl}${transformations.join(',')}/${imagePath}`;
   }
   
-  // Apply cache busting if enabled
   if (enableCacheBusting) {
     optimizedUrl = getBuildVersionUrl(optimizedUrl);
   }
@@ -274,8 +246,6 @@ export function getOptimizedImageUrl(
 }
 
 export function generateImageBlurDataUrl(_width: number = 10, _height: number = 10): string {
-  // Return the same small neutral placeholder on both server and client
-  // to avoid hydration mismatches caused by dynamic canvas rendering.
   return 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAKAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAhEQACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/9oADAMBAAIRAxEAPwCdABmX/9k=';
 }
 
@@ -310,7 +280,6 @@ export function generateResponsiveSizes(breakpoints: Record<string, number>): st
   return sizes.join(', ');
 }
 
-// Predefined responsive sizes for common use cases
 export const responsiveSizes = {
   hero: '100vw',
   fullWidth: '100vw',
@@ -321,7 +290,6 @@ export const responsiveSizes = {
   avatar: '(max-width: 768px) 64px, 128px',
 };
 
-// Image quality presets (must match qualities array in next.config.js)
 export const imageQuality = {
   thumbnail: 70,
   standard: 80,
@@ -329,7 +297,7 @@ export const imageQuality = {
   hero: 95,
 } as const;
 
-// Analytics utilities (existing code preserved)
+// Analytics utilities
 export function trackEvent(eventType: string, category: string, label: string, value?: number): void {
   if (typeof window !== 'undefined' && 'gtag' in window) {
     window.gtag!('event', eventType, {
@@ -377,40 +345,22 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
   }, {});
 }
 
-/**
- * Scroll utilities for adaptive navigation
- */
 export const scrollUtils = {
-  /**
-   * Get current scroll position
-   */
   getScrollY: (): number => {
     if (typeof window === 'undefined') return 0;
     return window.scrollY;
   },
 
-  /**
-   * Check if user is at top of page
-   */
   isAtTop: (threshold: number = 10): boolean => {
     return scrollUtils.getScrollY() < threshold;
   },
 
-  /**
-   * Get scroll direction
-   */
   getScrollDirection: (currentScrollY: number, lastScrollY: number): 'up' | 'down' => {
     return currentScrollY > lastScrollY ? 'down' : 'up';
   },
 };
 
-/**
- * Performance utilities for navigation
- */
 export const performanceUtils = {
-  /**
-   * Debounce function for scroll events
-   */
   debounce: <T extends (...args: Parameters<T>) => ReturnType<T>>(
     func: T,
     wait: number
@@ -423,9 +373,6 @@ export const performanceUtils = {
     };
   },
 
-  /**
-   * Throttle function for frequent events
-   */
   throttle: <T extends (...args: Parameters<T>) => ReturnType<T>>(
     func: T,
     limit: number
