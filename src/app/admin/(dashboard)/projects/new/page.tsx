@@ -1,3 +1,4 @@
+// src/app/admin/(dashboard)/projects/new/page.tsx
 import { requireAuth } from '@/lib/dal';
 import { ProjectForm } from '@/components/admin/ProjectForm';
 

@@ -1,3 +1,5 @@
+// src/app/admin/(dashboard)/projects/page.tsx
+
 import { requireAuth } from '@/lib/dal';
 import connectDB from '@/lib/mongodb';
 import DynamicProject from '@/models/DynamicProject';

@@ -1,3 +1,4 @@
+// src/app/admin/(dashboard)/projects/[id]/edit/page.tsx
 import { requireAuth } from '@/lib/dal';
 import { notFound } from 'next/navigation';
 import connectDB from '@/lib/mongodb';

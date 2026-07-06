@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { revalidatePath } from 'next/cache';
 import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import DynamicProject from '@/models/DynamicProject';
@@ -148,6 +149,8 @@ export async function POST(request: NextRequest) {
       slug,
       order: data.order ?? nextOrder,
     });
+
+    revalidatePath('/projects');
 
     return NextResponse.json(
       {
