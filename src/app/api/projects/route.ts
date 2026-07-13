@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
-import DynamicProject from '@/models/DynamicProject';
+import DynamicProject, { slugifyProjectSlug } from '@/models/DynamicProject';
 import type { DynamicProjectFormData } from '@/types/blog';
 
 interface ProjectQueryParams {
@@ -124,11 +124,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate slug if not provided
-    const slug = data.slug || data.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+    // Generate slug if not provided, and sanitize any custom slug into a URL-safe form
+    const slug = slugifyProjectSlug(data.slug || data.title);
 
     // Check for duplicate slug
     const existingProject = await DynamicProject.findOne({ slug });

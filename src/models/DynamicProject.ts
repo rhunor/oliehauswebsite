@@ -1,5 +1,13 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
+export function slugifyProjectSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
 export interface IDynamicProject extends Document {
   _id: mongoose.Types.ObjectId;
   title: string;
@@ -100,13 +108,11 @@ DynamicProjectSchema.index({ isPublished: 1, order: 1 });
 DynamicProjectSchema.index({ category: 1 });
 DynamicProjectSchema.index({ isFeatured: 1 });
 
-// Pre-save middleware to auto-generate slug if not provided
+// Pre-save middleware to always normalize the slug into a URL-safe form
 DynamicProjectSchema.pre('save', function (next) {
-  if (!this.slug && this.title) {
-    this.slug = this.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+  const base = this.slug || this.title;
+  if (base) {
+    this.slug = slugifyProjectSlug(base);
   }
   next();
 });

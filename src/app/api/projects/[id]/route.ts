@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
-import DynamicProject from '@/models/DynamicProject';
+import DynamicProject, { slugifyProjectSlug } from '@/models/DynamicProject';
 import mongoose from 'mongoose';
 import type { DynamicProjectFormData } from '@/types/blog';
 
@@ -94,6 +94,11 @@ export async function PUT(
 
     const data = body as Partial<DynamicProjectFormData>;
 
+    // Sanitize any custom slug into a URL-safe form
+    if (data.slug) {
+      data.slug = slugifyProjectSlug(data.slug);
+    }
+
     // Find existing project
     const existingProject = await DynamicProject.findById(id);
     if (!existingProject) {
@@ -105,9 +110,9 @@ export async function PUT(
 
     // Check for duplicate slug if slug is being updated
     if (data.slug && data.slug !== existingProject.slug) {
-      const duplicateSlug = await DynamicProject.findOne({ 
-        slug: data.slug, 
-        _id: { $ne: id } 
+      const duplicateSlug = await DynamicProject.findOne({
+        slug: data.slug,
+        _id: { $ne: id }
       });
       if (duplicateSlug) {
         return NextResponse.json(
