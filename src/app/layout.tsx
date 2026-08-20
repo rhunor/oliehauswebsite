@@ -12,6 +12,7 @@ import './globals.css';
 import AdaptiveNavigation from '@/components/ui/AdaptiveNavigation';
 import RitzCarltonFooter from '@/components/ui/RitzCarltonFooter';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp';
+import { SiteImagesProvider } from '@/context/SiteImagesContext';
 
 export const metadata: Metadata = {
   title: {
@@ -180,7 +181,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           
           {/* Main content - flex-1 to take remaining space */}
           <main id="main-content" style={{ flex: 1, paddingTop: '80px' }}>
-            {children}
+            <SiteImagesProvider>{children}</SiteImagesProvider>
           </main>
           
           {/* Footer - Force visibility with explicit background */}

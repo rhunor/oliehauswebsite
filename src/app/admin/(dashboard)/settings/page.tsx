@@ -76,8 +76,12 @@ export default async function SettingsPage() {
             display position.
           </p>
           <p>
-            <strong className="text-white">Images:</strong> All images are stored in Cloudinary 
+            <strong className="text-white">Images:</strong> All images are stored in Cloudinary
             for fast delivery and automatic optimization.
+          </p>
+          <p>
+            <strong className="text-white">Site Images:</strong> Replace any photo on the Home, About,
+            Services, Contact, or Testimonials pages — including the homepage slideshow — without touching code.
           </p>
         </div>
       </div>

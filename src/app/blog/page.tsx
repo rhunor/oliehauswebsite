@@ -3,6 +3,11 @@ import BlogPost from '@/models/BlogPost';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Always render fresh from the database at request time — this page must
+// never be statically frozen at build time, which also means `next build`
+// no longer needs a live DB connection to succeed (see project detail page).
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Blog - OliveHaus Interiors',
   description: 'Interior design insights, tips, and inspiration from OliveHaus Interiors',

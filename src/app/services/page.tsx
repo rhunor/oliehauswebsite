@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import Image from 'next/image';
-import { 
+import {
   ChevronRight,
   Phone,
   Home,
@@ -12,9 +12,8 @@ import {
   BarChart3,
   Sparkles
 } from 'lucide-react';
-
-// GitHub CDN base URL for images
-const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+import { useSiteImages } from '@/context/SiteImagesContext';
+import { SERVICES_IMAGE_SLOTS } from '@/lib/siteImageSlots';
 
 // Service interface
 interface Service {
@@ -26,43 +25,7 @@ interface Service {
 interface ServiceImage {
   src: string;
   alt: string;
-  width: number;
-  height: number;
 }
-
-// Images configuration with const assertion
-const serviceImages = [
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/13.webp`,
-    alt: "Luxury interior design showcase",
-    width: 1920,
-    height: 800
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/14.webp`,
-    alt: "Modern living space",
-    width: 600,
-    height: 400
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/15.webp`,
-    alt: "Kitchen renovation",
-    width: 500,
-    height: 600
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/16.webp`,
-    alt: "Bathroom design",
-    width: 700,
-    height: 500
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/17.webp`,
-    alt: "Commercial space",
-    width: 450,
-    height: 450
-  }
-] as const;
 
 // Updated services data matching provided write-up
 const services: Service[] = [
@@ -254,7 +217,9 @@ export default function ServicesPage() {
   // Parallax effects
   const parallaxDistance = 100;
   const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -parallaxDistance]);
-  
+
+  const serviceImages: ServiceImage[] = useSiteImages(SERVICES_IMAGE_SLOTS);
+
   // Safe image access helper
   const getImage = (index: number): ServiceImage => {
     const clampedIndex = Math.max(0, Math.min(index, serviceImages.length - 1));

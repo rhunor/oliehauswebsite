@@ -21,9 +21,8 @@ import {
 import Image from 'next/image';
 import { sendContactEmail } from './actions';
 import type { ContactFormData, FormErrors } from './types';
-
-// GitHub CDN base URL for images
-const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+import { useSiteImages } from '@/context/SiteImagesContext';
+import { CONTACT_IMAGE_SLOTS } from '@/lib/siteImageSlots';
 
 // Project types
 const projectTypes = [
@@ -56,17 +55,6 @@ const timelineOptions = [
   'In 6 months+'
 ] as const;
 
-// Contact images configuration
-const contactImages = [
-  { src: `${GITHUB_CDN_BASE}/images/hero/8.webp`, alt: "Luxury living room", width: 600, height: 400 },
-  { src: `${GITHUB_CDN_BASE}/images/hero/9.webp`, alt: "Modern office space", width: 500, height: 600 },
-  { src: `${GITHUB_CDN_BASE}/images/hero/10.webp`, alt: "Elegant bedroom", width: 700, height: 500 },
-  { src: `${GITHUB_CDN_BASE}/images/hero/11.webp`, alt: "Designer kitchen", width: 550, height: 550 },
-  { src: `${GITHUB_CDN_BASE}/images/hero/20.webp`, alt: "Bathroom renovation", width: 450, height: 600 }
-] as const;
-
-// Safe accessor for contact images
-const getContactImage = (index: 0 | 1 | 2 | 3 | 4) => contactImages[index];
 
 // Animation variants
 const fadeInUpVariants: Variants = {
@@ -156,6 +144,9 @@ export default function ContactPage() {
   const [submitError, setSubmitError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const contactImages = useSiteImages(CONTACT_IMAGE_SLOTS);
+  const getContactImage = (index: 0 | 1 | 2 | 3 | 4) => contactImages[index]!;
 
   const totalSteps = 6;
 

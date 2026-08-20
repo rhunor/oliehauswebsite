@@ -3,9 +3,13 @@ import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
 import AnimatedUnderline from '@/components/ui/AnimatedUnderline';
-
-// GitHub CDN base URL for images
-const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
+import { useSiteImage, useSiteImages } from '@/context/SiteImagesContext';
+import {
+  ABOUT_HERO_SLOT,
+  ABOUT_PORTRAIT_SLOT,
+  ABOUT_COLLAGE_SLOTS,
+  ABOUT_CLOSING_BG_SLOT,
+} from '@/lib/siteImageSlots';
 
 // Properly typed animation variants
 const fadeInUpVariants: Variants = {
@@ -70,11 +74,10 @@ export default function AboutPage() {
     window.location.href = '/contact';
   };
 
-  // Collage images data
-  const collageImages = [1, 2, 3, 4, 5].map((i) => ({
-    src: `${GITHUB_CDN_BASE}/images/hero/${i}.webp`,
-    alt: `Interior design collage image ${i}`
-  }));
+  const heroImage = useSiteImage(ABOUT_HERO_SLOT);
+  const portraitImage = useSiteImage(ABOUT_PORTRAIT_SLOT);
+  const collageImages = useSiteImages(ABOUT_COLLAGE_SLOTS);
+  const closingBgImage = useSiteImage(ABOUT_CLOSING_BG_SLOT);
 
   return (
     <div className="min-h-screen bg-white">
@@ -82,8 +85,8 @@ export default function AboutPage() {
       {/* Hero Section with Overlay Text and Scroll Arrow */}
       <section className="relative h-screen overflow-hidden">
         <Image
-          src={`${GITHUB_CDN_BASE}/images/hero/1.webp`}
-          alt="Luxury living room interior"
+          src={heroImage.src}
+          alt={heroImage.alt}
           fill
           priority
           className="object-cover"
@@ -165,8 +168,8 @@ export default function AboutPage() {
               className="relative h-80 md:h-96 rounded-md overflow-hidden shadow-lg order-first md:order-none"
             >
               <Image
-                src={`${GITHUB_CDN_BASE}/images/hero/2.webp`}
-                alt="OliveHaus founder portrait"
+                src={portraitImage.src}
+                alt={portraitImage.alt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -270,8 +273,8 @@ export default function AboutPage() {
         {/* Decorative background pattern */}
         <div className="absolute inset-0 opacity-5">
           <Image
-            src={`${GITHUB_CDN_BASE}/images/hero/7.webp`}
-            alt=""
+            src={closingBgImage.src}
+            alt={closingBgImage.alt}
             fill
             className="object-cover"
             sizes="100vw"

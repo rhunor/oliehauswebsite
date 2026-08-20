@@ -4,6 +4,11 @@ import DynamicProject from '@/models/DynamicProject';
 import { getGitHubCdnCacheBustedUrl, createImageArray } from '@/lib/utils';
 import ClientProjectsPage from './ClientProjectsPage';
 
+// Always render fresh from the database at request time — this page must
+// never be statically frozen at build time, which also means `next build`
+// no longer needs a live DB connection to succeed (see project detail page).
+export const dynamic = 'force-dynamic';
+
 // const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
 
 interface ProjectImage {

@@ -8,6 +8,8 @@ import { motion, useMotionValue, animate, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ArrowRight, Workflow, Home, Globe, Users } from 'lucide-react';
+import { useSiteImage, useSiteImages } from '@/context/SiteImagesContext';
+import { HOME_HERO_SLOTS, HOME_ABOUT_TEASER_SLOT, HOME_CLOSING_BG_SLOT } from '@/lib/siteImageSlots';
 
 interface HeroImage {
   src: string;
@@ -59,127 +61,15 @@ function AnimatedCounter({ value, suffix = '', prefix = '' }: AnimatedCounterPro
 
 const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
 
-const heroImages: HeroImage[] = [
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/1.webp`,
-    alt: 'Elegant luxury living room with contemporary furniture and sophisticated lighting',
-    title: 'Luxury Living Spaces',
-    subtitle: 'Timeless elegance meets modern comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/2.webp`,
-    alt: 'Modern luxury kitchen with premium finishes and state-of-the-art appliances',
-    title: 'Gourmet Kitchens',
-    subtitle: 'Where culinary dreams come to life'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/3.webp`,
-    alt: 'Modern luxury kitchen with premium finishes and state-of-the-art appliances',
-    title: 'Gourmet Kitchens',
-    subtitle: 'Where culinary dreams come to life'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/4.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
+// Titles/subtitles shown over each hero slide (the photo itself is admin-editable — see SiteImagesContext)
+const heroTitles: { title: string; subtitle: string }[] = [
+  { title: 'Luxury Living Spaces', subtitle: 'Timeless elegance meets modern comfort' },
+  { title: 'Gourmet Kitchens', subtitle: 'Where culinary dreams come to life' },
+  { title: 'Gourmet Kitchens', subtitle: 'Where culinary dreams come to life' },
+  ...Array.from({ length: 17 }, () => ({
     title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/5.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/6.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/7.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/8.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/9.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/10.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/11.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/12.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/13.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/14.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/15.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/16.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/17.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/18.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/19.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  },
-  {
-    src: `${GITHUB_CDN_BASE}/images/hero/20.webp`,
-    alt: 'Serene master bedroom with custom millwork and luxury bedding',
-    title: 'Tranquil Bedrooms',
-    subtitle: 'Your personal sanctuary of comfort'
-  }
+    subtitle: 'Your personal sanctuary of comfort',
+  })),
 ];
 
 const videoOptions: VideoContent[] = [
@@ -207,6 +97,14 @@ export default function HomePage(): React.JSX.Element {
   const handleHireUsClick = (): void => {
     window.location.href = '/contact';
   };
+
+  const heroImageResults = useSiteImages(HOME_HERO_SLOTS);
+  const heroImages: HeroImage[] = heroImageResults.map((image, index) => ({
+    ...image,
+    ...heroTitles[index]!,
+  }));
+  const aboutTeaserImage = useSiteImage(HOME_ABOUT_TEASER_SLOT);
+  const closingBgImage = useSiteImage(HOME_CLOSING_BG_SLOT);
 
   return (
     <>
@@ -285,8 +183,8 @@ export default function HomePage(): React.JSX.Element {
                 className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden shadow-luxury-soft"
               >
                 <Image
-                  src={`${GITHUB_CDN_BASE}/about/28.webp`}
-                  alt="OliveHaus luxury interior design showcase"
+                  src={aboutTeaserImage.src}
+                  alt={aboutTeaserImage.alt}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -635,8 +533,8 @@ export default function HomePage(): React.JSX.Element {
         <section className="relative py-20 md:py-28 bg-luxury-charcoal text-white text-center  overflow-hidden">
           <div className="absolute inset-0 opacity-5">
             <Image
-              src={`${GITHUB_CDN_BASE}/images/hero/2.webp`}
-              alt=""
+              src={closingBgImage.src}
+              alt={closingBgImage.alt}
               fill
               className="object-cover"
               sizes="100vw"

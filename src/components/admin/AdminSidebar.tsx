@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   FileText,
   FolderOpen,
+  Image,
   LogOut,
   Settings,
   User,
@@ -35,6 +36,11 @@ const navItems = [
     label: 'Projects',
     href: '/admin/projects',
     icon: FolderOpen,
+  },
+  {
+    label: 'Site Images',
+    href: '/admin/site-images',
+    icon: Image,
   },
   {
     label: 'Settings',

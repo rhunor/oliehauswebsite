@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useSiteImages } from '@/context/SiteImagesContext';
+import { TESTIMONIAL_IMAGE_SLOTS } from '@/lib/siteImageSlots';
 
 interface Testimonial {
   id: string;
@@ -14,15 +16,11 @@ interface Testimonial {
   rating: number;
   isHighProfile: boolean;
   clientImage?: string;
-  projectImage: string;
 }
 
 interface TestimonialSectionProps {
   className?: string;
 }
-
-// Updated to use jsDelivr CDN for better performance and reliability
-const GITHUB_CDN_BASE = "https://cdn.jsdelivr.net/gh/rhunor/olivehausimages@main";
 
 // Sample testimonials data - In production, this would come from your database
 const testimonials: Testimonial[] = [
@@ -34,7 +32,6 @@ const testimonials: Testimonial[] = [
     content: 'Awesome experience. The world best Nigerian interior designer.The household designs are so unique!!!!!!!!',
     rating: 5,
     isHighProfile: true,
-    projectImage: `${GITHUB_CDN_BASE}/projects/projectlandmark/6.webp`,
   },
   {
     id: '2',
@@ -44,7 +41,6 @@ const testimonials: Testimonial[] = [
     content: 'Your work exudes a sense of comfort and luxury,The flow of the space is seamless, The custom-built pieces are exceptional, the selection of furniture and decor is spot on.Olivehaus 💯',
     rating: 5,
     isHighProfile: true,
-    projectImage: `${GITHUB_CDN_BASE}/projects/projectcasavitalis/22.webp`,
   },
   {
     id: '3',
@@ -54,7 +50,6 @@ const testimonials: Testimonial[] = [
     content: 'Met Anita of Olivehaus interior round about 2021 through Instagram and she has gone ahead to create two magical properties for me. We are currently on two new projects outside her base and we cant wait to show the world the magic she will create. Olive haus interior is the best interior designing house ever.',
     rating: 5,
     isHighProfile: false,
-    projectImage: `${GITHUB_CDN_BASE}/projects/projectezra/2.webp`,
   },
   {
     id: '4',
@@ -64,7 +59,6 @@ const testimonials: Testimonial[] = [
     content: 'What I got was a surreal transformation that took my breath away. The sort of space only imagined and fit for royalty was what Olivehaus delivered as our reality. But we didn\'t expect any less. They are simply the best Indeed! The client\'s Premium comfort comes first with them.',
     rating: 5,
     isHighProfile: true,
-    projectImage: `${GITHUB_CDN_BASE}/projects/projectcasaserenalekkilagos/5.webp`,
   },
   {
     id: '5',
@@ -74,7 +68,6 @@ const testimonials: Testimonial[] = [
     content: 'To any one considering Olive Haus Interiors don\'t worry you\'re in good hands! The work they did was beautiful. Maximization of space in a thoughtful way, stunning design, respectful communication, I can go on and on.Anita has built a team that KNOWS their work and it shows. Everyone that comes over has raved about how nice our place is! Would recommend Olive Haus interiors a million times over!',
     rating: 5,
     isHighProfile: false,
-    projectImage: `${GITHUB_CDN_BASE}/projects/projectofficeland/1.webp`,
   },
 ];
 
@@ -108,8 +101,11 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
     setIsAutoPlaying(false);
   };
 
+  const testimonialImages = useSiteImages(TESTIMONIAL_IMAGE_SLOTS);
+
   const currentTestimonialData = testimonials[currentTestimonial];
-  if (!currentTestimonialData) {
+  const currentTestimonialImage = testimonialImages[currentTestimonial];
+  if (!currentTestimonialData || !currentTestimonialImage) {
     return null;
   }
 
@@ -173,8 +169,8 @@ export default function TestimonialSection({ className }: TestimonialSectionProp
               <div className="relative">
                 <div className="aspect-[3/2] relative overflow-hidden rounded-2xl shadow-luxury-soft">
                   <img
-                    src={currentTestimonialData.projectImage}
-                    alt={`${currentTestimonialData.projectType} project`}
+                    src={currentTestimonialImage.src}
+                    alt={currentTestimonialImage.alt}
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
