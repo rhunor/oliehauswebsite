@@ -51,9 +51,9 @@ export default async function BlogManagementPage() {
       </div>
 
       {/* Blog Posts Table */}
-      <div className="overflow-hidden rounded-xl bg-neutral-900 border border-neutral-800">
+      <div className="overflow-x-auto rounded-xl bg-neutral-900 border border-neutral-800">
         {posts.length > 0 ? (
-          <table className="w-full">
+          <table className="w-full min-w-[640px]">
             <thead className="border-b border-neutral-800 bg-neutral-800/50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-400">
