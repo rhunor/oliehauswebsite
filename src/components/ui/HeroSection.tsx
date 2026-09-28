@@ -164,6 +164,7 @@ export default function HeroSection({
 
   // Get current image safely
   const currentImage = images[currentImageIndex] || images[0];
+  const nextImage = images.length > 1 ? images[(currentImageIndex + 1) % images.length] : undefined;
   if (!currentImage) {
     return <div className="min-h-screen bg-luxury-charcoal animate-pulse">Loading...</div>;
   }
@@ -195,12 +196,14 @@ export default function HeroSection({
                 sizes="100vw"
               />
             ) : (
-              <AnimatePresence mode="wait">
+              // Crossfade: the incoming slide fades in on top while the outgoing one stays
+              // fully opaque underneath, so the section background never shows through.
+              <AnimatePresence initial={false}>
                 <motion.div
                   key={`slide-${currentImageIndex}`}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, scale: 1.05, zIndex: 2 }}
+                  animate={{ opacity: 1, scale: 1, zIndex: 2 }}
+                  exit={{ opacity: 0, zIndex: 1, transition: { opacity: { delay: 1, duration: 0 } } }}
                   transition={{ duration: 1, ease: "easeInOut" }}
                   className="absolute inset-0"
                 >
@@ -215,7 +218,19 @@ export default function HeroSection({
                 </motion.div>
               </AnimatePresence>
             )}
-            <div className="gradient-overlay" />
+            {/* Preload the next slide so it is decoded before its crossfade starts */}
+            {isHydrated && nextImage && (
+              <Image
+                src={nextImage.src}
+                alt=""
+                aria-hidden
+                fill
+                loading="eager"
+                className="object-cover opacity-0 pointer-events-none"
+                sizes="100vw"
+              />
+            )}
+            <div className="gradient-overlay" style={{ zIndex: 3 }} />
           </div>
         ) : (
           // Enhanced Video player with better responsive design
