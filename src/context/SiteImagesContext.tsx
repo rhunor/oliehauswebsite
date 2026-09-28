@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { getOptimizedImageUrl } from '@/lib/utils';
 
 export interface SiteImageOverride {
   url: string;
@@ -53,7 +54,8 @@ function resolve(spec: SiteImageSpec, overrides: OverridesMap): ResolvedSiteImag
     return { src: spec.src, alt: spec.alt };
   }
   return {
-    src: override.url,
+    // Uploads are stored as full-size originals (often several MB); request a resized, compressed rendition
+    src: getOptimizedImageUrl(override.url, 2560, undefined, 80, false),
     alt: override.alt?.trim() ? override.alt : spec.alt,
   };
 }

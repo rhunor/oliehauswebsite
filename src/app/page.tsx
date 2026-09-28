@@ -5,7 +5,7 @@ import PortfolioTeaser from '@/components/ui/PortfolioTeaser';
 import TestimonialSection from '@/components/ui/TestimonialSection';
 
 import { motion, useMotionValue, animate, useInView } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ArrowRight, Workflow, Home, Globe, Users } from 'lucide-react';
 import { useSiteImage, useSiteImages } from '@/context/SiteImagesContext';
@@ -99,10 +99,13 @@ export default function HomePage(): React.JSX.Element {
   };
 
   const heroImageResults = useSiteImages(HOME_HERO_SLOTS);
-  const heroImages: HeroImage[] = heroImageResults.map((image, index) => ({
-    ...image,
-    ...heroTitles[index]!,
-  }));
+  const heroImages: HeroImage[] = useMemo(
+    () => heroImageResults.map((image, index) => ({
+      ...image,
+      ...heroTitles[index]!,
+    })),
+    [heroImageResults]
+  );
   const aboutTeaserImage = useSiteImage(HOME_ABOUT_TEASER_SLOT);
   const closingBgImage = useSiteImage(HOME_CLOSING_BG_SLOT);
 

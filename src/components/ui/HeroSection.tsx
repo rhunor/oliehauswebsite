@@ -181,44 +181,41 @@ export default function HeroSection({
   return (
     <section className={cn("relative min-h-screen overflow-hidden bg-pale-oat", className)}>
       <div className="relative h-screen">
-        {/* Image slideshow - always render first image, then animate */}
+        {/* Image slideshow - single layer only, no stacked duplicate (avoids ghosting) */}
         {!isVideoPlaying ? (
           <div className="absolute inset-0">
-            {/* Base image - prevents hydration mismatch */}
-            <Image
-              src={currentImage.src}
-              alt={currentImage.alt}
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-              style={{ zIndex: 1 }}
-            />
-            
-            {/* Animated overlay - only when hydrated */}
-            {isHydrated && (
+            {!isHydrated ? (
+              // Pre-hydration: static image matching the server render exactly, no animation
+              <Image
+                src={currentImage.src}
+                alt={currentImage.alt}
+                fill
+                priority
+                className="object-cover"
+                sizes="100vw"
+              />
+            ) : (
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={`overlay-${currentImageIndex}`}
-                  initial={{ opacity: 0, scale: 1.1 }}
+                  key={`slide-${currentImageIndex}`}
+                  initial={{ opacity: 0, scale: 1.05 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 1, ease: "easeInOut" }}
                   className="absolute inset-0"
-                  style={{ zIndex: 2 }}
                 >
                   <Image
                     src={currentImage.src}
                     alt={currentImage.alt}
                     fill
+                    priority
                     className="object-cover"
                     sizes="100vw"
                   />
-                  <div className="gradient-overlay" />
                 </motion.div>
               </AnimatePresence>
             )}
-            <div className="gradient-overlay" style={{ zIndex: 3 }} />
+            <div className="gradient-overlay" />
           </div>
         ) : (
           // Enhanced Video player with better responsive design
